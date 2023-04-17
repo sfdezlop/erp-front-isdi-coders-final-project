@@ -1,0 +1,61 @@
+.dashboard__container {
+  display: flex;
+  flex: row;
+  gap: 2vh;
+  /* border-style: solid;
+  border-color: black; */
+  padding: 2vh;
+}
+
+.dashboard__graph {
+  display: flex;
+  flex: column;
+  border-style: solid;
+  border-color: black;
+  width: 250vh;
+  height: 80vh;
+  padding: 1rem;
+}
+.dashboard__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+.dashboard__metricProduct,
+.dashboard__metricUnits,
+.dashboard__metricValue {
+  border-style: solid;
+  border-color: black;
+  width: 50vh;
+  height: 26vh;
+}
+
+.dashboard__graph,
+.dashboard__metricValue {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dashboard__actualInventoryCost {
+  font-size: 12vh;
+  justify-content: flex-end;
+  align-content: baseline;
+  color: #4472c4;
+  padding: 1rem;
+}
+
+.dashboard__actualMovementsCount {
+  font-size: 4vh;
+  display: flex;
+  justify-content: right;
+
+  align-content: baseline;
+  color: #4472c4;
+  padding: 0.6rem;
+}
+
+.dashboard__actualInventoryCostLabel {
+  font-size: 5vh;
+}

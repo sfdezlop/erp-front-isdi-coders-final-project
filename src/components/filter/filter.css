@@ -1,0 +1,37 @@
+.filter__forms {
+  display: flex;
+  /* flex-direction: row; */
+  /* flex-direction: row-reverse; */
+  background-color: rgb(118, 116, 116);
+}
+
+.filter__form {
+  background-color: rgb(118, 116, 116);
+  display: flex;
+  gap: 3vh;
+  align-items: center;
+  justify-items: center;
+  font-size: 2vh;
+  color: white;
+  padding: 0.5vh;
+}
+
+.filter__option {
+  font-size: 2vh;
+}
+
+.filter__button {
+  font-size: 2vh;
+  padding: 0.5vh;
+}
+
+.pagination__form {
+  background-color: rgb(118, 116, 116);
+  display: flex;
+  gap: 3vh;
+  align-items: center;
+  justify-items: center;
+  font-size: 2vh;
+  color: white;
+  padding: 0.5vh;
+}

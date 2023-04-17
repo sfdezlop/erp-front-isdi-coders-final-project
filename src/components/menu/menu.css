@@ -1,0 +1,25 @@
+.menu__container {
+}
+
+.menu__nav {
+}
+
+.menu__list {
+  display: flex;
+  justify-content: space-around;
+}
+.menu__option {
+  list-style: none;
+  color: white;
+}
+
+.menu__link {
+  text-decoration: none;
+  color: white;
+  padding: 0.05rem;
+  font-size: 1em;
+}
+.menu__link:hover {
+  color: rgb(2, 2, 32);
+  text-decoration: none;
+}

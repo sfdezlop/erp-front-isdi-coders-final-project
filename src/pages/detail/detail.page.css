@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.detail__header {
+  background-color: white;
+  color: #4472c4;
+  text-align: left;
+  padding: 1vh;
+}
+
+.detail__container {
+  display: flex;
+  justify-content: space-around;
+  width: calc(100%);
+  background-color: white;
+  padding: 1rem;
+  border-color: black;
+  text-align: left;
+  object-fit: fill;
+  font-size: 1rem;
+}
+.detail__image {
+  /* width: 33%; */
+  height: 35vh; /* Ajustar el tamaño de la imagen para que se ajuste a la altura de la tarjeta */
+  object-fit: scale-down;
+
+  margin-bottom: 1rem;
+}
+
+.detail__dataContainer div {
+  padding: 0.25rem;
+}
+
+.detail__descriptionContainer div {
+  padding: 0.25rem;
+}
+
+.detail__buttons {
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  gap: 100px;
+  flex-direction: row;
+}
+
+.detail__addButton,
+.detail__updateButton,
+.detail__deleteButton {
+  margin: 50px;
+  padding: 0.5rem;
+  transform: 98%;
+}

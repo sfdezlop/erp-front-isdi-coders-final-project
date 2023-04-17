@@ -1,0 +1,7 @@
+.homePage__container {
+  max-height: calc(70vh);
+  width: 98%;
+  padding: 1rem;
+  margin: 1rem;
+  box-sizing: border-box;
+}
