@@ -1,8 +1,6 @@
-import { UserServerResponseType, UserStructure } from "../../models/user.model";
+import { UserStructure } from "../../models/user.model";
+import { UserServerResponseType } from "../../models/serverresponse.model";
 import { url_def } from "../../config";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { ProductStructure } from "../../models/product.model";
 
 export class UsersRepo {
   url: string;
