@@ -18,13 +18,14 @@ export type ProductStateStructure = {
   detail: ProductStructure[];
 };
 
-const initialState: ProductStateStructure = {
+export const initialState: ProductStateStructure = {
   filteredGallery: [],
   filter: {
     filterField: "brand",
+
     filterValue: "(select all)",
     filterSet: 1,
-    filterRecordsPerSet: 24,
+    filterRecordsPerSet: 4,
     orderField: "shortDescription",
   },
   filterOptions: ["brand"],
