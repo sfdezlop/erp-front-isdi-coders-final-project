@@ -7,12 +7,14 @@ import {
   loadFilteredCount,
   loadAnalytics,
   loadUnfilteredCount,
+  loadStock,
 } from "../reducers/productmovement.slice";
 
 import { initialState as initialUserState } from "../reducers/user.slice";
 
 import { ProductMovementsRepo } from "../services/repositories/productmovement.repo";
 import { useApp } from "./use.app";
+import { ProductMovementStructure } from "../models/productmovement.model";
 
 export function useProductMovements(repo: ProductMovementsRepo) {
   const productMovementStateData = useSelector(
@@ -102,6 +104,37 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     }
   };
 
+  const showStockBySku = async (sku: string) => {
+    try {
+      const result = await repo.stockBySku(tokenToUse, sku);
+
+      return result.results[0].stock;
+    } catch (error) {
+      console.error((error as Error).message);
+      return 0;
+    }
+  };
+
+  const addProductMovement = async (
+    newProductMovement: Partial<ProductMovementStructure>
+  ) => {
+    try {
+      await repo.addProductMovement(tokenToUse, newProductMovement);
+    } catch (error) {
+      console.error((error as Error).message);
+    }
+  };
+
+  const stock = async () => {
+    try {
+      const serverStockResponse = await repo.stock(tokenToUse);
+      await dispatch(loadStock(serverStockResponse));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, "/products");
+    }
+  };
+
   return {
     loadGallery,
     loadFilteredCount,
@@ -110,5 +143,8 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     filterProductMovements,
     paginateProductMovements,
     dashboardProductMovements,
+    showStockBySku,
+    addProductMovement,
+    stock,
   };
 }
