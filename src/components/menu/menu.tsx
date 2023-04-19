@@ -44,6 +44,3 @@ export function Menu({ options }: MenuProps) {
     </div>
   );
 }
-function updateUrl(arg0: string): any {
-  throw new Error("Function not implemented.");
-}
