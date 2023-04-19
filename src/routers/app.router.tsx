@@ -4,7 +4,6 @@ import { MenuOption } from "../components/menu/menu";
 import { Login } from "../components/login/login";
 import DashboardPage from "../pages/dashboard/dashboard.page";
 import DetailPage from "../pages/detail/detail.page";
-import DetailPageWithoutMap from "../pages/detail/detail.page.without.map";
 import HomePage from "../pages/home/home.page";
 import MovementsPage from "../pages/movements/movements.page";
 import ProductsPage from "../pages/products/products.page";
@@ -27,6 +26,7 @@ export function AppRouter({ options }: AppRouterProps) {
     // <Suspense>
     <Routes>
       <Route path={"*"} element={<Login></Login>}></Route>
+
       <Route path={options[0].path} element={<HomePage></HomePage>}></Route>
       <Route
         path={options[1].path}
@@ -41,7 +41,7 @@ export function AppRouter({ options }: AppRouterProps) {
         element={<MovementsPage></MovementsPage>}
       ></Route>
       <Route
-        path="/products/detail"
+        path="/products/details/:productSEMDetails"
         element={<DetailPage></DetailPage>}
       ></Route>
       <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>
