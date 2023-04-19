@@ -1,6 +1,7 @@
 import "./footer.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { url_def } from "../../config";
 
 export function Footer() {
   const firstName = useSelector(
@@ -15,6 +16,7 @@ export function Footer() {
     <>
       <div className="footer">
         <p>{"Name: " + firstName + " " + lastName}</p>
+        <p>{"Server: " + url_def}</p>
         <p>{"Page: " + page}</p>
       </div>
     </>
