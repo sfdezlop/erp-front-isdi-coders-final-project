@@ -1,7 +1,7 @@
-import { useProductMovements } from "../../hooks/use.productmovements";
+import { useProductMovements } from "../../../hooks/use.productmovements";
 import "./stock.css";
 
-import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
+import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
 import { useEffect, useState } from "react";
 
 export type StockProps = {
@@ -26,13 +26,13 @@ export function Stock({ options }: StockProps) {
   if (renderNumber === 1) {
     return (
       <div className="stock__container">
-        Stock of SKU {options} as microservice (units): Calculating...
+        {"Stock of SKU " + options + " as microservice (units): Calculating..."}
       </div>
     );
   } else {
     return (
       <div className="stock__container">
-        Stock of SKU {options} as microservice (units): {stockToShow}
+        {"Stock of SKU " + options + " as microservice (units): " + stockToShow}
       </div>
     );
   }

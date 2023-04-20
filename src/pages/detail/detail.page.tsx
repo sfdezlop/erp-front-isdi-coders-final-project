@@ -5,7 +5,7 @@ import { useProducts } from "../../hooks/use.products";
 import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
-import { Stock } from "../../components/stock/stock";
+import { Stock } from "../../components/microservices/stock/stock";
 import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
 import { useProductMovements } from "../../hooks/use.productmovements";
 import { americanShortFormatOfADate } from "../../services/helpers/functions";
@@ -80,22 +80,20 @@ export default function DetailPage() {
     addSampleProducts(dynamicSampleOfProductToAdd);
     // addProductMovement(dynamicSampleOfProductMovementToAdd);
     galleryProduct();
-
     navigate("/products");
   };
 
   const handlerDelete = (event: SyntheticEvent) => {
     if (detailProductData[0] === undefined) {
-      // galleryProduct();
+      galleryProduct();
       navigate("/products");
     }
 
     if (detailProductData[0].brand === "Fake") {
       deleteByIdProducts(detailProductData[0].id);
-      // galleryProduct();
+      galleryProduct();
       navigate("/products");
     }
-    // galleryProduct();
     navigate("/products");
   };
   const handlerUpdate = (event: SyntheticEvent) => {

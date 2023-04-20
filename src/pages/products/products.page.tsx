@@ -1,5 +1,5 @@
 import "./products.page.css";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../hooks/use.products";
 import { ProductStructure } from "../../models/product.model";
@@ -7,9 +7,6 @@ import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Filter } from "../../components/filter/filter";
-import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
-import { useProductMovements } from "../../hooks/use.productmovements";
-import { Stock } from "../../components/stock/stock";
 
 export default function ProductsPage() {
   const galleryArray = useSelector(
@@ -24,13 +21,8 @@ export default function ProductsPage() {
     (state: RootState) => state.productState.filteredPage
   );
 
-  const stockArrayData = useSelector(
-    (state: RootState) => state.productMovementState.stock
-  );
-
   const repoProduct = new ProductsRepo();
   const { galleryProduct } = useProducts(repoProduct);
-  const repoProductMovement = new ProductMovementsRepo();
 
   useEffect(() => {
     galleryProduct();
@@ -93,13 +85,6 @@ export default function ProductsPage() {
                 <div>Cost (€): {item.costPerUnit}</div>
                 <div>Price (€): {item.pricePerUnit}</div>
                 {/* <Stock options={item.sku ? item.sku : ""}></Stock> */}
-                {/* <div className="productsPageCard__stock">
-                    Stock (units):{" "}
-                    {" " +
-                      stockArrayData.filter(
-                        (element) => element._id === item.sku
-                      )[0].stock}
-                  </div> */}
               </div>
             </li>
           ))}

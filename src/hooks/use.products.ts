@@ -34,44 +34,26 @@ export function useProducts(repo: ProductsRepo) {
         "products/gallery",
         productStateData.filter
       );
-
-      await dispatch(loadGallery(serverGalleryResponse.results));
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, "/products");
-    }
-
-    try {
       const serverFilteredCountResponse: any = await repo.readFilteredCount(
         tokenToUse,
         "products/count",
         productStateData.filter
       );
-
-      await dispatch(loadFilteredCount(serverFilteredCountResponse.results[0]));
-
       const serverUnFilteredCountResponse: any = await repo.readFilteredCount(
         tokenToUse,
         "products/count",
         {}
       );
-
-      await dispatch(
-        loadUnFilteredCount(serverUnFilteredCountResponse.results[0])
-      );
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, "/products");
-    }
-
-    try {
       const serverGroupByFieldResponse: any = await repo.readGroupsByField(
-        // userState.userLoggedToken,
         tokenToUse,
         "products/group-values-per-field",
         "brand"
       );
-
+      await dispatch(loadGallery(serverGalleryResponse.results));
+      await dispatch(loadFilteredCount(serverFilteredCountResponse.results[0]));
+      await dispatch(
+        loadUnFilteredCount(serverUnFilteredCountResponse.results[0])
+      );
       await dispatch(loadFilterOptions(serverGroupByFieldResponse.results));
     } catch (error) {
       console.error((error as Error).message);
@@ -79,8 +61,8 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const detailCredentials = (credential: string) => {
-    dispatch(loadDetailCredentials(credential));
+  const detailCredentials = async (credential: string) => {
+    await dispatch(loadDetailCredentials(credential));
   };
 
   const detail = async (id: string) => {
@@ -97,18 +79,18 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const filterProducts = (filter: any) => {
+  const filterProducts = async (filter: any) => {
     try {
-      dispatch(loadFilter(filter));
+      await dispatch(loadFilter(filter));
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/products");
     }
   };
 
-  const paginateProducts = (page: number) => {
+  const paginateProducts = async (page: number) => {
     try {
-      dispatch(loadFilteredPage(page));
+      await dispatch(loadFilteredPage(page));
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/products");

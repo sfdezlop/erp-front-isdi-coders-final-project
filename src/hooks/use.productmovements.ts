@@ -40,21 +40,13 @@ export function useProductMovements(repo: ProductMovementsRepo) {
         "productmovements/gallery",
         productMovementStateData.filter
       );
-
-      await dispatch(loadGallery(serverGalleryResponse.results));
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
-    }
-
-    try {
       const serverCountResponse: any = await repo.readFilteredCount(
         tokenToUse,
         "productmovements/count",
         productMovementStateData.filter.filterField,
         productMovementStateData.filter.filterValue
       );
-
+      await dispatch(loadGallery(serverGalleryResponse.results));
       await dispatch(loadFilteredCount(serverCountResponse.results[0]));
     } catch (error) {
       console.error((error as Error).message);
@@ -71,9 +63,9 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     }
   };
 
-  const paginateProductMovements = (page: number) => {
+  const paginateProductMovements = async (page: number) => {
     try {
-      dispatch(loadFilteredPage(page));
+      await dispatch(loadFilteredPage(page));
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/productmovements");
@@ -83,24 +75,17 @@ export function useProductMovements(repo: ProductMovementsRepo) {
   const dashboardProductMovements = async () => {
     try {
       const serverAnalyticsResponse: any = await repo.readAnalytics(tokenToUse);
-      await dispatch(loadAnalytics(serverAnalyticsResponse.results));
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, "/dashboard");
-    }
-
-    try {
       const serverCountResponse: any = await repo.readFilteredCount(
         tokenToUse,
         "productmovements/count",
         "",
         ""
       );
-
+      await dispatch(loadAnalytics(serverAnalyticsResponse.results));
       await dispatch(loadUnfilteredCount(serverCountResponse.results[0]));
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
+      addError(error as Error, "/dashboard");
     }
   };
 
