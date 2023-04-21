@@ -7,6 +7,7 @@ import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Filter } from "../../components/filter/filter";
+import { Stock } from "../../components/microservices/stock/stock";
 
 export default function ProductsPage() {
   const galleryArray = useSelector(
@@ -84,7 +85,7 @@ export default function ProductsPage() {
                 <div>EAN: {item.ean}</div>
                 <div>Cost (€): {item.costPerUnit}</div>
                 <div>Price (€): {item.pricePerUnit}</div>
-                {/* <Stock options={item.sku ? item.sku : ""}></Stock> */}
+                <Stock options={item.sku ? item.sku : ""}></Stock>
               </div>
             </li>
           ))}
