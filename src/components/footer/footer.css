@@ -1,6 +1,9 @@
 .footer {
+  display: flex;
+  flex-direction: row;
+  gap: 2vh;
   background-color: #4472c4;
   color: white;
-  font-size: 2vh;
+  font-size: 1.5vh;
   height: 6vh;
 }

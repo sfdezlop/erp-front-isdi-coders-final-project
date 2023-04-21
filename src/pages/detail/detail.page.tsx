@@ -6,17 +6,11 @@ import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Stock } from "../../components/microservices/stock/stock";
-import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
-import { useProductMovements } from "../../hooks/use.productmovements";
 import { americanShortFormatOfADate } from "../../services/helpers/functions";
 
 export default function DetailPage() {
   const userCreatorFullNames = useSelector(
     (state: RootState) => state.userState.usersGallery
-  );
-
-  const stockArrayData = useSelector(
-    (state: RootState) => state.productMovementState.stock
   );
 
   const userLoggedEmailData = useSelector(
@@ -37,9 +31,6 @@ export default function DetailPage() {
   const repoProduct = new ProductsRepo();
   const { detail, addSampleProducts, deleteByIdProducts, galleryProduct } =
     useProducts(repoProduct);
-  const repoProductMovement = new ProductMovementsRepo();
-  const { stock, addProductMovement } =
-    useProductMovements(repoProductMovement);
 
   useEffect(() => {
     detail(detailCredentialsData);
@@ -172,7 +163,7 @@ export default function DetailPage() {
             <></>
           )}
         </article>
-      ))}{" "}
+      ))}
     </>
   );
 }
