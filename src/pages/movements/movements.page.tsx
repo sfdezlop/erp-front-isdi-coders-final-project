@@ -4,8 +4,9 @@ import { useProductMovements } from "../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
 import { RootState } from "../../store/store";
 import "./movements.page.css";
+import { useParams } from "react-router-dom";
 
-export default function MovementsPage() {
+export default function MovementsPage(this: any) {
   const filteredGalleryData = useSelector(
     (state: RootState) => state.productMovementState.filteredGallery
   );

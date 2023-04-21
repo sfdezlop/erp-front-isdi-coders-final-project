@@ -8,7 +8,3 @@ export type UserStructure = {
   image: string;
   lastLogging: string;
 };
-
-export type UserServerResponseType = {
-  results: [];
-};

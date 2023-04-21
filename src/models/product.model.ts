@@ -9,8 +9,5 @@ export type ProductStructure = {
   userCreatorEmail: string;
   costPerUnit: number;
   pricePerUnit: number;
-};
-
-export type ProductServerResponseType = {
-  results: [];
+  stock: number;
 };

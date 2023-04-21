@@ -1,5 +1,9 @@
-import { ProductServerResponseType } from "../../models/product.model";
+import {
+  ProductMovementServerResponseType,
+  StockServerResponseType,
+} from "../../models/serverresponse.model";
 import { url_def } from "../../config";
+import { ProductMovementStructure } from "../../models/productmovement.model";
 
 type Filter = {
   filterField?: string;
@@ -20,7 +24,7 @@ export class ProductMovementsRepo {
     token: string,
     urlExtraPath: string,
     filter: Filter
-  ): Promise<ProductServerResponseType> {
+  ): Promise<ProductMovementServerResponseType> {
     const url = this.url + "/" + urlExtraPath;
 
     const resp = await fetch(url, {
@@ -44,7 +48,7 @@ export class ProductMovementsRepo {
         `Error http reading filtered products movements gallery: ${resp.status} ${resp.statusText}`
       );
 
-    const data = await resp.json();
+    const data: ProductMovementServerResponseType = await resp.json();
 
     return data;
   }
@@ -86,7 +90,7 @@ export class ProductMovementsRepo {
   async readDetail(
     token: string,
     urlExtraPath: string
-  ): Promise<ProductServerResponseType> {
+  ): Promise<ProductMovementServerResponseType> {
     const url = this.url + "/" + urlExtraPath;
 
     const resp = await fetch(url, {
@@ -109,7 +113,7 @@ export class ProductMovementsRepo {
     token: string,
     urlExtraPath: string,
     field: string
-  ): Promise<ProductServerResponseType> {
+  ): Promise<ProductMovementServerResponseType> {
     const url = this.url + "/" + urlExtraPath + "/" + field;
 
     const resp = await fetch(url, {
@@ -129,7 +133,9 @@ export class ProductMovementsRepo {
     return data;
   }
 
-  async readAnalytics(token: string): Promise<ProductServerResponseType> {
+  async readAnalytics(
+    token: string
+  ): Promise<ProductMovementServerResponseType> {
     const url = this.url + "/productmovements/analytics";
 
     const resp = await fetch(url, {
@@ -141,7 +147,74 @@ export class ProductMovementsRepo {
 
     if (!resp.ok)
       throw new Error(
-        `Error http reading product detail: ${resp.status} ${resp.statusText}`
+        `Error http reading analytics: ${resp.status} ${resp.statusText}`
+      );
+
+    const data: ProductMovementServerResponseType = await resp.json();
+
+    return data;
+  }
+
+  async addProductMovement(
+    token: string,
+    newProductMovement: Partial<ProductMovementStructure>
+  ): Promise<ProductMovementStructure> {
+    const url = this.url + "/productmovements/add";
+
+    const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(newProductMovement),
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http adding a Product Movement: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async stockBySku(
+    token: string,
+    sku: string
+  ): Promise<StockServerResponseType> {
+    const url = this.url + "/productmovements/stock/" + sku;
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading stock: ${resp.status} ${resp.statusText}`
+      );
+
+    const data: StockServerResponseType = await resp.json();
+
+    return data;
+  }
+
+  async stock(token: string): Promise<StockServerResponseType> {
+    const url = this.url + "/productmovements/stock";
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading stock: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();

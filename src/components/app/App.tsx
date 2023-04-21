@@ -1,12 +1,15 @@
 import { menuOptions } from "../../components/menu/menu";
+import { useApp } from "../../hooks/use.app";
 import { AppRouter } from "../../routers/app.router";
 import { Footer } from "../footer/footer";
 import { Header } from "../header/header";
-import { Login } from "../login/login";
-// import { Menu } from "../menu/menu";
+import { useLocation } from "react-router-dom";
 import "./App.css";
 
 export function App() {
+  const location = useLocation();
+  const { updateUrl } = useApp();
+  updateUrl(location.pathname);
   return (
     <>
       <div className="App">

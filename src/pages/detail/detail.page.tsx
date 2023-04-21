@@ -5,6 +5,8 @@ import { useProducts } from "../../hooks/use.products";
 import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import { Stock } from "../../components/microservices/stock/stock";
+import { americanShortFormatOfADate } from "../../services/helpers/functions";
 
 export default function DetailPage() {
   const userCreatorFullNames = useSelector(
@@ -32,6 +34,7 @@ export default function DetailPage() {
 
   useEffect(() => {
     detail(detailCredentialsData);
+    // stock();
   }, []);
 
   const navigate = useNavigate();
@@ -40,8 +43,8 @@ export default function DetailPage() {
   const dynamicSampleToAddBaseObject = filteredGalleryData.filter(
     (item) => item.sku === valueOfDetailCredentialsData
   )[0];
-  const handlerAdd = (event: SyntheticEvent) => {
-    const dynamicSampleToAdd = {
+  const handlerAdd = () => {
+    const dynamicSampleOfProductToAdd = {
       sku: dynamicSampleToAddBaseObject.sku + "_fake",
       shortDescription: dynamicSampleToAddBaseObject.shortDescription + "_fake",
       longDescription: dynamicSampleToAddBaseObject.longDescription + "_fake",
@@ -53,23 +56,35 @@ export default function DetailPage() {
       pricePerUnit: dynamicSampleToAddBaseObject.pricePerUnit,
     };
 
-    addSampleProducts(dynamicSampleToAdd);
+    const dynamicSampleOfProductMovementToAdd = {
+      productSku: dynamicSampleOfProductToAdd.sku,
+      batch: "fake",
+      date: americanShortFormatOfADate(new Date()),
+      type: "Inicialización",
+      typeId: "",
+      store: "AL01",
+      units: 0,
+      costPerUnit: dynamicSampleOfProductToAdd.costPerUnit,
+      pricePerUnit: dynamicSampleOfProductToAdd.pricePerUnit,
+    };
+
+    addSampleProducts(dynamicSampleOfProductToAdd);
+    // addProductMovement(dynamicSampleOfProductMovementToAdd);
     galleryProduct();
     navigate("/products");
   };
 
   const handlerDelete = (event: SyntheticEvent) => {
     if (detailProductData[0] === undefined) {
-      // galleryProduct();
+      galleryProduct();
       navigate("/products");
     }
 
     if (detailProductData[0].brand === "Fake") {
       deleteByIdProducts(detailProductData[0].id);
-      // galleryProduct();
+      galleryProduct();
       navigate("/products");
     }
-    // galleryProduct();
     navigate("/products");
   };
   const handlerUpdate = (event: SyntheticEvent) => {
@@ -95,6 +110,16 @@ export default function DetailPage() {
               <div>EAN: {item.ean}</div>
               <div>Cost (€): {item.costPerUnit}</div>
               <div>Price (€): {item.pricePerUnit}</div>
+              {/* <div className="detail__stock">
+                Stock of {item.sku} loaded to productMovementState (units):
+                {" " +
+                  stockArrayData.filter(
+                    (item) => item._id === detailProductData[0].sku
+                  )[0].stock}
+              </div> */}
+              <div className="detail__microServiceStock">
+                <Stock options={item.sku}></Stock>
+              </div>
               <div>
                 Created by:
                 {" " +
@@ -121,19 +146,24 @@ export default function DetailPage() {
               <div>
                 <div className="detail__longDescriptionInput"></div>
               </div>
-            </div>{" "}
+            </div>
+
             {/* <button className="detail__updateButton" onClick={handlerUpdate}>
               Editar
             </button> */}
-          </div>
+          </div>{" "}
+          <button className="detail__addButton" onClick={handlerAdd}>
+            Add a Fake Product
+          </button>
+          {item.brand === "Fake" ? (
+            <button className="detail__deleteButton" onClick={handlerDelete}>
+              Delete a Fake Product
+            </button>
+          ) : (
+            <></>
+          )}
         </article>
-      ))}{" "}
-      <button className="detail__addButton" onClick={handlerAdd}>
-        Add a Fake Product
-      </button>
-      <button className="detail__deleteButton" onClick={handlerDelete}>
-        Delete a Fake Product
-      </button>
+      ))}
     </>
   );
 }

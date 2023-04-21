@@ -19,15 +19,17 @@
   padding: 1rem;
   border-color: black;
   text-align: left;
-  object-fit: fill;
+  /* object-fit: fill; */
   font-size: 1rem;
 }
 .detail__image {
-  /* width: 33%; */
-  height: 35vh; /* Ajustar el tamaño de la imagen para que se ajuste a la altura de la tarjeta */
+  height: 35vh;
   object-fit: scale-down;
-
   margin-bottom: 1rem;
+}
+
+.detail__stock {
+  color: #4472c4;
 }
 
 .detail__dataContainer div {

@@ -10,7 +10,3 @@ export type ProductMovementStructure = {
   costPerUnit: number;
   pricePerUnit: number;
 };
-
-export type ProductMovementServerResponseType = {
-  results: [];
-};

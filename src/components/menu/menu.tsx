@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./menu.css";
-import { useApp } from "../../hooks/use.app";
-import { SyntheticEvent } from "react";
 
 export type MenuOption = {
   label: string;
@@ -19,11 +17,6 @@ export type MenuProps = {
 };
 
 export function Menu({ options }: MenuProps) {
-  const { updateUrl } = useApp();
-  const handlerClick = (event: SyntheticEvent) => {
-    const menuOptionSelected = event.currentTarget;
-    updateUrl(menuOptionSelected.innerHTML.split("href=")[1].split(">")[0]);
-  };
   return (
     <div className="menu__container">
       <nav className="menu__nav">
@@ -32,18 +25,20 @@ export function Menu({ options }: MenuProps) {
             <li
               key={item.label}
               className="menu__option menu__option_notSelected"
-              onClick={handlerClick}
             >
-              <Link to={item.path as string} className="menu__link">
+              <NavLink
+                to={item.path as string}
+                className="menu__link"
+                style={(isActive) => ({
+                  color: isActive ? "white" : "white",
+                })}
+              >
                 {item.label}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
       </nav>
     </div>
   );
-}
-function updateUrl(arg0: string): any {
-  throw new Error("Function not implemented.");
 }

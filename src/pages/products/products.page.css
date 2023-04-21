@@ -44,9 +44,9 @@
 
 .productsPageCard__image:hover {
   border-style: solid;
-  border-width: 0.2px;
+  border-width: 1px;
   border-color: #4472c4;
-  padding: 0.5vh;
+  padding: 2vh;
 }
 
 .productsPageCard__shortDescription {
@@ -63,5 +63,9 @@
 
 .productsPageCard__sku:hover {
   text-decoration: underline;
+  color: #4472c4;
+}
+
+.productsPageCard__stock {
   color: #4472c4;
 }
