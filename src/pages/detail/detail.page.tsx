@@ -1,5 +1,5 @@
 import "./detail.page.css";
-import { SyntheticEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../hooks/use.products";
 import { ProductsRepo } from "../../services/repositories/product.repo";
@@ -7,8 +7,11 @@ import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Stock } from "../../components/microservices/stock/stock";
 import { americanShortFormatOfADate } from "../../services/helpers/functions";
+import { Loader } from "../../components/loader/loader";
 
 export default function DetailPage() {
+  const [renderNumber, setRenderNumber] = useState(1);
+
   const userCreatorFullNames = useSelector(
     (state: RootState) => state.userState.usersGallery
   );
@@ -34,11 +37,10 @@ export default function DetailPage() {
 
   useEffect(() => {
     detail(detailCredentialsData);
-    // stock();
-  }, []);
+    setRenderNumber(2);
+  }, [renderNumber]);
 
   const navigate = useNavigate();
-  // const fieldOfDetailCredentialsData = detailCredentialsData.split("/")[0];
   const valueOfDetailCredentialsData = detailCredentialsData.split("/")[1];
   const dynamicSampleToAddBaseObject = filteredGalleryData.filter(
     (item) => item.sku === valueOfDetailCredentialsData
@@ -69,7 +71,6 @@ export default function DetailPage() {
     };
 
     addSampleProducts(dynamicSampleOfProductToAdd);
-    // addProductMovement(dynamicSampleOfProductMovementToAdd);
     galleryProduct();
     navigate("/products");
   };
@@ -90,80 +91,85 @@ export default function DetailPage() {
   const handlerUpdate = (event: SyntheticEvent) => {
     navigate("/products");
   };
-  return (
-    <>
-      <h2 className="detail__header">Product Details</h2>
-      {detailProductData.map((item) => (
-        <article key={item.id}>
-          <div className="detail__container">
-            <div className="detail__imageContainer">
-              <img
-                className="detail__image"
-                src={item.image}
-                alt={`${item.shortDescription} card`}
-              ></img>
-            </div>
-            <div className="detail__dataContainer">
-              <div>Brand: {item.brand}</div>
-              <div>ID: {item.id}</div>
-              <div>SKU: {item.sku}</div>
-              <div>EAN: {item.ean}</div>
-              <div>Cost (€): {item.costPerUnit}</div>
-              <div>Price (€): {item.pricePerUnit}</div>
-              {/* <div className="detail__stock">
+
+  if (renderNumber === 1) {
+    return <Loader></Loader>;
+  } else {
+    return (
+      <>
+        <h2 className="detail__header">Product Details {renderNumber}</h2>
+        {detailProductData.map((item) => (
+          <article key={item.id}>
+            <div className="detail__container">
+              <div className="detail__imageContainer">
+                <img
+                  className="detail__image"
+                  src={item.image}
+                  alt={`${item.shortDescription} card`}
+                ></img>
+              </div>
+              <div className="detail__dataContainer">
+                <div>Brand: {item.brand}</div>
+                <div>ID: {item.id}</div>
+                <div>SKU: {item.sku}</div>
+                <div>EAN: {item.ean}</div>
+                <div>Cost (€): {item.costPerUnit}</div>
+                <div>Price (€): {item.pricePerUnit}</div>
+                {/* <div className="detail__stock">
                 Stock of {item.sku} loaded to productMovementState (units):
                 {" " +
                   stockArrayData.filter(
                     (item) => item._id === detailProductData[0].sku
                   )[0].stock}
               </div> */}
-              <div className="detail__microServiceStock">
-                <Stock options={item.sku}></Stock>
+                <div className="detail__microServiceStock">
+                  <Stock options={item.sku}></Stock>
+                </div>
+                <div>
+                  Created by:
+                  {" " +
+                    userCreatorFullNames.filter(
+                      (item) =>
+                        item.email === detailProductData[0].userCreatorEmail
+                    )[0].firstName +
+                    " " +
+                    userCreatorFullNames.filter(
+                      (item) =>
+                        item.email === detailProductData[0].userCreatorEmail
+                    )[0].lastName}
+                </div>
               </div>
-              <div>
-                Created by:
-                {" " +
-                  userCreatorFullNames.filter(
-                    (item) =>
-                      item.email === detailProductData[0].userCreatorEmail
-                  )[0].firstName +
-                  " " +
-                  userCreatorFullNames.filter(
-                    (item) =>
-                      item.email === detailProductData[0].userCreatorEmail
-                  )[0].lastName}
-              </div>
-            </div>
-            <div className="detail__descriptionContainer">
-              <div className="detail__shortDescription">
-                Short Description: {item.shortDescription}
-              </div>
-              <div className="detail__shortDescriptionInput"></div>
-              <div className="detail__longDescription">
-                Long Description: {item.longDescription}
+              <div className="detail__descriptionContainer">
+                <div className="detail__shortDescription">
+                  Short Description: {item.shortDescription}
+                </div>
+                <div className="detail__shortDescriptionInput"></div>
+                <div className="detail__longDescription">
+                  Long Description: {item.longDescription}
+                </div>
+
+                <div>
+                  <div className="detail__longDescriptionInput"></div>
+                </div>
               </div>
 
-              <div>
-                <div className="detail__longDescriptionInput"></div>
-              </div>
-            </div>
-
-            {/* <button className="detail__updateButton" onClick={handlerUpdate}>
+              {/* <button className="detail__updateButton" onClick={handlerUpdate}>
               Editar
             </button> */}
-          </div>{" "}
-          <button className="detail__addButton" onClick={handlerAdd}>
-            Add a Fake Product
-          </button>
-          {item.brand === "Fake" ? (
-            <button className="detail__deleteButton" onClick={handlerDelete}>
-              Delete a Fake Product
+            </div>{" "}
+            <button className="detail__addButton" onClick={handlerAdd}>
+              Add a Fake Product
             </button>
-          ) : (
-            <></>
-          )}
-        </article>
-      ))}
-    </>
-  );
+            {item.brand === "Fake" ? (
+              <button className="detail__deleteButton" onClick={handlerDelete}>
+                Delete a Fake Product
+              </button>
+            ) : (
+              <></>
+            )}
+          </article>
+        ))}
+      </>
+    );
+  }
 }

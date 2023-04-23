@@ -29,8 +29,7 @@ export function useUsers(repo: UsersRepo) {
 
       await dispatch(loginToken(serverLoginResponse.results[0]));
       await dispatch(loginUser(serverLoginResponse.results[1]));
-      await localStorage.setItem("tokenERP", userLoggedToken);
-
+      await localStorage.setItem("tokenERP", serverLoginResponse.results[0]);
       const serverGalleryResponse: any = await repo.readGallery(
         localStorage.token,
         "users"

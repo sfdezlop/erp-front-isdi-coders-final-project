@@ -12,6 +12,7 @@ export type ErrorLog = {
 export type AppStateStructure = {
   errorLog: ErrorLog[];
   urlPage: string;
+  storeLog: { date: string; user: string; log: {} };
 };
 
 export const initialState: AppStateStructure = {
@@ -27,6 +28,12 @@ export const initialState: AppStateStructure = {
     },
   ],
   urlPage: "",
+
+  storeLog: {
+    date: new Date().toString(),
+    user: "Initial",
+    log: {},
+  },
 };
 
 export const appSlice = createSlice({
@@ -39,9 +46,15 @@ export const appSlice = createSlice({
     updateUrlPage(state: AppStateStructure, action: PayloadAction<string>) {
       state.urlPage = action.payload;
     },
+    updateStore(
+      state: AppStateStructure,
+      action: PayloadAction<{ date: string; user: string; log: {} }>
+    ) {
+      state.storeLog = action.payload;
+    },
   },
 });
 
-export const { addErrorLog, updateUrlPage } = appSlice.actions;
+export const { addErrorLog, updateUrlPage, updateStore } = appSlice.actions;
 
 export const appReducer = appSlice.reducer;

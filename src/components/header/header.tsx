@@ -23,9 +23,7 @@ export function Header() {
   );
 
   const handlerClick = (event: SyntheticEvent) => {
-    localStorage.setItem("tokenERP", initialUserState.userLoggedToken);
     userLogout();
-
     navigate("/");
   };
 
