@@ -85,7 +85,10 @@ export default function ProductsPage() {
                 <div>EAN: {item.ean}</div>
                 <div>Cost (€): {item.costPerUnit}</div>
                 <div>Price (€): {item.pricePerUnit}</div>
-                <Stock options={item.sku ? item.sku : ""}></Stock>
+                <div>
+                  {"Stock (units): "}
+                  <Stock options={item.sku ? item.sku : ""}></Stock>
+                </div>
               </div>
             </li>
           ))}

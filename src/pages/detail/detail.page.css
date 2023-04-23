@@ -1,9 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .detail__header {
   background-color: white;
   color: #4472c4;
@@ -38,6 +32,12 @@
 
 .detail__descriptionContainer div {
   padding: 0.25rem;
+}
+
+.detail__microServiceStock div {
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .detail__buttons {

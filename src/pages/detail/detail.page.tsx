@@ -97,7 +97,7 @@ export default function DetailPage() {
   } else {
     return (
       <>
-        <h2 className="detail__header">Product Details {renderNumber}</h2>
+        <h2 className="detail__header">Product Details</h2>
         {detailProductData.map((item) => (
           <article key={item.id}>
             <div className="detail__container">
@@ -123,6 +123,7 @@ export default function DetailPage() {
                   )[0].stock}
               </div> */}
                 <div className="detail__microServiceStock">
+                  {"Stock (units): "}
                   <Stock options={item.sku}></Stock>
                 </div>
                 <div>

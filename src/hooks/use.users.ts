@@ -53,13 +53,13 @@ export function useUsers(repo: UsersRepo) {
 
       await dispatch(loginToken(serverResponse.results[0]));
       await dispatch(loginUser(serverResponse.results[1]));
-      await localStorage.setItem("tokenERP", userLoggedToken);
+      await localStorage.setItem("tokenERP", serverResponse.results[0]);
 
-      const serverGalleryResponse: any = await repo.readGallery(
-        localStorage.token,
-        "users"
-      );
-      await dispatch(loginGallery(serverGalleryResponse.results));
+      // const serverGalleryResponse: any = await repo.readGallery(
+      //   localStorage.tokenERP,
+      //   "users"
+      // );
+      await dispatch(loginGallery(serverResponse.results[2]));
     } catch (error) {
       localStorage.setItem("tokenERP", initialUserState.userLoggedToken);
       console.error((error as Error).message);

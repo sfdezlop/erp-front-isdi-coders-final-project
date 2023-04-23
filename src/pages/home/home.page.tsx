@@ -11,27 +11,33 @@ export default function HomePage() {
   const userLoggedToken = useSelector(
     (state: RootState) => state.userState.userLoggedToken
   );
-  localStorage.setItem("tokenERP", userLoggedToken);
-  useEffect(() => {
-    localStorage.setItem("tokenERP", userLoggedToken);
-  }, []);
+  // localStorage.setItem("tokenERP", userLoggedToken);
+  // useEffect(() => {
+  //   console.log(localStorage.getItem("tokenERP"));
+  //   localStorage.setItem("tokenERP", userLoggedToken);
+  // }, []);
 
   return (
     <>
       <div className="homePage__container">
-        <h2>Bienvenido a ERP</h2>
-        <section className="userLogged_profile">
-          <h3>
-            Nombre:{" "}
-            {userLoggedObject.firstName + " " + userLoggedObject.lastName}
-          </h3>
-          <p>Email: {userLoggedObject.email}</p>
-          <p>Rol: {userLoggedObject.role}</p>
-          <p>Token en estado del usuario: {userLoggedToken}</p>
-          <p>Token en localStorage: {localStorage.getItem("tokenERP")}</p>
+        <h2>Welcome to ERP app</h2>
+        <section className="homePage__userLoggedProfile">
+          <div>
+            Name: {userLoggedObject.firstName + " " + userLoggedObject.lastName}
+          </div>
+          <div>Email: {userLoggedObject.email}</div>
+          <div>Rol: {userLoggedObject.role}</div>
+          <div className="token">Token at userState: {userLoggedToken}</div>
+          <div className="token">
+            Token at localStorage: {localStorage.getItem("tokenERP")}
+          </div>
 
-          <article className="userLogged_menuOptions"></article>
-          <article className="userLogged_permissions"></article>
+          <article className="homePage__userLoggedMenuOptions">
+            Menu Options:
+          </article>
+          <article className="homePage__userLoggedPermissions">
+            Permissions:
+          </article>
         </section>
       </div>
     </>
