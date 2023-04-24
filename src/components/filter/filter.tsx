@@ -9,7 +9,6 @@ import "./filter.css";
 
 export function Filter() {
   const navigate = useNavigate();
-  // const repoProduct = useMemo(() => new ProductsRepo(), []);
   const repoProduct = new ProductsRepo();
   const { filterProducts, paginateProducts } = useProducts(repoProduct);
   const filterOptionsArray = [
