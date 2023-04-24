@@ -101,7 +101,7 @@ describe("Given the useUsers hook", () => {
 
     test("Then, if there is an error at the loginWithToken method of the repo, the property tokenERP of the localStorage should be equal to the initial value of the userLoggedToken property of userState", async () => {
       const elements = await screen.findAllByRole("button");
-      (mockRepo.loginWithToken as jest.Mock).mockResolvedValueOnce(undefined);
+      (mockRepo.loginWithToken as jest.Mock).mockResolvedValueOnce([]);
 
       await act(async () => userEvent.click(elements[1]));
       expect(localStorage.getItem("tokenERP")).toBe(
