@@ -15,6 +15,7 @@
 ## Microservices
 
 - Obtener los datos del creador de un artículo a través de un componente independiente con fetch en tiempo real
+- Tratar de diseñarlo con parametrización total. Parámetros de diseño de colección, campo y valor de origen y destino de los elementos a comparar para obtener la join y control mediante useState y useEffect de la posibilidad de que no haya join forzando una left join en la renderización del dato.
 
 ## Menu Options y Permissions
 
