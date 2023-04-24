@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { UserStructure } from "../models/user.model";
 import { UsersRepo } from "../services/repositories/user.repo";
-import { AppDispatch, RootState } from "../store/store";
+import { AppDispatch } from "../store/store";
 import {
   initialState as initialUserState,
   loginGallery,
@@ -12,10 +12,6 @@ import {
 import { useApp } from "./use.app";
 
 export function useUsers(repo: UsersRepo) {
-  const userLoggedToken = useSelector(
-    (state: RootState) => state.userState.userLoggedToken
-  );
-
   const dispatch = useDispatch<AppDispatch>();
 
   const { addError } = useApp();
@@ -55,10 +51,6 @@ export function useUsers(repo: UsersRepo) {
       await dispatch(loginUser(serverResponse.results[1]));
       await localStorage.setItem("tokenERP", serverResponse.results[0]);
 
-      // const serverGalleryResponse: any = await repo.readGallery(
-      //   localStorage.tokenERP,
-      //   "users"
-      // );
       await dispatch(loginGallery(serverResponse.results[2]));
     } catch (error) {
       localStorage.setItem("tokenERP", initialUserState.userLoggedToken);
@@ -68,13 +60,8 @@ export function useUsers(repo: UsersRepo) {
   };
 
   const userLogout = () => {
-    try {
-      dispatch(logoutToken(initialUserState.userLoggedToken));
-      dispatch(loginUser(initialUserState.userLogged));
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, "/home");
-    }
+    dispatch(logoutToken(initialUserState.userLoggedToken));
+    dispatch(loginUser(initialUserState.userLogged));
   };
 
   return {
