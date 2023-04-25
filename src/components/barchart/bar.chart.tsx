@@ -1,9 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
-import { useProductMovements } from "../../hooks/use.productmovements";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,

@@ -1,0 +1,25 @@
+import { render } from "@testing-library/react";
+import { Bar } from "react-chartjs-2";
+import { Provider, useSelector } from "react-redux";
+import { store } from "../../store/store";
+import { BarChart } from "./bar.chart";
+
+jest.mock("../../store/store");
+jest.mock("../../reducers/app.slice");
+jest.mock("../../reducers/product.slice");
+jest.mock("../../reducers/productmovement.slice");
+jest.mock("../../reducers/user.slice");
+
+describe("Given the BarChart component", () => {
+  describe("When it is rendered", () => {
+    test("Then it should call Bar from react-chartjs-2 library", () => {
+      render(
+        <Provider store={store}>
+          <BarChart></BarChart>
+        </Provider>
+      );
+
+      expect(useSelector).toHaveBeenCalled();
+    });
+  });
+});
