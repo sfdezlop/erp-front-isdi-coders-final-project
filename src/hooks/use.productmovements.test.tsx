@@ -19,7 +19,7 @@ describe("Given the useProducts hook", () => {
   let mockRepo: ProductMovementsRepo;
   let mockResponse: ProductMovementServerResponseType;
   let mockStockResponse: StockServerResponseType;
-  let mockProductMovement: ProductMovementStructure;
+  let mockProductMovement: Partial<ProductMovementStructure>;
 
   beforeEach(async () => {
     mockPayload = {
@@ -62,15 +62,6 @@ describe("Given the useProducts hook", () => {
 
     mockProductMovement = {
       id: "mockId",
-      // productSku: "mockProductSku",
-      // batch: "mockBatch",
-      // date: "mockDate",
-      // type: "mockType",
-      // typeId: "mockTypeId",
-      // store: "mockStore",
-      // units: 11,
-      // costPerUnit: 22,
-      // pricePerUnit: 33,
     };
 
     const TestComponent = function () {
