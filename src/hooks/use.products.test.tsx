@@ -6,10 +6,7 @@ import { Provider } from "react-redux";
 
 import { ProductsRepo } from "../services/repositories/product.repo";
 import { useProducts } from "./use.products";
-import {
-  ProductStateStructure,
-  initialState as initialProductState,
-} from "../reducers/product.slice";
+import { ProductStateStructure } from "../reducers/product.slice";
 import { ProductServerResponseType } from "../models/serverresponse.model";
 import { store } from "../store/store";
 
