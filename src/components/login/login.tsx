@@ -14,10 +14,7 @@ export function Login() {
   const { userLogin, userLoginWithToken } = useUsers(repoUser);
 
   useEffect(() => {
-    if (
-      localStorage.tokenERP.split(".")[0] ===
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-    ) {
+    if (localStorage.tokenERP) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
       if (localStorage.tokenERP === initialUserState.userLoggedToken)
         navigate("/");

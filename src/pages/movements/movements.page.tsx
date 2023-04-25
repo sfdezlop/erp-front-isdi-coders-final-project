@@ -5,6 +5,7 @@ import { ProductMovementsRepo } from "../../services/repositories/productmovemen
 import { RootState } from "../../store/store";
 import "./movements.page.css";
 import { useParams } from "react-router-dom";
+import { Filter } from "../../components/filter/filter";
 
 export default function MovementsPage(this: any) {
   const filteredGalleryData = useSelector(
@@ -28,6 +29,7 @@ export default function MovementsPage(this: any) {
 
   return (
     <>
+      <Filter></Filter>
       <div className="productMovementsPage__container">
         <div className="productMovementsPage__fieldContainer">
           <div className="productMovementsPage__field">Date</div>

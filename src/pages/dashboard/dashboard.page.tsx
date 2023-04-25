@@ -32,6 +32,7 @@ export default function DashboardPage() {
 
   return (
     <>
+      <h2>Dashboard</h2>
       {analyticsData.map((item) => (
         <div className="dashboard__container" key={analyticsData.indexOf(item)}>
           <div className="dashboard__graph">

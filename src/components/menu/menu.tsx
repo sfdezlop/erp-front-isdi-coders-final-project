@@ -26,15 +26,15 @@ export function Menu({ options }: MenuProps) {
               key={item.label}
               className="menu__option menu__option_notSelected"
             >
-              <NavLink
+              <Link
                 to={item.path as string}
                 className="menu__link"
-                style={(isActive) => ({
-                  color: isActive ? "white" : "white",
-                })}
+                // style={(isActive) => ({
+                //   color: isActive ? "white" : "white",
+                // })}
               >
                 {item.label}
-              </NavLink>
+              </Link>
             </li>
           ))}
         </ul>

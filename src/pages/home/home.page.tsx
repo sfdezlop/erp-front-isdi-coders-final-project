@@ -11,11 +11,6 @@ export default function HomePage() {
   const userLoggedToken = useSelector(
     (state: RootState) => state.userState.userLoggedToken
   );
-  // localStorage.setItem("tokenERP", userLoggedToken);
-  // useEffect(() => {
-  //   console.log(localStorage.getItem("tokenERP"));
-  //   localStorage.setItem("tokenERP", userLoggedToken);
-  // }, []);
 
   return (
     <>
