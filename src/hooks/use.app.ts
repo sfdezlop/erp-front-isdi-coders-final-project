@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { addErrorLog, updateUrlPage } from "../reducers/app.slice";
-import { useNavigate } from "react-router-dom";
+
+// import { useNavigate } from "react-router-dom";
 
 export function useApp() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const userLoggedData = useSelector(
     (state: RootState) => state.userState.userLogged
   );
@@ -23,7 +24,7 @@ export function useApp() {
         errorCause: "" + error.cause,
       })
     );
-    navigate("/errorlog");
+    // navigate("/errorlog");
   };
 
   const updateUrl = (url: string) => {

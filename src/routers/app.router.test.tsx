@@ -8,26 +8,46 @@ import { AppRouter } from "./app.router";
 describe("Given the app router component", () => {
   const mockOptions: MenuOption[] = [
     { label: "Home", path: "/home" },
-    { label: "Inventory", path: "/inventory" },
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "Products", path: "/products" },
+    { label: "Movements", path: "/productmovements" },
   ];
 
   const mockRouterFunctions = (num: number) => {
     render(
       <Provider store={store}>
-        <Router initialEntries={["/home", "/inventory"]} initialIndex={num}>
+        <Router
+          initialEntries={[
+            "/home",
+            "/dashboard",
+            "/products",
+            "/productmovements",
+          ]}
+          initialIndex={num}
+        >
           <AppRouter options={mockOptions}></AppRouter>
         </Router>
       </Provider>
     );
   };
 
-  describe("when the route is HOME", () => {
-    test("then it should go to /home and render it", async () => {
+  describe("When the route is Home", () => {
+    test("Then it should go to /home and render it", async () => {
       await waitFor(async () => mockRouterFunctions(0));
-      const element = await screen.findByRole("heading", {
-        name: "HomePage",
-      });
+      const element = await screen.findByRole("heading");
       expect(element).toBeInTheDocument();
+      console.log(element.innerHTML);
+      expect(element.innerHTML).toContain("ERP");
+    });
+  });
+
+  describe("When the route is Dashboard", () => {
+    test("Then it should go to /dashboard and render it", async () => {
+      await waitFor(async () => mockRouterFunctions(1));
+      const element = await screen.findByRole("heading");
+      expect(element).toBeInTheDocument();
+      console.log(element.innerHTML);
+      expect(element.innerHTML).toContain("Dashboard");
     });
   });
 });

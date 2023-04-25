@@ -21,8 +21,8 @@ export function useProducts(repo: ProductsRepo) {
 
   const userStateData = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
+  const tokenAtLocalStorage = localStorage.tokenERP;
   const tokenAtUserState = userStateData.userLoggedToken;
-
   const tokenToUse = tokenAtUserState;
 
   const { addError } = useApp();

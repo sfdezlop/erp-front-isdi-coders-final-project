@@ -24,16 +24,8 @@ export function Stock({ options }: StockProps) {
   }, []);
 
   if (renderNumber === 1) {
-    return (
-      <div className="stock__container">
-        {"Stock of SKU " + options + " as microservice (units): Calculating..."}
-      </div>
-    );
+    return <div className="stock__container">{"Calculating..."}</div>;
   } else {
-    return (
-      <div className="stock__container">
-        {"Stock of SKU " + options + " as microservice (units): " + stockToShow}
-      </div>
-    );
+    return <div className="stock__container">{stockToShow}</div>;
   }
 }

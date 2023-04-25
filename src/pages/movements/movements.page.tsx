@@ -5,6 +5,7 @@ import { ProductMovementsRepo } from "../../services/repositories/productmovemen
 import { RootState } from "../../store/store";
 import "./movements.page.css";
 import { useParams } from "react-router-dom";
+import { Filter } from "../../components/filter/filter";
 
 export default function MovementsPage(this: any) {
   const filteredGalleryData = useSelector(
@@ -28,27 +29,34 @@ export default function MovementsPage(this: any) {
 
   return (
     <>
-      <div className="productMovementsPage__fieldContainer">
-        <div className="productMovementsPage__field">Date</div>
-        <div className="productMovementsPage__field">Type</div>
-        <div className="productMovementsPage__field">Type ID</div>
-        <div className="productMovementsPage__field">SKU</div>
-        <div className="productMovementsPage__field">Cost</div>
-        <div className="productMovementsPage__field">Units</div>
-      </div>
-      <div className="productMovementsPage__dataContainer">
-        {filteredGalleryData.map((item) => (
-          <li className="productMovementsPage__dataRow" key={item.id}>
-            <div className="productMovementsPage__data">{item.date}</div>
-            <div className="productMovementsPage__data">{item.type}</div>
-            <div className="productMovementsPage__data">{item.typeId}</div>
-            <div className="productMovementsPage__data">{item.productSku}</div>
-            <div className="productMovementsPage__data">{item.costPerUnit}</div>
-            <div className="productMovementsPage__data">
-              {item.pricePerUnit}
-            </div>
-          </li>
-        ))}
+      <Filter></Filter>
+      <div className="productMovementsPage__container">
+        <div className="productMovementsPage__fieldContainer">
+          <div className="productMovementsPage__field">Date</div>
+          <div className="productMovementsPage__field">Type</div>
+          <div className="productMovementsPage__field">Type ID</div>
+          <div className="productMovementsPage__field">SKU</div>
+          <div className="productMovementsPage__field">Cost</div>
+          <div className="productMovementsPage__field">Units</div>
+        </div>
+        <div className="productMovementsPage__dataContainer">
+          {filteredGalleryData.map((item) => (
+            <li className="productMovementsPage__dataRow" key={item.id}>
+              <div className="productMovementsPage__data">{item.date}</div>
+              <div className="productMovementsPage__data">{item.type}</div>
+              <div className="productMovementsPage__data">{item.typeId}</div>
+              <div className="productMovementsPage__data">
+                {item.productSku}
+              </div>
+              <div className="productMovementsPage__data">
+                {item.costPerUnit}
+              </div>
+              <div className="productMovementsPage__data">
+                {item.pricePerUnit}
+              </div>
+            </li>
+          ))}
+        </div>
       </div>
     </>
   );

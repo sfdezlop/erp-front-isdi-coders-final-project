@@ -25,11 +25,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
 
   const tokenAtLocalStorage = localStorage.tokenERP;
   const tokenAtUserState = userStateData.userLoggedToken;
-
-  const tokenToUse =
-    tokenAtUserState === initialUserState.userLoggedToken
-      ? tokenAtLocalStorage
-      : tokenAtUserState;
+  const tokenToUse = tokenAtUserState;
 
   const { addError } = useApp();
 
