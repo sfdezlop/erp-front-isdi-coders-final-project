@@ -15,7 +15,7 @@ export function App() {
       <div className="App">
         <Header></Header>
         <div className="approuter_container">
-          <AppRouter options={menuOptions}></AppRouter> {/* <Login></Login> */}
+          <AppRouter options={menuOptions}></AppRouter>
         </div>
         <Footer></Footer>
       </div>

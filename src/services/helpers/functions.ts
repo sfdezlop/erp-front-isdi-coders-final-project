@@ -8,9 +8,9 @@ export const americanLargeFormatOfADate = (a: Date): string => {
   const dateSeparator = "-";
   const timeSeparator = ":";
   if (Number(a.getMonth() + 1) < 10) {
-    month = "0" + (a.getMonth() + 1);
+    month = "0" + Number(a.getMonth() + 1);
   } else {
-    month = "" + a.getMonth() + 1;
+    month = "" + Number(a.getMonth() + 1);
   }
   if (a.getDate() < 10) {
     day = "0" + a.getDate();
@@ -55,9 +55,9 @@ export const americanShortFormatOfADate = (a: Date): string => {
     day = "";
   const dateSeparator = "-";
   if (Number(a.getMonth() + 1) < 10) {
-    month = "0" + (a.getMonth() + 1);
+    month = "0" + Number(a.getMonth() + 1);
   } else {
-    month = "" + a.getMonth() + 1;
+    month = "" + Number(a.getMonth() + 1);
   }
   if (a.getDate() < 10) {
     day = "0" + a.getDate();

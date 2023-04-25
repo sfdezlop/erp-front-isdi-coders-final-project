@@ -15,7 +15,7 @@ export function Footer() {
   return (
     <>
       <div className="footer">
-        <p>{"Name: " + firstName + " " + lastName}</p>
+        <h2>{"Name: " + firstName + " " + lastName}</h2>
         <p>{"Server: " + url_def}</p>
         <p>{"Page: " + page}</p>
       </div>

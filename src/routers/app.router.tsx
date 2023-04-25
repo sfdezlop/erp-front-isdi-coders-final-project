@@ -45,7 +45,6 @@ export function AppRouter({ options }: AppRouterProps) {
         element={<DetailPage></DetailPage>}
       ></Route>
       <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>
-      {/* <Route path="/products/filter" element={<Filter></Filter>}></Route> */}
     </Routes>
     // </Suspense>
   );

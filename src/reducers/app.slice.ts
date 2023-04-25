@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type ErrorLog = {
+export type ErrorLogStructure = {
   date: string;
   user: string;
   origin: string;
@@ -10,7 +10,7 @@ export type ErrorLog = {
   errorCause: string;
 };
 export type AppStateStructure = {
-  errorLog: ErrorLog[];
+  errorLog: ErrorLogStructure[];
   urlPage: string;
   storeLog: { date: string; user: string; log: {} };
 };
@@ -40,7 +40,10 @@ export const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    addErrorLog(state: AppStateStructure, action: PayloadAction<ErrorLog>) {
+    addErrorLog(
+      state: AppStateStructure,
+      action: PayloadAction<ErrorLogStructure>
+    ) {
       state.errorLog.push(action.payload);
     },
     updateUrlPage(state: AppStateStructure, action: PayloadAction<string>) {
