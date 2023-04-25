@@ -32,7 +32,7 @@ export function useUsers(repo: UsersRepo) {
       );
       await dispatch(loginGallery(serverGalleryResponse.results));
     } catch (error) {
-      console.log((error as Error).message);
+      console.error((error as Error).message);
       addError(error as Error, "/home");
     }
   };
@@ -54,7 +54,7 @@ export function useUsers(repo: UsersRepo) {
       await dispatch(loginGallery(serverResponse.results[2]));
     } catch (error) {
       localStorage.setItem("tokenERP", initialUserState.userLoggedToken);
-      console.log((error as Error).message);
+      console.error((error as Error).message);
       addError(error as Error, "/home");
     }
   };
