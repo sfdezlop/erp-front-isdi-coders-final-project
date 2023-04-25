@@ -1,4 +1,4 @@
-# Pending developmentss
+# Pending developments
 
 ## Login
 
