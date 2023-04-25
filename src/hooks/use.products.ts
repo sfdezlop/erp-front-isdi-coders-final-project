@@ -56,7 +56,7 @@ export function useProducts(repo: ProductsRepo) {
       );
       await dispatch(loadFilterOptions(serverGroupByFieldResponse.results));
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products");
     }
   };
@@ -74,7 +74,7 @@ export function useProducts(repo: ProductsRepo) {
 
       await dispatch(loadDetail(serverDetailResponse.results));
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products");
     }
   };
@@ -83,7 +83,7 @@ export function useProducts(repo: ProductsRepo) {
     try {
       await dispatch(loadFilter(filter));
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products");
     }
   };
@@ -92,7 +92,7 @@ export function useProducts(repo: ProductsRepo) {
     try {
       await dispatch(loadFilteredPage(page));
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products");
     }
   };
@@ -101,7 +101,7 @@ export function useProducts(repo: ProductsRepo) {
     try {
       await repo.create(tokenToUse, newProduct);
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products/detail");
     }
   };
@@ -110,7 +110,7 @@ export function useProducts(repo: ProductsRepo) {
     try {
       await repo.deleteByKey(tokenToUse, query.key, query.value);
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products/detail");
     }
   };
@@ -119,7 +119,7 @@ export function useProducts(repo: ProductsRepo) {
     try {
       await repo.deleteById(tokenToUse, id);
     } catch (error) {
-      console.error((error as Error).message);
+      console.log((error as Error).message);
       addError(error as Error, "/products/detail");
     }
   };
