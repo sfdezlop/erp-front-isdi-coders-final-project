@@ -6,7 +6,7 @@ import { ProductStructure } from "../../models/product.model";
 import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
-import { Filter } from "../../components/filter/filter";
+import { FilterProducts } from "../../components/filter.products/filter.products";
 import { Stock } from "../../components/microservices/stock/stock";
 
 export default function ProductsPage() {
@@ -14,7 +14,7 @@ export default function ProductsPage() {
     (state: RootState) => state.productState.filteredGallery
   );
 
-  const filterObject = useSelector(
+  const filterData = useSelector(
     (state: RootState) => state.productState.filter
   );
 
@@ -27,7 +27,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     galleryProduct();
-  }, [filterObject, pageNumber]);
+  }, [filterData, pageNumber]);
 
   const { detailCredentials } = useProducts(repoProduct);
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function ProductsPage() {
 
   return (
     <>
-      <Filter></Filter>
+      <FilterProducts></FilterProducts>
       <div className="productsPage__container">
         <ul className="productsPage__list">
           {galleryArray.map((item: Partial<ProductStructure>) => (

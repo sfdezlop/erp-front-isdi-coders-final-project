@@ -11,13 +11,28 @@ export function Footer() {
     (state: RootState) => state.userState.userLogged.lastName
   );
   const page = useSelector((state: RootState) => state.appState.urlPage);
+  const errorLogData = useSelector(
+    (state: RootState) => state.appState.errorLog
+  );
 
   return (
     <>
-      <div className="footer">
-        <h2>{"Name: " + firstName + " " + lastName}</h2>
-        <p>{"Server: " + url_def}</p>
-        <p>{"Page: " + page}</p>
+      <div className="footer__container">
+        <div className="footer__connection">
+          <h2 className="connection__user">
+            {"User logged: " + firstName + " " + lastName}
+          </h2>
+          <p className="connection__server">{"Server: " + url_def}</p>
+          <p className="connection__url">{"Page: " + page}</p>
+        </div>
+        <div className="footer__error">
+          <p>
+            {"Last Date Error: " + errorLogData[errorLogData.length - 1].date}{" "}
+          </p>
+          <p>
+            {"Error: " + errorLogData[errorLogData.length - 1].errorMessage}{" "}
+          </p>
+        </div>
       </div>
     </>
   );

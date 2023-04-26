@@ -4,7 +4,7 @@ import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
 import { store } from "../../store/store";
-import { Filter } from "./filter";
+import { FilterProducts } from "./filter.products";
 
 describe("Given the errorlog component", () => {
   beforeEach(async () => {
@@ -12,7 +12,7 @@ describe("Given the errorlog component", () => {
       render(
         <Provider store={store}>
           <Router>
-            <Filter></Filter>
+            <FilterProducts></FilterProducts>
           </Router>
         </Provider>
       );

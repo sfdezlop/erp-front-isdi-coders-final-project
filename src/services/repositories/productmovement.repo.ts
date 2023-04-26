@@ -26,16 +26,26 @@ export class ProductMovementsRepo {
     filter: Filter
   ): Promise<ProductMovementServerResponseType> {
     const url = this.url + "/" + urlExtraPath;
+    let filterObject;
+    filter.filterValue === "(select all)"
+      ? (filterObject = {
+          filterSet: filter.filterSet,
+          filterRecordsPerSet: filter.filterRecordsPerSet,
+          orderField: filter.orderField,
+          orderType: filter.orderType,
+        })
+      : (filterObject = {
+          filterField: filter.filterField,
+          filterValue: filter.filterValue,
+          filterSet: filter.filterSet,
+          filterRecordsPerSet: filter.filterRecordsPerSet,
+          orderField: filter.orderField,
+          orderType: filter.orderType,
+        });
 
     const resp = await fetch(url, {
       method: "POST",
-      body: JSON.stringify({
-        filterField: filter.filterField,
-        filterValue: filter.filterValue,
-        filterSet: filter.filterSet,
-        filterRecordsPerSet: filter.filterRecordsPerSet,
-        orderField: filter.orderField,
-      }),
+      body: JSON.stringify(filterObject),
 
       headers: {
         Authorization: "Bearer " + token,
@@ -56,21 +66,20 @@ export class ProductMovementsRepo {
   async readFilteredCount(
     token: string,
     urlExtraPath: string,
-    filterFieldReceived: string,
-    filterValueReceived: string
+    filter: Filter
   ): Promise<number> {
     const url = this.url + "/" + urlExtraPath;
     let filterObject;
-    filterFieldReceived === "" && filterValueReceived === ""
+    filter.filterValue === "(select all)"
       ? (filterObject = {})
       : (filterObject = {
-          filterField: filterFieldReceived,
-          filterValue: filterValueReceived,
+          filterField: filter.filterField,
+          filterValue: filter.filterValue,
         });
 
     const resp = await fetch(url, {
       method: "POST",
-      body: JSON.stringify({ filterObject }),
+      body: JSON.stringify(filterObject),
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",

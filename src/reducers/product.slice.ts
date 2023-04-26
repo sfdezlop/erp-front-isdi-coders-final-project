@@ -9,6 +9,7 @@ export type ProductStateStructure = {
     filterSet: number;
     filterRecordsPerSet: number;
     orderField: string;
+    orderType: "asc" | "desc";
   };
   filterOptions: string[];
   filteredPage: number;
@@ -27,6 +28,7 @@ export const initialState: ProductStateStructure = {
     filterSet: 1,
     filterRecordsPerSet: 4,
     orderField: "shortDescription",
+    orderType: "asc",
   },
   filterOptions: ["brand"],
   filteredPage: 1,

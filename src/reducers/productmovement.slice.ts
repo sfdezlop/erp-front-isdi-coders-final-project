@@ -10,7 +10,9 @@ export type ProductMovementStateStructure = {
     filterSet: number;
     filterRecordsPerSet: number;
     orderField: string;
+    orderType: "asc" | "desc";
   };
+  filterOptions: string[];
   filteredPage: number;
   filteredCount: number;
   unfilteredCount: number;
@@ -24,12 +26,14 @@ export const initialState: ProductMovementStateStructure = {
     filterField: "productSku",
     filterValue: "90110",
     filterSet: 1,
-    filterRecordsPerSet: 200,
+    filterRecordsPerSet: 4,
     orderField: "date",
+    orderType: "asc",
   },
+  filterOptions: ["type"],
   filteredPage: 1,
-  filteredCount: 100,
-  unfilteredCount: 100,
+  filteredCount: 1,
+  unfilteredCount: 1,
   analytics: [],
   stock: [],
 };
@@ -50,6 +54,12 @@ export const productMovementSlice = createSlice({
       action: PayloadAction<typeof initialState.filter>
     ) {
       state.filter = action.payload;
+    },
+    loadFilterOptions(
+      state: ProductMovementStateStructure,
+      action: PayloadAction<[]>
+    ) {
+      state.filterOptions = action.payload;
     },
     loadFilteredPage(
       state: ProductMovementStateStructure,
@@ -87,6 +97,7 @@ export const productMovementSlice = createSlice({
 export const {
   loadGallery,
   loadFilter,
+  loadFilterOptions,
   loadFilteredPage,
   loadFilteredCount,
   loadUnfilteredCount,

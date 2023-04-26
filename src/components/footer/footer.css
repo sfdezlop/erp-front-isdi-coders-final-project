@@ -1,9 +1,29 @@
-.footer {
+.footer__container {
+  display: flex;
+  flex-direction: column;
+  background-color: #4472c4;
+  gap: 0;
+  height: 8vh;
+}
+.footer__connection {
   display: flex;
   flex-direction: row;
-  gap: 2vh;
+  gap: 3vh;
   background-color: #4472c4;
   color: white;
   font-size: 1.5vh;
-  height: 8vh;
+}
+
+.footer__error {
+  display: flex;
+  flex-direction: column;
+  background-color: #4472c4;
+  color: white;
+  font-size: 1.5vh;
+}
+
+.connection__user,
+.connection__server,
+.connection__url {
+  font-size: 1.5vh;
 }

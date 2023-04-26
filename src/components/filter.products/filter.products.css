@@ -1,7 +1,5 @@
 .filter__forms {
   display: flex;
-  /* flex-direction: row; */
-  /* flex-direction: row-reverse; */
   background-color: rgb(118, 116, 116);
 }
 
@@ -11,17 +9,17 @@
   gap: 3vh;
   align-items: center;
   justify-items: center;
-  font-size: 2vh;
+  font-size: 1.8vh;
   color: white;
   padding: 0.5vh;
 }
 
 .filter__option {
-  font-size: 2vh;
+  font-size: 1.8vh;
 }
 
 .filter__button {
-  font-size: 2vh;
+  font-size: 1.8vh;
   padding: 0.5vh;
 }
 
@@ -31,7 +29,7 @@
   gap: 3vh;
   align-items: center;
   justify-items: center;
-  font-size: 2vh;
+  font-size: 1.8vh;
   color: white;
   padding: 0.5vh;
 }
