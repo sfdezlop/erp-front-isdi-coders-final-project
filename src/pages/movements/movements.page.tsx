@@ -4,14 +4,14 @@ import { useProductMovements } from "../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
 import { RootState } from "../../store/store";
 import "./movements.page.css";
-import { Filter } from "../../components/filter/filter";
+import { FilterProductMovements } from "../../components/filter.productmovements/filter.productmovements";
 
 export default function MovementsPage() {
   const filteredGalleryData = useSelector(
     (state: RootState) => state.productMovementState.filteredGallery
   );
 
-  const filterObject = useSelector(
+  const filterData = useSelector(
     (state: RootState) => state.productMovementState.filter
   );
 
@@ -24,11 +24,11 @@ export default function MovementsPage() {
 
   useEffect(() => {
     galleryProductMovement();
-  }, [filterObject, pageNumber]);
+  }, [filterData, pageNumber]);
 
   return (
     <>
-      <Filter></Filter>
+      <FilterProductMovements></FilterProductMovements>
       <div className="productMovementsPage__container">
         <div className="productMovementsPage__fieldContainer">
           <div className="productMovementsPage__field">Date</div>

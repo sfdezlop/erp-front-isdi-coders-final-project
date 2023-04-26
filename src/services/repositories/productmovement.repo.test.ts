@@ -33,22 +33,12 @@ describe("Given the product repo", () => {
         ok: true,
         json: jest.fn().mockResolvedValue(mockValue),
       });
-      const result = await repo.readFilteredCount(
-        "mockToken",
-        "/test",
-        "mockFilterFieldReceived",
-        "mockFilterValueReceived"
-      );
+      const result = await repo.readFilteredCount("mockToken", "/test", {});
       expect(result).toEqual(mockValue);
     });
     test("then if the fetch is NOT OK it throw error", async () => {
       global.fetch = jest.fn().mockResolvedValue("Error test");
-      const result = repo.readFilteredCount(
-        "mockToken",
-        "/test",
-        "mockFilterFieldReceived",
-        "mockFilterValueReceived"
-      );
+      const result = repo.readFilteredCount("mockToken", "/test", {});
       await expect(result).rejects.toThrow();
     });
   });

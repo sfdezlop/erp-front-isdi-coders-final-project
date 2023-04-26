@@ -30,6 +30,7 @@ export class ProductsRepo {
           filterSet: filter.filterSet,
           filterRecordsPerSet: filter.filterRecordsPerSet,
           orderField: filter.orderField,
+          orderType: filter.orderType,
         })
       : (filterObject = {
           filterField: filter.filterField,
@@ -37,7 +38,9 @@ export class ProductsRepo {
           filterSet: filter.filterSet,
           filterRecordsPerSet: filter.filterRecordsPerSet,
           orderField: filter.orderField,
+          orderType: filter.orderType,
         });
+
     const resp = await fetch(url, {
       method: "POST",
       body: JSON.stringify(filterObject),

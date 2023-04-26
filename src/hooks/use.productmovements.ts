@@ -3,14 +3,13 @@ import { AppDispatch, RootState } from "../store/store";
 import {
   loadGallery,
   loadFilter,
+  loadFilterOptions,
   loadFilteredPage,
   loadFilteredCount,
   loadAnalytics,
   loadUnfilteredCount,
   loadStock,
 } from "../reducers/productmovement.slice";
-
-import { initialState as initialUserState } from "../reducers/user.slice";
 
 import { ProductMovementsRepo } from "../services/repositories/productmovement.repo";
 import { useApp } from "./use.app";
@@ -23,7 +22,6 @@ export function useProductMovements(repo: ProductMovementsRepo) {
   const userStateData = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
 
-  const tokenAtLocalStorage = localStorage.tokenERP;
   const tokenAtUserState = userStateData.userLoggedToken;
   const tokenToUse = tokenAtUserState;
 
@@ -36,14 +34,29 @@ export function useProductMovements(repo: ProductMovementsRepo) {
         "productmovements/gallery",
         productMovementStateData.filter
       );
-      const serverCountResponse: any = await repo.readFilteredCount(
+      const serverFilteredCountResponse: any = await repo.readFilteredCount(
         tokenToUse,
         "productmovements/count",
-        productMovementStateData.filter.filterField,
-        productMovementStateData.filter.filterValue
+        productMovementStateData.filter
+      );
+
+      const serverUnFilteredCountResponse: any = await repo.readFilteredCount(
+        tokenToUse,
+        "productmovements/count",
+        {}
+      );
+
+      const serverGroupByFieldResponse: any = await repo.readGroupsByField(
+        tokenToUse,
+        "productmovements/group-values-per-field",
+        "type"
       );
       await dispatch(loadGallery(serverGalleryResponse.results));
-      await dispatch(loadFilteredCount(serverCountResponse.results[0]));
+      await dispatch(loadFilteredCount(serverFilteredCountResponse.results[0]));
+      await dispatch(
+        loadUnfilteredCount(serverUnFilteredCountResponse.results[0])
+      );
+      await dispatch(loadFilterOptions(serverGroupByFieldResponse.results));
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/productmovements");
@@ -74,8 +87,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       const serverCountResponse: any = await repo.readFilteredCount(
         tokenToUse,
         "productmovements/count",
-        "",
-        ""
+        {}
       );
       await dispatch(loadAnalytics(serverAnalyticsResponse.results));
       await dispatch(loadUnfilteredCount(serverCountResponse.results[0]));

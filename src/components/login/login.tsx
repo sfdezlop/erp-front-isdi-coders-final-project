@@ -14,10 +14,8 @@ export function Login() {
   const { userLogin, userLoginWithToken } = useUsers(repoUser);
 
   useEffect(() => {
-    if (localStorage.tokenERP) {
+    if (localStorage.tokenERP !== initialUserState.userLoggedToken) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
-      if (localStorage.tokenERP === initialUserState.userLoggedToken)
-        navigate("/");
       navigate("/home");
     }
   }, []);
@@ -41,7 +39,9 @@ export function Login() {
       <form onSubmit={handlerSubmit} className="login__form">
         <h1 className="login__title">Log In to ERP</h1>
         <label className="login__label">
-          <div className="login__label">Email sfdezlop@gmail.com</div>
+          <div className="login__label">
+            Email (try with sfdezlop@gmail.com)
+          </div>
           <input
             type="email"
             name="email"
@@ -52,7 +52,7 @@ export function Login() {
           />
         </label>
         <label className="login__label">
-          <div className="login__label"> Password santiago</div>
+          <div className="login__label"> Password (try with santiago)</div>
           <input
             type="password"
             name="password"

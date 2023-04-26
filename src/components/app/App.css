@@ -6,6 +6,6 @@
 
 .approuter_container {
   min-height: calc(100vh - 17vh);
-  width: 98%;
+  width: 100%;
   /* max-height: calc(100vh - 24vh); */
 }

@@ -1,14 +1,14 @@
-import { SyntheticEvent, useMemo } from "react";
+import { SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "../../hooks/use.products";
 import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
-import { ProductStructure } from "../../models/product.model";
-import "./filter.css";
+import "./filter.products.css";
 
-export function Filter() {
+export function FilterProducts() {
   const navigate = useNavigate();
+
   const repoProduct = new ProductsRepo();
   const { filterProducts, paginateProducts } = useProducts(repoProduct);
   const filterOptionsArray = [
@@ -24,6 +24,10 @@ export function Filter() {
 
   const orderFieldDefault = useSelector(
     (state: RootState) => state.productState.filter.orderField
+  );
+
+  const orderTypeDefault = useSelector(
+    (state: RootState) => state.productState.filter.orderType
   );
 
   const filterRecordsPerSetDefault = useSelector(
@@ -60,7 +64,8 @@ export function Filter() {
       filterValue: (formFilter.elements[0] as HTMLFormElement).value,
       filterSet: 1,
       orderField: (formFilter.elements[1] as HTMLFormElement).value,
-      filterRecordsPerSet: (formFilter.elements[2] as HTMLFormElement).value,
+      orderType: (formFilter.elements[2] as HTMLFormElement).value,
+      filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
     filterProducts(filterData);
@@ -69,15 +74,19 @@ export function Filter() {
     navigate("/products");
   };
 
-  const countData = useSelector(
+  const filteredCountData = useSelector(
     (state: RootState) => state.productState.filteredCount
   );
 
+  const unFilteredCountData = useSelector(
+    (state: RootState) => state.productState.unFilteredCount
+  );
+
   const maximumPages =
-    Math.floor(countData / filterRecordsPerSetDefault) <
-    countData / filterRecordsPerSetDefault
-      ? Math.floor(countData / filterRecordsPerSetDefault)
-      : Math.floor(countData / filterRecordsPerSetDefault) + 1;
+    Math.floor(filteredCountData / filterRecordsPerSetDefault) <
+    filteredCountData / filterRecordsPerSetDefault
+      ? Math.floor(filteredCountData / filterRecordsPerSetDefault)
+      : Math.floor(filteredCountData / filterRecordsPerSetDefault) + 1;
 
   const pagesArray = [];
   for (let i = 1; i <= maximumPages + 1; i++) {
@@ -98,7 +107,8 @@ export function Filter() {
       filterValue: (formFilter.elements[0] as HTMLFormElement).value,
       filterSet: paginationData,
       orderField: (formFilter.elements[1] as HTMLFormElement).value,
-      filterRecordsPerSet: (formFilter.elements[2] as HTMLFormElement).value,
+      orderType: (formFilter.elements[2] as HTMLFormElement).value,
+      filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
     paginateProducts(paginationData);
@@ -111,7 +121,11 @@ export function Filter() {
     <>
       <div className="filter_forms">
         <div>
-          <form className="filter__form" onSubmit={handlerFilterSubmit}>
+          <form
+            className="filter__form"
+            onSubmit={handlerFilterSubmit}
+            onChange={handlerFilterSubmit}
+          >
             <label>Select a Brand:</label>
             <select
               name="marcas"
@@ -137,6 +151,20 @@ export function Filter() {
                 </option>
               ))}
             </select>
+            <label>Order type:</label>
+            <select
+              className="filter__orderType"
+              defaultValue={orderTypeDefault}
+            >
+              {orderTypeDefault}
+
+              <option className="orderType__option" key={"asc"}>
+                {"asc"}
+              </option>
+              <option className="orderType__option" key={"desc"}>
+                {"desc"}
+              </option>
+            </select>
             <label>Records to show per page:</label>
             <select
               className="filter__recordsPerSet"
@@ -153,8 +181,13 @@ export function Filter() {
           </form>
         </div>
         <div>
-          <form className="pagination__form" onSubmit={handlerPaginationSubmit}>
-            <p>Filtered records: {countData}</p>
+          <form
+            className="pagination__form"
+            onSubmit={handlerPaginationSubmit}
+            onChange={handlerPaginationSubmit}
+          >
+            <p>Unfiltered records: {unFilteredCountData}</p>
+            <p>Filtered records: {filteredCountData}</p>
             <p>Available pages: {maximumPages + 1}</p>
             <p>Page shown: {pageDefault}</p>
             <select className="pagination__pages" defaultValue={pageDefault}>
