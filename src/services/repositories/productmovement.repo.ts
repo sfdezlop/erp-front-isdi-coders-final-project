@@ -188,6 +188,25 @@ export class ProductMovementsRepo {
     return data;
   }
 
+  async deleteById(tokenToUse: string, id: string): Promise<void> {
+    const url = this.url + "/productmovements/" + id;
+
+    const resp = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + tokenToUse,
+      },
+    });
+    if (!resp.ok)
+      throw new Error(
+        `Error http deleting a product movement: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
   async stockBySku(
     token: string,
     sku: string

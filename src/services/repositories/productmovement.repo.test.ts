@@ -119,6 +119,24 @@ describe("Given the product repo", () => {
     });
   });
 
+  describe("When we call the deleteById method", () => {
+    test("Then if the fetch is OK it should return the data", async () => {
+      const mockValue = {};
+
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockValue),
+      });
+      const result = await repo.deleteById("mockToken", "mockId");
+      expect(result).toEqual(mockValue);
+    });
+    test("then if the fetch is NOT OK it throw error", async () => {
+      global.fetch = jest.fn().mockResolvedValue("Error test");
+      const result = repo.deleteById("mockToken", "mockId");
+      await expect(result).rejects.toThrow();
+    });
+  });
+
   describe("When we call the stockBySku method", () => {
     test("Then if the fetch is OK it should return the data", async () => {
       const mockValue = {};

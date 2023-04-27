@@ -118,6 +118,14 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     }
   };
 
+  const deleteProductMovement = async (id: string) => {
+    try {
+      await repo.deleteById(tokenToUse, id);
+    } catch (error) {
+      console.error((error as Error).message);
+    }
+  };
+
   const stock = async () => {
     try {
       const serverStockResponse = await repo.stock(tokenToUse);
@@ -138,6 +146,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     dashboardProductMovements,
     showStockBySku,
     addProductMovement,
+    deleteProductMovement,
     stock,
   };
 }
