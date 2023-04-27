@@ -10,8 +10,7 @@ export function FilterProductMovements() {
   const navigate = useNavigate();
 
   const repo = new ProductMovementsRepo();
-  const { filterProductMovements, paginateProductMovements } =
-    useProductMovements(repo);
+  const { filter, paginate } = useProductMovements(repo);
   const filterOptionsArray = [
     ...useSelector(
       (state: RootState) => state.productMovementState.filterOptions
@@ -71,8 +70,8 @@ export function FilterProductMovements() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    filterProductMovements(filterData);
-    paginateProductMovements(1);
+    filter(filterData);
+    paginate(1);
     navigate("/productmovements");
   };
 
@@ -112,8 +111,8 @@ export function FilterProductMovements() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    paginateProductMovements(paginationData);
-    filterProductMovements(filterData);
+    paginate(paginationData);
+    filter(filterData);
     navigate("/productmovements");
   };
 

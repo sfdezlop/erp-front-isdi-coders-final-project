@@ -32,7 +32,7 @@ export default function DetailPage() {
   );
 
   const repoProduct = new ProductsRepo();
-  const { detail, addSampleProducts, deleteByIdProducts, galleryProduct } =
+  const { detail, createSample, deleteById, gallery } =
     useProducts(repoProduct);
 
   useEffect(() => {
@@ -58,37 +58,22 @@ export default function DetailPage() {
       pricePerUnit: dynamicSampleToAddBaseObject.pricePerUnit,
     };
 
-    const dynamicSampleOfProductMovementToAdd = {
-      productSku: dynamicSampleOfProductToAdd.sku,
-      batch: "fake",
-      date: americanShortFormatOfADate(new Date()),
-      type: "Inicialización",
-      typeId: "",
-      store: "AL01",
-      units: 0,
-      costPerUnit: dynamicSampleOfProductToAdd.costPerUnit,
-      pricePerUnit: dynamicSampleOfProductToAdd.pricePerUnit,
-    };
-
-    addSampleProducts(dynamicSampleOfProductToAdd);
-    galleryProduct();
+    createSample(dynamicSampleOfProductToAdd);
+    gallery();
     navigate("/products");
   };
 
   const handlerDelete = (event: SyntheticEvent) => {
     if (detailProductData[0] === undefined) {
-      galleryProduct();
+      gallery();
       navigate("/products");
     }
 
     if (detailProductData[0].brand === "Fake") {
-      deleteByIdProducts(detailProductData[0].id);
-      galleryProduct();
+      deleteById(detailProductData[0].id);
+      gallery();
       navigate("/products");
     }
-    navigate("/products");
-  };
-  const handlerUpdate = (event: SyntheticEvent) => {
     navigate("/products");
   };
 
@@ -153,11 +138,7 @@ export default function DetailPage() {
                   <div className="detail__longDescriptionInput"></div>
                 </div>
               </div>
-
-              {/* <button className="detail__updateButton" onClick={handlerUpdate}>
-              Editar
-            </button> */}
-            </div>{" "}
+            </div>
             <button className="detail__addButton" onClick={handlerAdd}>
               Add a Fake Product
             </button>

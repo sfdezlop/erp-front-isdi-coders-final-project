@@ -10,7 +10,7 @@ export function FilterProducts() {
   const navigate = useNavigate();
 
   const repoProduct = new ProductsRepo();
-  const { filterProducts, paginateProducts } = useProducts(repoProduct);
+  const { filter, paginate } = useProducts(repoProduct);
   const filterOptionsArray = [
     ...useSelector((state: RootState) => state.productState.filterOptions),
   ];
@@ -68,8 +68,8 @@ export function FilterProducts() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    filterProducts(filterData);
-    paginateProducts(1);
+    filter(filterData);
+    paginate(1);
 
     navigate("/products");
   };
@@ -111,8 +111,8 @@ export function FilterProducts() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    paginateProducts(paginationData);
-    filterProducts(filterData);
+    paginate(paginationData);
+    filter(filterData);
 
     navigate("/products");
   };

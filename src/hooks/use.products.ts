@@ -21,13 +21,12 @@ export function useProducts(repo: ProductsRepo) {
 
   const userStateData = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
-  const tokenAtLocalStorage = localStorage.tokenERP;
   const tokenAtUserState = userStateData.userLoggedToken;
   const tokenToUse = tokenAtUserState;
 
   const { addError } = useApp();
 
-  const galleryProduct = async () => {
+  const gallery = async () => {
     try {
       const serverGalleryResponse: any = await repo.readFilteredGallery(
         tokenToUse,
@@ -79,7 +78,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const filterProducts = async (filter: any) => {
+  const filter = async (filter: any) => {
     try {
       await dispatch(loadFilter(filter));
     } catch (error) {
@@ -88,7 +87,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const paginateProducts = async (page: number) => {
+  const paginate = async (page: number) => {
     try {
       await dispatch(loadFilteredPage(page));
     } catch (error) {
@@ -97,7 +96,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const addSampleProducts = async (newProduct: Partial<ProductStructure>) => {
+  const createSample = async (newProduct: Partial<ProductStructure>) => {
     try {
       await repo.create(tokenToUse, newProduct);
     } catch (error) {
@@ -106,7 +105,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const deleteByKeyProducts = async (query: { key: string; value: string }) => {
+  const deleteByKey = async (query: { key: string; value: string }) => {
     try {
       await repo.deleteByKey(tokenToUse, query.key, query.value);
     } catch (error) {
@@ -115,7 +114,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const deleteByIdProducts = async (id: string) => {
+  const deleteById = async (id: string) => {
     try {
       await repo.deleteById(tokenToUse, id);
     } catch (error) {
@@ -130,13 +129,13 @@ export function useProducts(repo: ProductsRepo) {
     loadDetail,
     loadFilterOptions,
     loadFilteredPage,
-    galleryProduct,
+    gallery,
     detailCredentials,
     detail,
-    filterProducts,
-    paginateProducts,
-    addSampleProducts,
-    deleteByKeyProducts,
-    deleteByIdProducts,
+    filter,
+    paginate,
+    createSample,
+    deleteByKey,
+    deleteById,
   };
 }

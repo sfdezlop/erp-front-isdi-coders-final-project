@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useProductMovements } from "../../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
 import { RootState } from "../../../store/store";
 import "./movements.page.css";
 import { FilterProductMovements } from "../../filter.productmovements/filter.productmovements";
+import { useNavigate } from "react-router-dom";
 
 export default function MovementsPage() {
   const filteredGalleryData = useSelector(
@@ -19,14 +20,28 @@ export default function MovementsPage() {
     (state: RootState) => state.productMovementState.filteredPage
   );
 
-  const repoProductMovement = new ProductMovementsRepo();
-  const { galleryProductMovement } = useProductMovements(repoProductMovement);
+  const repo = new ProductMovementsRepo();
+  const { gallery, deleteByKey } = useProductMovements(repo);
 
   useEffect(() => {
-    galleryProductMovement();
+    gallery();
   }, [filterData, pageNumber]);
 
-  const handlerDelete = () => {};
+  const navigate = useNavigate();
+
+  const handlerClick = (event: SyntheticEvent) => {
+    const valueToDelete =
+      event.currentTarget.ariaLabel === null || undefined
+        ? ""
+        : event.currentTarget.ariaLabel;
+    const keyToDelete = "id";
+
+    const query = { key: keyToDelete, value: valueToDelete };
+
+    deleteByKey(query);
+
+    navigate("/productmovements");
+  };
 
   return (
     <>
@@ -63,7 +78,7 @@ export default function MovementsPage() {
                 {item.pricePerUnit}
               </div>
               <div className="productMovementsPage__data productMovementsPage__delete">
-                <button aria-label={item.id} onClick={handlerDelete}>
+                <button aria-label={item.id} onClick={handlerClick}>
                   Delete
                 </button>
               </div>

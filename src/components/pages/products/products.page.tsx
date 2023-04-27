@@ -23,10 +23,10 @@ export default function ProductsPage() {
   );
 
   const repoProduct = new ProductsRepo();
-  const { galleryProduct } = useProducts(repoProduct);
+  const { gallery } = useProducts(repoProduct);
 
   useEffect(() => {
-    galleryProduct();
+    gallery();
   }, [filterData, pageNumber]);
 
   const { detailCredentials } = useProducts(repoProduct);

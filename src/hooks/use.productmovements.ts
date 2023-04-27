@@ -27,7 +27,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
 
   const { addError } = useApp();
 
-  const galleryProductMovement = async () => {
+  const gallery = async () => {
     try {
       const serverGalleryResponse: any = await repo.readFilteredGallery(
         tokenToUse,
@@ -63,7 +63,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     }
   };
 
-  const filterProductMovements = async (filter: any) => {
+  const filter = async (filter: any) => {
     try {
       await dispatch(loadFilter(filter));
     } catch (error) {
@@ -72,7 +72,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     }
   };
 
-  const paginateProductMovements = async (page: number) => {
+  const paginate = async (page: number) => {
     try {
       await dispatch(loadFilteredPage(page));
     } catch (error) {
@@ -108,21 +108,30 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     }
   };
 
-  const addProductMovement = async (
+  const create = async (
     newProductMovement: Partial<ProductMovementStructure>
   ) => {
     try {
-      await repo.addProductMovement(tokenToUse, newProductMovement);
+      await repo.create(tokenToUse, newProductMovement);
     } catch (error) {
       console.error((error as Error).message);
     }
   };
 
-  const deleteProductMovement = async (id: string) => {
+  const deleteByKey = async (query: { key: string; value: string }) => {
+    try {
+      await repo.deleteByKey(tokenToUse, query.key, query.value);
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, "/productmovements");
+    }
+  };
+  const deleteById = async (id: string) => {
     try {
       await repo.deleteById(tokenToUse, id);
     } catch (error) {
       console.error((error as Error).message);
+      addError(error as Error, "/productmovements");
     }
   };
 
@@ -140,13 +149,14 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     loadGallery,
     loadFilteredCount,
     loadFilteredPage,
-    galleryProductMovement,
-    filterProductMovements,
-    paginateProductMovements,
+    gallery,
+    filter,
+    paginate,
     dashboardProductMovements,
     showStockBySku,
-    addProductMovement,
-    deleteProductMovement,
+    create,
+    deleteByKey,
+    deleteById,
     stock,
   };
 }
