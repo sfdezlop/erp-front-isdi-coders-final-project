@@ -1,13 +1,13 @@
 import "./products.page.css";
 import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useProducts } from "../../hooks/use.products";
-import { ProductStructure } from "../../models/product.model";
-import { ProductsRepo } from "../../services/repositories/product.repo";
-import { RootState } from "../../store/store";
+import { useProducts } from "../../../hooks/use.products";
+import { ProductStructure } from "../../../models/product.model";
+import { ProductsRepo } from "../../../services/repositories/product.repo";
+import { RootState } from "../../../store/store";
 import { useNavigate } from "react-router-dom";
-import { FilterProducts } from "../../components/filter.products/filter.products";
-import { Stock } from "../../components/microservices/stock/stock";
+import { FilterProducts } from "../../filter.products/filter.products";
+import { Stock } from "../../microservices/stock/stock";
 
 export default function ProductsPage() {
   const galleryArray = useSelector(

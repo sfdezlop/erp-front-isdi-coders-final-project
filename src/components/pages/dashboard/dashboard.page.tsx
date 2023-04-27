@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useProductMovements } from "../../hooks/use.productmovements";
-import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
-import { RootState } from "../../store/store";
 import "./dashboard.page.css";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { BarChart } from "../../components/barchart/bar.chart";
+import { useProductMovements } from "../../../hooks/use.productmovements";
+import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
+import { RootState } from "../../../store/store";
+import { BarChart } from "../../barchart/bar.chart";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

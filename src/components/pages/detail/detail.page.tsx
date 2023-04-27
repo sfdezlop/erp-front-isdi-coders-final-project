@@ -1,13 +1,13 @@
 import "./detail.page.css";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useProducts } from "../../hooks/use.products";
-import { ProductsRepo } from "../../services/repositories/product.repo";
-import { RootState } from "../../store/store";
+import { useProducts } from "../../../hooks/use.products";
+import { ProductsRepo } from "../../../services/repositories/product.repo";
+import { RootState } from "../../../store/store";
 import { useNavigate } from "react-router-dom";
-import { Stock } from "../../components/microservices/stock/stock";
-import { americanShortFormatOfADate } from "../../services/helpers/functions";
-import { Loader } from "../../components/loader/loader";
+import { Stock } from "../../microservices/stock/stock";
+import { americanShortFormatOfADate } from "../../../services/helpers/functions";
+import { Loader } from "../../loader/loader";
 
 export default function DetailPage() {
   const [renderNumber, setRenderNumber] = useState(1);

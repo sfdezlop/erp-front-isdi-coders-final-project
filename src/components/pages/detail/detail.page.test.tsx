@@ -3,7 +3,7 @@
 import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
-import { store } from "../../store/store";
+import { store } from "../../../store/store";
 import DetailPage from "./detail.page";
 
 describe("Given the DetailPage component", () => {
