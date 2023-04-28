@@ -1,0 +1,13 @@
+.productKeyValue__container {
+  color: #4472c4;
+  margin: 0;
+  padding: 0px;
+  max-height: 5vh;
+}
+
+.productKeyValue__imageContainer {
+  color: #4472c4;
+  margin: 0;
+  padding: 2px;
+  max-height: 5vh;
+}

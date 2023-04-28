@@ -1,52 +1,65 @@
-.dashboard__container {
+.dashboardPage {
+  height: 84vh;
+}
+.dashboardPage__heading {
+  background-color: white;
+  color: #4472c4;
+  text-align: left;
+  padding: 0.5vh;
+}
+
+.dashboardPage__container {
   display: flex;
   flex: row;
   gap: 2vh;
+  height: 75vh;
   /* border-style: solid;
   border-color: black; */
   padding: 2vh;
 }
 
-.dashboard__graph {
+.dashboardPage__graph {
   display: flex;
   flex: column;
   border-style: solid;
   border-color: black;
   width: 250vh;
-  height: 80vh;
-  padding: 1rem;
+  height: 75vh;
+  padding: 0vh;
 }
-.dashboard__metrics {
+.dashboardPage__metrics {
   display: flex;
   flex-direction: column;
-  gap: 1vh;
+
+  gap: 2vh;
 }
 
-.dashboard__metricProduct,
-.dashboard__metricUnits,
-.dashboard__metricValue {
+.dashboardPage__metricProduct,
+.dashboardPage__metricUnits,
+.dashboardPage__metricValue {
   border-style: solid;
   border-color: black;
   width: 50vh;
-  height: 26vh;
+  height: 32rem;
 }
 
-.dashboard__graph,
-.dashboard__metricValue {
+.dashboardPage__graph,
+.dashboardPage__metricValue {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.dashboard__actualInventoryCost {
-  font-size: 12vh;
+.dashboardPage__actualInventoryCost {
+  font-size: 8vh;
   justify-content: flex-end;
   align-content: baseline;
   color: #4472c4;
   padding: 1rem;
+  text-align: right;
 }
 
-.dashboard__actualMovementsCount {
+.dashboardPage__actualMovementsCount {
   font-size: 4vh;
   display: flex;
   justify-content: right;
@@ -56,6 +69,6 @@
   padding: 0.6rem;
 }
 
-.dashboard__actualInventoryCostLabel {
+.dashboardPage__actualInventoryCostLabel {
   font-size: 5vh;
 }

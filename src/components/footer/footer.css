@@ -4,6 +4,7 @@
   background-color: #4472c4;
   gap: 0;
   height: 8vh;
+  padding-left: 1vh;
 }
 .footer__connection {
   display: flex;
