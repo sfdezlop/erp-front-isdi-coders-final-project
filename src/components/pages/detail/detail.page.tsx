@@ -5,9 +5,9 @@ import { useProducts } from "../../../hooks/use.products";
 import { ProductsRepo } from "../../../services/repositories/product.repo";
 import { RootState } from "../../../store/store";
 import { useNavigate } from "react-router-dom";
-import { Stock } from "../../microservices/stock/stock";
-import { americanShortFormatOfADate } from "../../../services/helpers/functions";
+import { ProductStock } from "../../microservices/product.stock/product.stock";
 import { Loader } from "../../loader/loader";
+import MovementsPage from "../movements/movements.page";
 
 export default function DetailPage() {
   const [renderNumber, setRenderNumber] = useState(1);
@@ -32,11 +32,11 @@ export default function DetailPage() {
   );
 
   const repoProduct = new ProductsRepo();
-  const { detail, createSample, deleteById, gallery } =
+  const { readDetailById, createSample, deleteById, gallery } =
     useProducts(repoProduct);
 
   useEffect(() => {
-    detail(detailCredentialsData);
+    readDetailById(detailCredentialsData);
     setRenderNumber(2);
   }, [renderNumber]);
 
@@ -82,75 +82,84 @@ export default function DetailPage() {
   } else {
     return (
       <>
-        <h2 className="detail__header">Product Details</h2>
-        {detailProductData.map((item) => (
-          <article key={item.id}>
-            <div className="detail__container">
-              <div className="detail__imageContainer">
-                <img
-                  className="detail__image"
-                  src={item.image}
-                  alt={`${item.shortDescription} card`}
-                ></img>
-              </div>
-              <div className="detail__dataContainer">
-                <div>Brand: {item.brand}</div>
-                <div>ID: {item.id}</div>
-                <div>SKU: {item.sku}</div>
-                <div>EAN: {item.ean}</div>
-                <div>Cost (€): {item.costPerUnit}</div>
-                <div>Price (€): {item.pricePerUnit}</div>
-                {/* <div className="detail__stock">
+        <div className="detailPage">
+          <h2 className="detail__heading">Product Details</h2>
+          {detailProductData.map((item) => (
+            <article key={item.id} className="detail__article">
+              <div className="detail__container">
+                <div className="detail__imageContainer">
+                  <img
+                    className="detail__image"
+                    src={item.image}
+                    alt={`${item.shortDescription} card`}
+                  ></img>
+                </div>
+                <div className="detail__dataContainer">
+                  <div>Brand: {item.brand}</div>
+                  <div>ID: {item.id}</div>
+                  <div>SKU: {item.sku}</div>
+                  <div>EAN: {item.ean}</div>
+                  <div>Cost (€): {item.costPerUnit}</div>
+                  <div>Price (€): {item.pricePerUnit}</div>
+                  {/* <div className="detail__stock">
                 Stock of {item.sku} loaded to productMovementState (units):
                 {" " +
                   stockArrayData.filter(
                     (item) => item._id === detailProductData[0].sku
                   )[0].stock}
               </div> */}
-                <div className="detail__microServiceStock">
-                  {"Stock (units): "}
-                  <Stock options={item.sku}></Stock>
+                  <div className="detail__microServiceStock">
+                    <div>{"Stock (units):"}</div>
+                    <div>
+                      <ProductStock sku={item.sku}></ProductStock>
+                    </div>
+                  </div>
+                  <div>
+                    Created by:
+                    {" " +
+                      userCreatorFullNames.filter(
+                        (item) =>
+                          item.email === detailProductData[0].userCreatorEmail
+                      )[0].firstName +
+                      " " +
+                      userCreatorFullNames.filter(
+                        (item) =>
+                          item.email === detailProductData[0].userCreatorEmail
+                      )[0].lastName}
+                  </div>
                 </div>
-                <div>
-                  Created by:
-                  {" " +
-                    userCreatorFullNames.filter(
-                      (item) =>
-                        item.email === detailProductData[0].userCreatorEmail
-                    )[0].firstName +
-                    " " +
-                    userCreatorFullNames.filter(
-                      (item) =>
-                        item.email === detailProductData[0].userCreatorEmail
-                    )[0].lastName}
-                </div>
-              </div>
-              <div className="detail__descriptionContainer">
-                <div className="detail__shortDescription">
-                  Short Description: {item.shortDescription}
-                </div>
-                <div className="detail__shortDescriptionInput"></div>
-                <div className="detail__longDescription">
-                  Long Description: {item.longDescription}
-                </div>
+                <div className="detail__descriptionContainer">
+                  <div className="detail__shortDescription">
+                    Short Description: {item.shortDescription}
+                  </div>
+                  <div className="detail__shortDescriptionInput"></div>
+                  <div className="detail__longDescription">
+                    Long Description: {item.longDescription}
+                  </div>
 
-                <div>
-                  <div className="detail__longDescriptionInput"></div>
+                  <div>
+                    <div className="detail__longDescriptionInput"></div>
+                  </div>
+                </div>
+                <div className="detail__buttonsContainer">
+                  <button className="detail__addButton" onClick={handlerAdd}>
+                    Add a Fake Product
+                  </button>
+                  {item.brand === "Fake" ? (
+                    <button
+                      className="detail__deleteButton"
+                      onClick={handlerDelete}
+                    >
+                      Delete a Fake Product
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
-            </div>
-            <button className="detail__addButton" onClick={handlerAdd}>
-              Add a Fake Product
-            </button>
-            {item.brand === "Fake" ? (
-              <button className="detail__deleteButton" onClick={handlerDelete}>
-                Delete a Fake Product
-              </button>
-            ) : (
-              <></>
-            )}
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </>
     );
   }

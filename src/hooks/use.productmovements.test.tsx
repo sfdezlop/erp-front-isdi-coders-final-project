@@ -165,7 +165,7 @@ describe("Given the useProducts hook", () => {
     test("Then the readAnalytics and readFilteredCount methods of the repo should have been called", async () => {
       const elements = await screen.findAllByRole("button");
       (mockRepo.readAnalytics as jest.Mock).mockResolvedValueOnce(mockResponse);
-      (mockRepo.readFilteredCount as jest.Mock).mockResolvedValueOnce(
+      (mockRepo.readFilteredCount as jest.Mock).mockReturnValueOnce(
         mockResponse
       );
       await act(async () => userEvent.click(elements[3]));

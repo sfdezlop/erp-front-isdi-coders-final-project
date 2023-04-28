@@ -1,3 +1,5 @@
+import { ProductStructure } from "./product.model";
+
 export type ProductServerResponseType = {
   results: [];
 };
@@ -16,4 +18,8 @@ export type StockServerResponseType = {
 
 export type StoreLogServerResponseType = {
   results: [];
+};
+
+export type ProductDetailServerResponseType = {
+  results: { key: string; value: string }[];
 };

@@ -55,6 +55,8 @@ export function FilterProducts() {
       : Object.keys(filteredGalleryArray[0]).sort();
   const recordsPerSetArray = [4, 8, 16, 32, 64, 128, 256];
 
+  const thisUrl = useSelector((state: RootState) => state.appState.urlPage);
+
   const handlerFilterSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formFilter = event.currentTarget;
@@ -71,7 +73,7 @@ export function FilterProducts() {
     filter(filterData);
     paginate(1);
 
-    navigate("/products");
+    navigate(thisUrl);
   };
 
   const filteredCountData = useSelector(
@@ -114,7 +116,7 @@ export function FilterProducts() {
     paginate(paginationData);
     filter(filterData);
 
-    navigate("/products");
+    navigate(thisUrl);
   };
 
   return (
@@ -177,7 +179,7 @@ export function FilterProducts() {
                 </option>
               ))}
             </select>
-            <button className="filter__button">Filter</button>
+            {/* <button className="filter__button">Filter</button> */}
           </form>
         </div>
         <div>
@@ -198,7 +200,7 @@ export function FilterProducts() {
                 </option>
               ))}
             </select>
-            <button className="filter__button">Go to page#</button>
+            {/* <button className="filter__button">Go to page#</button> */}
           </form>
         </div>
       </div>

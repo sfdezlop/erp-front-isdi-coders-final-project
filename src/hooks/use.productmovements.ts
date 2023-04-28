@@ -105,6 +105,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     } catch (error) {
       console.error((error as Error).message);
       return 0;
+      //To guard the correct functionality or ProductStock component, it always return a number, even if the ProductStock component always render a 0 when the promise is not fulfilled
     }
   };
 

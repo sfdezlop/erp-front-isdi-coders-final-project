@@ -193,6 +193,7 @@ export class ProductMovementsRepo {
     key: string,
     value: string
   ): Promise<void> {
+    // When the key is id, its necessary to indicate _id in the fetch action
     const url = this.url + "/productmovements/" + key + "/" + value;
 
     const resp = await fetch(url, {

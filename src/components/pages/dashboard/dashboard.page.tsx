@@ -32,42 +32,47 @@ export default function DashboardPage() {
 
   return (
     <>
-      <h2>Dashboard</h2>
-      {analyticsData.map((item) => (
-        <div className="dashboard__container" key={analyticsData.indexOf(item)}>
-          <div className="dashboard__graph">
-            <p className="dashboard__actualInventoryCostLabel">
-              Inventory Value
-            </p>
-            <div
-              className="dashboard__actualInventoryCostLabelEvolution"
-              style={{ width: 700 }}
-            >
-              <BarChart></BarChart>
-            </div>
+      <div className="dashboardPage">
+        <h2 className="dashboardPage__heading">Dashboard</h2>
+        {analyticsData.map((item) => (
+          <div
+            className="dashboardPage__container"
+            key={analyticsData.indexOf(item)}
+          >
+            <div className="dashboardPage__graph">
+              <p className="dashboardPage__actualInventoryCostLabel">
+                Inventory Value
+              </p>
+              <div
+                className="dashboardPage__actualInventoryCostLabelEvolution"
+                style={{ width: 700 }}
+              >
+                <BarChart></BarChart>
+              </div>
 
-            <p className="dashboard__actualInventoryCost">
-              {item.ActualInventoryCost[0].totalValue}
-            </p>
-          </div>
-          <div className="dashboard__metrics">
-            <div className="dashboard__metricProduct">
-              <p>Total Products</p>
-              <p>{productUnFilteredCountData}</p>
-            </div>
-            <div className="dashboard__metricUnits">
-              <p>Total Units at Inventory</p>
-              <p>{}</p>
-            </div>
-            <div className="dashboard__metricValue">
-              <p>Total Product Movements</p>
-              <p className="dashboard__actualMovementsCount">
-                {productMovementUnfilteredCountData}
+              <p className="dashboardPage__actualInventoryCost">
+                {item.ActualInventoryCost[0].totalValue}
               </p>
             </div>
+            <div className="dashboardPage__metrics">
+              <div className="dashboardPage__metricProduct">
+                <p>Total Products</p>
+                <p>{productUnFilteredCountData}</p>
+              </div>
+              <div className="dashboardPage__metricUnits">
+                <p>Total Units at Inventory</p>
+                <p>{}</p>
+              </div>
+              <div className="dashboardPage__metricValue">
+                <p>Total Product Movements</p>
+                <p className="dashboardPage__actualMovementsCount">
+                  {productMovementUnfilteredCountData}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </>
   );
 }

@@ -13,6 +13,7 @@ import {
 } from "../reducers/product.slice";
 import { ProductStructure } from "../models/product.model";
 import { useApp } from "./use.app";
+import { ProductServerResponseType } from "../models/serverresponse.model";
 
 export function useProducts(repo: ProductsRepo) {
   const productStateData = useSelector(
@@ -64,17 +65,50 @@ export function useProducts(repo: ProductsRepo) {
     await dispatch(loadDetailCredentials(credential));
   };
 
-  const detail = async (id: string) => {
+  const readDetailById = async (
+    id: string
+  ): Promise<ProductServerResponseType> => {
     try {
-      const serverDetailResponse: any = await repo.readDetail(
+      const serverDetailResponse: any = await repo.readDetailById(
         tokenToUse,
         "products/" + id
       );
-
       await dispatch(loadDetail(serverDetailResponse.results));
+      return serverDetailResponse.results;
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/products");
+      return { results: [] };
+    }
+  };
+
+  const readDetailByKeyValue = async (
+    urlExtraPathId: string
+  ): Promise<ProductServerResponseType> => {
+    try {
+      const serverDetailResponse: any = await repo.readDetailByKeyValue(
+        tokenToUse,
+        "products/" + urlExtraPathId
+      );
+      return serverDetailResponse.results;
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, "/products");
+      return { results: [] };
+    }
+  };
+
+  const microserviceQueryByKeyValue = async (urlExtraPathId: string) => {
+    try {
+      const result = await repo.microserviceQueryByKeyValue(
+        tokenToUse,
+        "products/" + urlExtraPathId
+      );
+      return result;
+    } catch (error) {
+      console.error((error as Error).message);
+      return "Info not found";
+      //To guard the correct functionality or ProductKeValue microservice, it always return a string
     }
   };
 
@@ -131,7 +165,9 @@ export function useProducts(repo: ProductsRepo) {
     loadFilteredPage,
     gallery,
     detailCredentials,
-    detail,
+    readDetailById,
+    readDetailByKeyValue,
+    microserviceQueryByKeyValue,
     filter,
     paginate,
     createSample,

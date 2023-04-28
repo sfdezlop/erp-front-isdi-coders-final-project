@@ -12,14 +12,9 @@ jest.mock("../../reducers/user.slice");
 
 describe("Given the BarChart component", () => {
   describe("When it is rendered", () => {
-    test("Then it should call Bar from react-chartjs-2 library", () => {
-      render(
-        <Provider store={store}>
-          <BarChart></BarChart>
-        </Provider>
-      );
-
-      expect(useSelector).toHaveBeenCalled();
+    test("Then it should contain the text 'Yearly Evolution'", () => {
+      const element = screen.getByText("Yearly Evolution");
+      expect(element).toBeInTheDocument();
     });
   });
 });

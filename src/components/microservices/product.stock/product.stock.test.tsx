@@ -3,26 +3,26 @@
 import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
-import { store } from "../../store/store";
-import { FilterProducts } from "./filter.products";
+import { store } from "../../../store/store";
+import { ProductStock } from "./product.stock";
 
-describe("Given the FilterProducts component", () => {
+describe("Given the ProductStock component", () => {
   beforeEach(async () => {
     await act(async () => {
       render(
         <Provider store={store}>
           <Router>
-            <FilterProducts></FilterProducts>
+            <ProductStock sku="mockSku"></ProductStock>
           </Router>
         </Provider>
       );
     });
   });
 
-  describe("When the filter component is rendered", () => {
-    test("Then it should contain the combobox role", () => {
-      const elements = screen.getAllByRole("combobox");
-      expect(elements[0]).toBeInTheDocument();
+  describe("When it is rendered", () => {
+    test("Then it should contain the text 'Calculating...'", () => {
+      const element = screen.getByText("Calculating...");
+      expect(element).toBeInTheDocument();
     });
   });
 });

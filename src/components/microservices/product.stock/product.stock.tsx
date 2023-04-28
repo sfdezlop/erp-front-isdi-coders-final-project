@@ -1,20 +1,20 @@
 import { useProductMovements } from "../../../hooks/use.productmovements";
-import "./stock.css";
+import "./product.stock.css";
 
 import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
 import { useEffect, useState } from "react";
 
-export type StockProps = {
-  options: string;
+export type ProductStockProps = {
+  sku: string;
 };
 
-export function Stock({ options }: StockProps) {
+export function ProductStock({ sku }: ProductStockProps) {
   const repo = new ProductMovementsRepo();
   const { showStockBySku } = useProductMovements(repo);
   const [stockToShow, setStockToShow] = useState(0);
   const [renderNumber, setRenderNumber] = useState(1);
   useEffect(() => {
-    const promiseToEvaluate = showStockBySku(options);
+    const promiseToEvaluate = showStockBySku(sku);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined
         ? setStockToShow(0)

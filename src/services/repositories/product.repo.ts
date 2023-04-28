@@ -1,6 +1,9 @@
 import { ProductStructure } from "../../models/product.model";
 
-import { ProductServerResponseType } from "../../models/serverresponse.model";
+import {
+  ProductDetailServerResponseType,
+  ProductServerResponseType,
+} from "../../models/serverresponse.model";
 import { url_def } from "../../config";
 
 type Filter = {
@@ -93,7 +96,7 @@ export class ProductsRepo {
     return data;
   }
 
-  async readDetail(
+  async readDetailById(
     token: string,
     urlExtraPath: string
   ): Promise<ProductServerResponseType> {
@@ -107,10 +110,32 @@ export class ProductsRepo {
     });
     if (!resp.ok)
       throw new Error(
-        `Error http reading product detail: ${resp.status} ${resp.statusText}`
+        `Error http reading product detail by id: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();
+
+    return data;
+  }
+
+  async readDetailByKeyValue(
+    token: string,
+    urlExtraPathId: string
+  ): Promise<ProductServerResponseType> {
+    const url = this.url + "/" + urlExtraPathId;
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading product detail by key value: ${resp.status} ${resp.statusText}`
+      );
+
+    const data: ProductServerResponseType = await resp.json();
 
     return data;
   }
@@ -168,6 +193,7 @@ export class ProductsRepo {
     key: string,
     value: string
   ): Promise<void> {
+    // When the key is id, its necessary to indicate _id in the fetch action
     const url = this.url + "/products/" + key + "/" + value;
 
     const resp = await fetch(url, {
@@ -203,5 +229,27 @@ export class ProductsRepo {
     const data = await resp.json();
 
     return data;
+  }
+
+  async microserviceQueryByKeyValue(
+    token: string,
+    urlExtraPathId: string
+  ): Promise<string> {
+    const url = this.url + "/" + urlExtraPathId;
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading product detail by key value: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data.results as string;
   }
 }

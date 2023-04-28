@@ -65,7 +65,7 @@ export function Login() {
         <div className="login__keepCheckbox">
           <label>
             <input type="checkbox" />
-            Keep me logged
+            Remind me for 1 day
           </label>
         </div>
 

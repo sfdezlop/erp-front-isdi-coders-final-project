@@ -42,7 +42,7 @@ describe("Given the product repo", () => {
       await expect(result).rejects.toThrow();
     });
   });
-  describe("When we call the readDetail method", () => {
+  describe("When we call the readDetailById method", () => {
     test("Then if the fetch is OK it should return the data", async () => {
       const mockValue = {};
 
@@ -50,12 +50,30 @@ describe("Given the product repo", () => {
         ok: true,
         json: jest.fn().mockResolvedValue(mockValue),
       });
-      const result = await repo.readDetail("mockToken", "/test");
+      const result = await repo.readDetailById("mockToken", "/test");
       expect(result).toEqual(mockValue);
     });
     test("then if the fetch is NOT OK it throw error", async () => {
       global.fetch = jest.fn().mockResolvedValue("Error test");
-      const result = repo.readDetail("mockToken", "/test");
+      const result = repo.readDetailById("mockToken", "/test");
+      await expect(result).rejects.toThrow();
+    });
+  });
+
+  describe("When we call the readDetailByKeyValue method", () => {
+    test("Then if the fetch is OK it should return the data", async () => {
+      const mockValue = {};
+
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockValue),
+      });
+      const result = await repo.readDetailByKeyValue("mockToken", "/test");
+      expect(result).toEqual(mockValue);
+    });
+    test("then if the fetch is NOT OK it throw error", async () => {
+      global.fetch = jest.fn().mockResolvedValue("Error test");
+      const result = repo.readDetailByKeyValue("mockToken", "/test");
       await expect(result).rejects.toThrow();
     });
   });

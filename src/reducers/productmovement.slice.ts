@@ -26,7 +26,7 @@ export const initialState: ProductMovementStateStructure = {
     filterField: "productSku",
     filterValue: "90110",
     filterSet: 1,
-    filterRecordsPerSet: 4,
+    filterRecordsPerSet: 16,
     orderField: "date",
     orderType: "asc",
   },
