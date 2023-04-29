@@ -22,7 +22,7 @@ export function ProductKeyValue({ urlExtraPathId }: ProductKeyProps) {
         : setValueToShow(promiseValue);
       setRenderNumber(2);
     });
-  }, []);
+  });
 
   if (renderNumber === 1) {
     return <div className="productKeyValue__container">{"Processing..."}</div>;

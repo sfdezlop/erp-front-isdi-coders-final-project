@@ -18,7 +18,7 @@ export function Login() {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
       navigate("/home");
     }
-  }, []);
+  });
 
   const handlerSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();

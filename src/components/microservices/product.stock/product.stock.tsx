@@ -21,7 +21,7 @@ export function ProductStock({ sku }: ProductStockProps) {
         : setStockToShow(promiseValue);
       setRenderNumber(2);
     });
-  }, []);
+  });
 
   if (renderNumber === 1) {
     return <div className="stock__container">{"Calculating..."}</div>;
