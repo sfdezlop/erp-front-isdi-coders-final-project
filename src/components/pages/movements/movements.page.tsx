@@ -57,12 +57,10 @@ export default function MovementsPage() {
 
       if (confirmation) {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        deleteByKey(query),
-          gallery(),
-          navigate("/productmovements"),
-          setRenderToAvoidConfirmMalfunction(
-            renderToAvoidConfirmMalfunction + 1
-          );
+        deleteByKey(query);
+        gallery();
+        navigate("/productmovements");
+        setRenderToAvoidConfirmMalfunction(renderToAvoidConfirmMalfunction + 1);
       } else {
         navigate("/productmovements");
       }
