@@ -49,19 +49,23 @@ export default function MovementsPage() {
     const query = { key: keyToDelete, value: valueToDelete };
 
     const confirmHandlerClick = () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      window.confirm(
+      const confirmation = window.confirm(
         "Delete record with id  " +
           query.value +
           " at collection productmovements?"
-      )
-        ? (deleteByKey(query),
+      );
+
+      if (confirmation) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        deleteByKey(query),
           gallery(),
           navigate("/productmovements"),
           setRenderToAvoidConfirmMalfunction(
             renderToAvoidConfirmMalfunction + 1
-          ))
-        : navigate("/productmovements");
+          );
+      } else {
+        navigate("/productmovements");
+      }
     };
 
     confirmHandlerClick();
