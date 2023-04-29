@@ -17,7 +17,7 @@ export function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     if (localStorage.tokenERP !== initialUserState.userLoggedToken) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
-      navigate("/home");
+      // navigate("/home");
     }
   });
 
