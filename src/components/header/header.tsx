@@ -3,7 +3,7 @@ import "./header.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { menuOptions } from "../../components/menu/menu";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent } from "react";
 import { useUsers } from "../../hooks/use.users";
 import { UsersRepo } from "../../services/repositories/user.repo";
 import { Link, useNavigate } from "react-router-dom";

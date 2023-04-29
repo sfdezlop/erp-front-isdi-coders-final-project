@@ -1,9 +1,6 @@
 import { ProductStructure } from "../../models/product.model";
 
-import {
-  ProductDetailServerResponseType,
-  ProductServerResponseType,
-} from "../../models/serverresponse.model";
+import { ProductServerResponseType } from "../../models/serverresponse.model";
 import { url_def } from "../../config";
 
 type Filter = {

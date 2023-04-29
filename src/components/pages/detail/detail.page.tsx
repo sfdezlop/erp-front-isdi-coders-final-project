@@ -7,7 +7,6 @@ import { RootState } from "../../../store/store";
 import { useNavigate } from "react-router-dom";
 import { ProductStock } from "../../microservices/product.stock/product.stock";
 import { Loader } from "../../loader/loader";
-import MovementsPage from "../movements/movements.page";
 
 export default function DetailPage() {
   const [renderNumber, setRenderNumber] = useState(1);
@@ -101,13 +100,7 @@ export default function DetailPage() {
                   <div>EAN: {item.ean}</div>
                   <div>Cost (€): {item.costPerUnit}</div>
                   <div>Price (€): {item.pricePerUnit}</div>
-                  {/* <div className="detail__stock">
-                Stock of {item.sku} loaded to productMovementState (units):
-                {" " +
-                  stockArrayData.filter(
-                    (item) => item._id === detailProductData[0].sku
-                  )[0].stock}
-              </div> */}
+
                   <div className="detail__microServiceStock">
                     <div>{"Stock (units):"}</div>
                     <div>
