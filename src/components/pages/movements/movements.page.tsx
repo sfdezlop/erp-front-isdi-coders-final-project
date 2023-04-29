@@ -1,5 +1,5 @@
-// PENDING: Strange behaviour when deleting productmovements. Sometimes, the gallery updates correctly after deletions and other not when we use confirm(). If we don't use confirmation for the deletion, the gallery update is correct. To solve it its necessary to include a local state variable that changes when the delation is confirmed.
-// Anyway, even when the update of deletion is correct, the show value of the stock is catched at server when the filter does not change, showing not updated info about it. This is a pending issue. It also show update problems when the order field is id and the order type (asc/desc) is changed, because the gallery does not change properly in this case of usage
+// PENDING: Strange behavior when deleting productmovements. Sometimes, the gallery updates correctly after deletions and other not when we use confirm(). If we don't use confirmation for the deletion, the gallery update is correct. To solve it its necessary to include a local state variable that changes when the deletion is confirmed.
+// Anyway, even when the update of deletion is correct, the show value of the stock is cached at server when the filter does not change, showing not updated info about it. This is a pending issue. It also show update problems when the order field is id and the order type (asc/desc) is changed, because the gallery does not change properly in this case of usage
 
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -28,11 +28,12 @@ export default function MovementsPage() {
   const repo = new ProductMovementsRepo();
   const { gallery, deleteByKey } = useProductMovements(repo);
 
-  const [renderToAvoidConfirmMalfunction, setrenderToAvoidConfirmMalfunction] =
+  const [renderToAvoidConfirmMalfunction, setRenderToAvoidConfirmMalfunction] =
     useState(0);
 
   useEffect(() => {
     gallery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterData, pageNumber]);
 
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export default function MovementsPage() {
         ? (deleteByKey(query),
           gallery(),
           navigate("/productmovements"),
-          setrenderToAvoidConfirmMalfunction(
+          setRenderToAvoidConfirmMalfunction(
             renderToAvoidConfirmMalfunction + 1
           ))
         : navigate("/productmovements");
