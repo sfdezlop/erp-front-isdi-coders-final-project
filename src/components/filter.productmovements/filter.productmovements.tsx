@@ -10,8 +10,7 @@ export function FilterProductMovements() {
   const navigate = useNavigate();
 
   const repo = new ProductMovementsRepo();
-  const { filterProductMovements, paginateProductMovements } =
-    useProductMovements(repo);
+  const { filter, paginate } = useProductMovements(repo);
   const filterOptionsArray = [
     ...useSelector(
       (state: RootState) => state.productMovementState.filterOptions
@@ -56,7 +55,9 @@ export function FilterProductMovements() {
     filteredGalleryArray[0] === undefined
       ? orderByFieldsDefault
       : Object.keys(filteredGalleryArray[0]).sort();
-  const recordsPerSetArray = [4, 8, 16, 32, 64, 128, 256];
+  const recordsPerSetArray = [5, 10, 20, 40, 80, 160, 320];
+
+  const thisUrl = useSelector((state: RootState) => state.appState.urlPage);
 
   const handlerFilterSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,9 +72,9 @@ export function FilterProductMovements() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    filterProductMovements(filterData);
-    paginateProductMovements(1);
-    navigate("/productmovements");
+    filter(filterData);
+    paginate(1);
+    navigate(thisUrl);
   };
 
   const filteredCountData = useSelector(
@@ -112,9 +113,9 @@ export function FilterProductMovements() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    paginateProductMovements(paginationData);
-    filterProductMovements(filterData);
-    navigate("/productmovements");
+    paginate(paginationData);
+    filter(filterData);
+    navigate(thisUrl);
   };
 
   return (
@@ -177,7 +178,7 @@ export function FilterProductMovements() {
                 </option>
               ))}
             </select>
-            <button className="filter__button">Filter</button>
+            {/* <button className="filter__button">Filter</button> */}
           </form>
         </div>
         <div>
@@ -199,7 +200,7 @@ export function FilterProductMovements() {
                 </option>
               ))}
             </select>
-            <button className="filter__button">Go to page#</button>
+            {/* <button className="filter__button">Go to page#</button> */}
           </form>
         </div>
       </div>

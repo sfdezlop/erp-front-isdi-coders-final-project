@@ -13,6 +13,7 @@ import {
 } from "../reducers/product.slice";
 import { ProductStructure } from "../models/product.model";
 import { useApp } from "./use.app";
+import { ProductServerResponseType } from "../models/serverresponse.model";
 
 export function useProducts(repo: ProductsRepo) {
   const productStateData = useSelector(
@@ -21,13 +22,12 @@ export function useProducts(repo: ProductsRepo) {
 
   const userStateData = useSelector((state: RootState) => state.userState);
   const dispatch = useDispatch<AppDispatch>();
-  const tokenAtLocalStorage = localStorage.tokenERP;
   const tokenAtUserState = userStateData.userLoggedToken;
   const tokenToUse = tokenAtUserState;
 
   const { addError } = useApp();
 
-  const galleryProduct = async () => {
+  const gallery = async () => {
     try {
       const serverGalleryResponse: any = await repo.readFilteredGallery(
         tokenToUse,
@@ -65,21 +65,54 @@ export function useProducts(repo: ProductsRepo) {
     await dispatch(loadDetailCredentials(credential));
   };
 
-  const detail = async (id: string) => {
+  const readDetailById = async (
+    id: string
+  ): Promise<ProductServerResponseType> => {
     try {
-      const serverDetailResponse: any = await repo.readDetail(
+      const serverDetailResponse: any = await repo.readDetailById(
         tokenToUse,
         "products/" + id
       );
-
       await dispatch(loadDetail(serverDetailResponse.results));
+      return serverDetailResponse.results;
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/products");
+      return { results: [] };
     }
   };
 
-  const filterProducts = async (filter: any) => {
+  const readDetailByKeyValue = async (
+    urlExtraPathId: string
+  ): Promise<ProductServerResponseType> => {
+    try {
+      const serverDetailResponse: any = await repo.readDetailByKeyValue(
+        tokenToUse,
+        "products/" + urlExtraPathId
+      );
+      return serverDetailResponse.results;
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, "/products");
+      return { results: [] };
+    }
+  };
+
+  const microserviceQueryByKeyValue = async (urlExtraPathId: string) => {
+    try {
+      const result = await repo.microserviceQueryByKeyValue(
+        tokenToUse,
+        "products/" + urlExtraPathId
+      );
+      return result;
+    } catch (error) {
+      console.error((error as Error).message);
+      return "Info not found";
+      //To guard the correct functionality or ProductKeValue microservice, it always return a string
+    }
+  };
+
+  const filter = async (filter: any) => {
     try {
       await dispatch(loadFilter(filter));
     } catch (error) {
@@ -88,7 +121,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const paginateProducts = async (page: number) => {
+  const paginate = async (page: number) => {
     try {
       await dispatch(loadFilteredPage(page));
     } catch (error) {
@@ -97,7 +130,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const addSampleProducts = async (newProduct: Partial<ProductStructure>) => {
+  const createSample = async (newProduct: Partial<ProductStructure>) => {
     try {
       await repo.create(tokenToUse, newProduct);
     } catch (error) {
@@ -106,7 +139,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const deleteByKeyProducts = async (query: { key: string; value: string }) => {
+  const deleteByKey = async (query: { key: string; value: string }) => {
     try {
       await repo.deleteByKey(tokenToUse, query.key, query.value);
     } catch (error) {
@@ -115,7 +148,7 @@ export function useProducts(repo: ProductsRepo) {
     }
   };
 
-  const deleteByIdProducts = async (id: string) => {
+  const deleteById = async (id: string) => {
     try {
       await repo.deleteById(tokenToUse, id);
     } catch (error) {
@@ -130,13 +163,15 @@ export function useProducts(repo: ProductsRepo) {
     loadDetail,
     loadFilterOptions,
     loadFilteredPage,
-    galleryProduct,
+    gallery,
     detailCredentials,
-    detail,
-    filterProducts,
-    paginateProducts,
-    addSampleProducts,
-    deleteByKeyProducts,
-    deleteByIdProducts,
+    readDetailById,
+    readDetailByKeyValue,
+    microserviceQueryByKeyValue,
+    filter,
+    paginate,
+    createSample,
+    deleteByKey,
+    deleteById,
   };
 }

@@ -1,3 +1,13 @@
+.homePage {
+  height: 84vh;
+}
+.homePage__heading {
+  background-color: white;
+  color: #4472c4;
+  text-align: left;
+  padding: 0.5vh;
+}
+
 .homePage__container {
   margin: 1rem;
   display: flex;
@@ -7,7 +17,8 @@
 
 .homePage__userLoggedProfile {
   font-size: 1vh;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 0.2rem;
 }
 
@@ -15,4 +26,8 @@
 h2,
 article {
   font-size: 2vh;
+}
+
+.homePage__token {
+  font-size: xx-small;
 }

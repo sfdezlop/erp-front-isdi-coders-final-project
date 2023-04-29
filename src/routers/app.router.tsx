@@ -1,16 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-// import { lazy, Suspense } from "react";
 import { MenuOption } from "../components/menu/menu";
 import { Login } from "../components/login/login";
-import DashboardPage from "../pages/dashboard/dashboard.page";
-import DetailPage from "../pages/detail/detail.page";
-import HomePage from "../pages/home/home.page";
-import MovementsPage from "../pages/movements/movements.page";
-import ProductsPage from "../pages/products/products.page";
+import DetailPage from "../components/pages/detail/detail.page";
+import HomePage from "../components/pages/home/home.page";
+import MovementsPage from "../components/pages/movements/movements.page";
+import ProductsPage from "../components/pages/products/products.page";
 import { ErrorLog } from "../components/errorlog/errorlog";
+import DashboardPage from "../components/pages/dashboard/dashboard.page";
 
-// import { Filter } from "../pages/products/filter";
-
+// import { lazy, Suspense } from "react";
 // const HomePage = lazy(() => import("../pages/home/home.page"));
 // const DashboardPage = lazy(() => import("../pages/dashboard/dashboard.page"));
 // const ProductsPage = lazy(() => import("../pages/products/products.page"));

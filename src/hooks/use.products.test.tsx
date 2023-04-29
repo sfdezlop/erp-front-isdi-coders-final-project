@@ -38,7 +38,8 @@ describe("Given the useProducts hook", () => {
       readFilteredGallery: jest.fn(),
       readFilteredCount: jest.fn(),
       readGroupsByField: jest.fn(),
-      readDetail: jest.fn(),
+      readDetailById: jest.fn(),
+      readDetailByKeyValue: jest.fn(),
       create: jest.fn(),
       deleteByKey: jest.fn(),
       deleteById: jest.fn(),
@@ -50,46 +51,48 @@ describe("Given the useProducts hook", () => {
 
     const TestComponent = function () {
       const {
-        galleryProduct,
+        gallery,
         detailCredentials,
-        detail,
-        filterProducts,
-        paginateProducts,
-        addSampleProducts,
-        deleteByKeyProducts,
-        deleteByIdProducts,
+        readDetailById,
+        readDetailByKeyValue,
+        filter,
+        paginate,
+        createSample,
+        deleteByKey,
+        deleteById,
       } = useProducts(mockRepo);
 
       return (
         <>
-          <button onClick={() => galleryProduct()}>galleryProduct</button>
+          <button onClick={() => gallery()}>gallery</button>
           <button
             onClick={() => detailCredentials(mockPayload.detailCredentials)}
           >
             detailCredentials
           </button>
-          <button onClick={() => detail(mockPayload.detailCredentials)}>
-            detail
+          <button onClick={() => readDetailById(mockPayload.detailCredentials)}>
+            readDetailById
           </button>
-          <button onClick={() => filterProducts(mockPayload.filter)}>
-            filterProducts
+          <button
+            onClick={() => readDetailByKeyValue(mockPayload.detailCredentials)}
+          >
+            readDetailByKeyValue
           </button>
-          <button onClick={() => paginateProducts(mockPayload.filteredPage)}>
-            paginateProducts
+          <button onClick={() => filter(mockPayload.filter)}>filter</button>
+          <button onClick={() => paginate(mockPayload.filteredPage)}>
+            paginate
           </button>
-          <button onClick={() => addSampleProducts({ id: "mockId" })}>
-            addSampleProducts
+          <button onClick={() => createSample({ id: "mockId" })}>
+            createSample
           </button>
           <button
             onClick={() =>
-              deleteByKeyProducts({ key: "mockField", value: "mockValue" })
+              deleteByKey({ key: "mockField", value: "mockValue" })
             }
           >
-            deleteByKeyProducts
+            deleteByKey
           </button>
-          <button onClick={() => deleteByIdProducts("mockId")}>
-            deleteByIdProducts
-          </button>
+          <button onClick={() => deleteById("mockId")}>deleteById</button>
         </>
       );
     };
@@ -106,13 +109,13 @@ describe("Given the useProducts hook", () => {
   });
 
   describe("When the TestComponent is rendered", () => {
-    test("Then the 8 buttons should be in the document", async () => {
+    test("Then the 9 buttons should be in the document", async () => {
       const elements = await screen.findAllByRole("button");
-      expect(elements.length).toEqual(8);
+      expect(elements.length).toEqual(9);
     });
   });
 
-  describe("When the galleryProduct button of TestComponent is clicked", () => {
+  describe("When the gallery button of TestComponent is clicked", () => {
     test("Then the readFilteredGallery, readFilteredCount and readGroupsByField methods of the repo should been called", async () => {
       const elements = await screen.findAllByRole("button");
       (mockRepo.readFilteredGallery as jest.Mock).mockResolvedValueOnce(
@@ -142,66 +145,80 @@ describe("Given the useProducts hook", () => {
     });
   });
 
-  describe("When the detail button of TestComponent is clicked", () => {
-    test("Then the readDetail method of the repo should been called", async () => {
+  describe("When the readDetailById button of TestComponent is clicked", () => {
+    test("Then the readDetailById method of the repo should been called", async () => {
       const elements = await screen.findAllByRole("button");
-      (mockRepo.readDetail as jest.Mock).mockResolvedValueOnce(mockResponse);
+      (mockRepo.readDetailById as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
 
       await act(async () => userEvent.click(elements[2]));
-      expect(mockRepo.readDetail).toHaveBeenCalled();
+      expect(mockRepo.readDetailById).toHaveBeenCalled();
     });
   });
 
-  describe("When the filterProducts button of TestComponent is clicked", () => {
+  describe("When the readDetailByKeyValue button of TestComponent is clicked", () => {
+    test("Then the readDetailByKeyValue method of the repo should been called", async () => {
+      const elements = await screen.findAllByRole("button");
+      (mockRepo.readDetailByKeyValue as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
+
+      await act(async () => userEvent.click(elements[3]));
+      expect(mockRepo.readDetailByKeyValue).toHaveBeenCalled();
+    });
+  });
+
+  describe("When the filter button of TestComponent is clicked", () => {
     test("Then the loadFilter action should be dispatched changing the value of filter property of productState", async () => {
       const elements = await screen.findAllByRole("button");
 
-      await act(async () => userEvent.click(elements[3]));
+      await act(async () => userEvent.click(elements[4]));
       const filterData = store.getState().productState.filter;
 
       expect(filterData.filterRecordsPerSet).toEqual(321);
     });
   });
 
-  describe("When the paginateProducts button of TestComponent is clicked", () => {
+  describe("When the paginate button of TestComponent is clicked", () => {
     test("Then the loadFilteredPage action should be dispatched changing the value of filteredPage property of productState", async () => {
       const elements = await screen.findAllByRole("button");
 
-      await act(async () => userEvent.click(elements[4]));
+      await act(async () => userEvent.click(elements[5]));
       const filteredPageData = store.getState().productState.filteredPage;
 
       expect(filteredPageData).toEqual(123456);
     });
   });
 
-  describe("When the addSampleProducts button of TestComponent is clicked", () => {
+  describe("When the createSample button of TestComponent is clicked", () => {
     test("Then the create method of the repo should been called", async () => {
       const elements = await screen.findAllByRole("button");
       (mockRepo.create as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      await act(async () => userEvent.click(elements[5]));
+      await act(async () => userEvent.click(elements[6]));
 
       expect(mockRepo.create).toHaveBeenCalled();
     });
   });
 
-  describe("When the deleteByKeyProducts button of TestComponent is clicked", () => {
+  describe("When the deleteByKey button of TestComponent is clicked", () => {
     test("Then the deleteByKey method of the repo should been called", async () => {
       const elements = await screen.findAllByRole("button");
       (mockRepo.deleteByKey as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      await act(async () => userEvent.click(elements[6]));
+      await act(async () => userEvent.click(elements[7]));
 
       expect(mockRepo.deleteByKey).toHaveBeenCalled();
     });
   });
 
-  describe("When the deleteByIdProducts button of TestComponent is clicked", () => {
+  describe("When the deleteById button of TestComponent is clicked", () => {
     test("Then the deleteByKey method of the repo should been called", async () => {
       const elements = await screen.findAllByRole("button");
       (mockRepo.deleteById as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      await act(async () => userEvent.click(elements[7]));
+      await act(async () => userEvent.click(elements[8]));
 
       expect(mockRepo.deleteById).toHaveBeenCalled();
     });

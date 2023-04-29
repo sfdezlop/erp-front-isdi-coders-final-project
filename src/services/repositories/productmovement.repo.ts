@@ -164,7 +164,7 @@ export class ProductMovementsRepo {
     return data;
   }
 
-  async addProductMovement(
+  async create(
     token: string,
     newProductMovement: Partial<ProductMovementStructure>
   ): Promise<ProductMovementStructure> {
@@ -181,6 +181,48 @@ export class ProductMovementsRepo {
     if (!resp.ok)
       throw new Error(
         `Error http adding a Product Movement: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async deleteByKey(
+    tokenToUse: string,
+    key: string,
+    value: string
+  ): Promise<void> {
+    // When the key is id, its necessary to indicate _id in the fetch action
+    const url = this.url + "/productmovements/" + key + "/" + value;
+
+    const resp = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + tokenToUse,
+      },
+    });
+    if (!resp.ok)
+      throw new Error(
+        `Error http deleting a product movement: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+  async deleteById(tokenToUse: string, id: string): Promise<void> {
+    const url = this.url + "/productmovements/" + id;
+
+    const resp = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + tokenToUse,
+      },
+    });
+    if (!resp.ok)
+      throw new Error(
+        `Error http deleting a product movement: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();

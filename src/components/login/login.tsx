@@ -14,11 +14,11 @@ export function Login() {
   const { userLogin, userLoginWithToken } = useUsers(repoUser);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (localStorage.tokenERP !== initialUserState.userLoggedToken) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
-      navigate("/home");
     }
-  }, []);
+  });
 
   const handlerSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,7 +65,7 @@ export function Login() {
         <div className="login__keepCheckbox">
           <label>
             <input type="checkbox" />
-            Keep me logged
+            Remind me for 1 day
           </label>
         </div>
 

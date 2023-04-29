@@ -1,19 +1,19 @@
-.detail__header {
+.detail__heading {
   background-color: white;
   color: #4472c4;
   text-align: left;
-  padding: 1vh;
+  padding: 0.5vh;
 }
 
 .detail__container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 5vh;
   width: calc(100%);
   background-color: white;
   padding: 1rem;
   border-color: black;
   text-align: left;
-  /* object-fit: fill; */
   font-size: 1rem;
 }
 .detail__image {
@@ -27,17 +27,18 @@
 }
 
 .detail__dataContainer div {
-  padding: 0.25rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }
 
 .detail__descriptionContainer div {
   padding: 0.25rem;
 }
 
-.detail__microServiceStock div {
-  padding: 0.25rem;
+.detail__microServiceStock {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .detail__buttons {

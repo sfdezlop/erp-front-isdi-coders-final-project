@@ -10,7 +10,7 @@ export function FilterProducts() {
   const navigate = useNavigate();
 
   const repoProduct = new ProductsRepo();
-  const { filterProducts, paginateProducts } = useProducts(repoProduct);
+  const { filter, paginate } = useProducts(repoProduct);
   const filterOptionsArray = [
     ...useSelector((state: RootState) => state.productState.filterOptions),
   ];
@@ -55,6 +55,8 @@ export function FilterProducts() {
       : Object.keys(filteredGalleryArray[0]).sort();
   const recordsPerSetArray = [4, 8, 16, 32, 64, 128, 256];
 
+  const thisUrl = useSelector((state: RootState) => state.appState.urlPage);
+
   const handlerFilterSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formFilter = event.currentTarget;
@@ -68,10 +70,10 @@ export function FilterProducts() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    filterProducts(filterData);
-    paginateProducts(1);
+    filter(filterData);
+    paginate(1);
 
-    navigate("/products");
+    navigate(thisUrl);
   };
 
   const filteredCountData = useSelector(
@@ -111,10 +113,10 @@ export function FilterProducts() {
       filterRecordsPerSet: (formFilter.elements[3] as HTMLFormElement).value,
     };
 
-    paginateProducts(paginationData);
-    filterProducts(filterData);
+    paginate(paginationData);
+    filter(filterData);
 
-    navigate("/products");
+    navigate(thisUrl);
   };
 
   return (
@@ -177,7 +179,7 @@ export function FilterProducts() {
                 </option>
               ))}
             </select>
-            <button className="filter__button">Filter</button>
+            {/* <button className="filter__button">Filter</button> */}
           </form>
         </div>
         <div>
@@ -198,7 +200,7 @@ export function FilterProducts() {
                 </option>
               ))}
             </select>
-            <button className="filter__button">Go to page#</button>
+            {/* <button className="filter__button">Go to page#</button> */}
           </form>
         </div>
       </div>

@@ -1,3 +1,9 @@
+# Bugs
+
+- Strange behaviour when deleting fake products. Some times, the gallery updates correctly after deletions and other not.
+
+- Strange behaviour when deleting productmovements. Some times, the gallery updates correctly after deletions and other not.
+
 # Pending developments
 
 ## Login

@@ -1,6 +1,17 @@
+.productsPage {
+  height: 84vh;
+}
+
+.productsPage__heading {
+  background-color: white;
+  color: #4472c4;
+  text-align: left;
+  padding: 0.5vh;
+}
+
 .productsPage__container {
   background-color: white;
-  height: 73.8vh;
+  height: 71vh;
   overflow-y: scroll;
   padding-top: 1vh;
   padding-bottom: 1vh;
@@ -66,7 +77,8 @@
   text-decoration: underline;
   color: #4472c4;
 }
-
-.productsPageCard__stock {
-  color: #4472c4;
+.productsPageCard__stockContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
