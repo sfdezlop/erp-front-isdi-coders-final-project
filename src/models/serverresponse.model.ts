@@ -1,5 +1,3 @@
-import { ProductStructure } from "./product.model";
-
 export type ProductServerResponseType = {
   results: [];
 };
