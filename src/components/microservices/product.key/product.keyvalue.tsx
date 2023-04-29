@@ -15,6 +15,7 @@ export function ProductKeyValue({ urlExtraPathId }: ProductKeyProps) {
   const [valueToShow, setValueToShow] = useState("");
   const [renderNumber, setRenderNumber] = useState(1);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const promiseToEvaluate = microserviceQueryByKeyValue(urlExtraPathId);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined

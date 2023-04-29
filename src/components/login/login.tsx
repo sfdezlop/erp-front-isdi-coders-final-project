@@ -14,6 +14,7 @@ export function Login() {
   const { userLogin, userLoginWithToken } = useUsers(repoUser);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (localStorage.tokenERP !== initialUserState.userLoggedToken) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
       navigate("/home");

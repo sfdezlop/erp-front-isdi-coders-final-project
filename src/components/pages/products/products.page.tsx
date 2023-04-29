@@ -25,7 +25,7 @@ export default function ProductsPage() {
   const repoProduct = new ProductsRepo();
   const { gallery } = useProducts(repoProduct);
   useEffect(() => {
-    gallery();
+    gallery(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterData, pageNumber]);
 
   const { detailCredentials } = useProducts(repoProduct);

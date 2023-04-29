@@ -14,6 +14,7 @@ export function ProductStock({ sku }: ProductStockProps) {
   const [stockToShow, setStockToShow] = useState(0);
   const [renderNumber, setRenderNumber] = useState(1);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const promiseToEvaluate = showStockBySku(sku);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined

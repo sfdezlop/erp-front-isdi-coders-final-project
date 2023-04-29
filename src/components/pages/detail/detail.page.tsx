@@ -37,6 +37,7 @@ export default function DetailPage() {
   useEffect(() => {
     readDetailById(detailCredentialsData);
     setRenderNumber(2);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderNumber]);
 
   const navigate = useNavigate();
