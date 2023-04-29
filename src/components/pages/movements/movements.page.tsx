@@ -1,4 +1,7 @@
-import { SyntheticEvent, useEffect } from "react";
+// PENDING: Strange behaviour when deleting productmovements. Sometimes, the gallery updates correctly after deletions and other not when we use confirm(). If we don't use confirmation for the deletion, the gallery update is correct. To solve it its necessary to include a local state variable that changes when the delation is confirmed.
+// Anyway, even when the update of deletion is correct, the show value of the stock is catched at server when the filter does not change, showing not updated info about it. This is a pending issue. It also show update problems when the order field is id and the order type (asc/desc) is changed, because the gallery does not change properly in this case of usage
+
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useProductMovements } from "../../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
@@ -25,6 +28,9 @@ export default function MovementsPage() {
   const repo = new ProductMovementsRepo();
   const { gallery, deleteByKey } = useProductMovements(repo);
 
+  const [renderToAvoidConfirmMalfunction, setrenderToAvoidConfirmMalfunction] =
+    useState(0);
+
   useEffect(() => {
     gallery();
   }, [filterData, pageNumber]);
@@ -41,21 +47,34 @@ export default function MovementsPage() {
 
     const query = { key: keyToDelete, value: valueToDelete };
 
-    // eslint-disable-next-line no-restricted-globals, @typescript-eslint/no-unused-expressions
-    confirm(
-      "Delete record with id  " +
-        query.value +
-        " at collection productmovements?"
-    )
-      ? (deleteByKey(query), gallery(), navigate("/productmovements"))
-      : // PENDING: Strange behaviour when deleting productmovements. Sometimes, the gallery updates correctly after deletions and other not when we use confirm(). If we don't use confirmation for the deletion, the gallery update is correct
-        navigate("/productmovements");
+    const confirmHandlerClick = () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      window.confirm(
+        "Delete record with id  " +
+          query.value +
+          " at collection productmovements?"
+      )
+        ? (deleteByKey(query),
+          gallery(),
+          navigate("/productmovements"),
+          setrenderToAvoidConfirmMalfunction(
+            renderToAvoidConfirmMalfunction + 1
+          ))
+        : navigate("/productmovements");
+    };
+
+    confirmHandlerClick();
   };
 
   return (
     <>
       <div className="productMovementsPage">
-        <h2 className="productMovementsPage__heading">Product Movements</h2>
+        <h2 className="productMovementsPage__heading">
+          {"Product Movements" +
+            " (forced render #" +
+            renderToAvoidConfirmMalfunction +
+            ")"}
+        </h2>
         <FilterProductMovements></FilterProductMovements>
         <div className="productMovementsPage__container">
           <div className="productMovementsPage__fieldContainer">
@@ -80,7 +99,8 @@ export default function MovementsPage() {
                 <div className="productMovementsPage__data">
                   <ProductKeyValue
                     urlExtraPathId={
-                      "microservices/sku-brand/" + item.productSku
+                      "microservices/inputkey-sku-outputkey-brand/inputvalue-" +
+                      item.productSku
                     }
                   ></ProductKeyValue>
                 </div>
@@ -105,7 +125,8 @@ export default function MovementsPage() {
                 <div className="productMovementsPage__data">
                   <ProductKeyValue
                     urlExtraPathId={
-                      "microservices/sku-image/" + item.productSku
+                      "microservices/inputkey-sku-outputkey-image/inputvalue-" +
+                      item.productSku
                     }
                   ></ProductKeyValue>
                 </div>
