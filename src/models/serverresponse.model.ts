@@ -7,7 +7,7 @@ export type ProductMovementServerResponseType = {
 };
 
 export type UserServerResponseType = {
-  results: [];
+  results: [string, object, []];
 };
 
 export type StockServerResponseType = {

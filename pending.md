@@ -17,6 +17,7 @@
 
 ## Architecture
 
+- Usage of thunks and extrareducers.
 - Universal filter with 'get' fetch that can be used to filter any collection at any tsx components.
 
 ## Navigation

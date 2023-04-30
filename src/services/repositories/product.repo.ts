@@ -3,7 +3,7 @@ import { ProductStructure } from "../../models/product.model";
 import { ProductServerResponseType } from "../../models/serverresponse.model";
 import { url_def } from "../../config";
 
-type Filter = {
+export type Filter = {
   filterField?: string;
   filterValue?: string;
   filterSet?: number;
