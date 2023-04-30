@@ -42,15 +42,15 @@ export const userSlice = createSlice({
 
   extraReducers(builder) {
     builder.addCase(asyncLoadUsersGallery.pending, (state) => {
-      // state.loadingUsersStatus = "loading";
+      //To change state variables in async processes: state.loadingUsersStatus = "loading";
     });
     builder.addCase(asyncLoadUsersGallery.fulfilled, (state, action) => {
       state.usersGallery = action.payload.results[2];
 
-      // state.loadingUsersStatus = "idle";
+      //To change state variables in async processes: state.loadingUsersStatus = "idle";
     });
     builder.addCase(asyncLoadUsersGallery.rejected, (state) => {
-      // state.loadingUsersStatus = "error";
+      //To change state variables in async processes: state.loadingUsersStatus = "error";
     });
   },
 });

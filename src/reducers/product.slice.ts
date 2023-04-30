@@ -93,15 +93,15 @@ export const productSlice = createSlice({
 
   extraReducers(builder) {
     builder.addCase(asyncLoadProductsGallery.pending, (state) => {
-      // state.loadingUsersStatus = "loading";
+      //To change state variables in async processes: state.loadingUsersStatus = "loading";
     });
     builder.addCase(asyncLoadProductsGallery.fulfilled, (state, action) => {
       state.filteredGallery = action.payload.results;
 
-      // state.loadingUsersStatus = "idle";
+      //To change state variables in async processes: state.loadingUsersStatus = "idle";
     });
     builder.addCase(asyncLoadProductsGallery.rejected, (state) => {
-      // state.loadingUsersStatus = "error";
+      //To change state variables in async processes: state.loadingUsersStatus = "error";
     });
   },
 });
