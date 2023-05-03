@@ -11,7 +11,7 @@ export type UserServerResponseType = {
 };
 
 export type StockServerResponseType = {
-  results: { _id: string; stock: number }[];
+  results: number[];
 };
 
 export type StoreLogServerResponseType = {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { menuOptions, MenuOption } from "../components/menu/menu";
-import { UserStructure } from "../models/user.model";
+import { UserStructure } from "../models/collections.model";
 import { asyncLoadUsersGallery } from "./user.thunks";
 
 export type UserStateStructure = {

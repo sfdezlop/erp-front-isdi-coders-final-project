@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { UserStructure } from "../models/user.model";
+import { UserStructure } from "../models/collections.model";
 import { UsersRepo } from "../services/repositories/user.repo";
 import { AppDispatch } from "../store/store";
 import {

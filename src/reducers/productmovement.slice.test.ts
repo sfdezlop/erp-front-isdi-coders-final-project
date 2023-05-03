@@ -4,7 +4,7 @@ import {
   productMovementReducer,
   ProductMovementStateStructure,
 } from "./productmovement.slice";
-import { ProductMovementStructure } from "../models/productmovement.model";
+import { ProductMovementStructure } from "../models/collections.model";
 import { Filter } from "../services/repositories/product.repo";
 
 const mockInitialState: ProductMovementStateStructure = {

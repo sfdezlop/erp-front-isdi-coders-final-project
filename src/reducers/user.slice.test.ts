@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { UserStructure } from "../models/user.model";
+import { UserStructure } from "../models/collections.model";
 import { userReducer, UserStateStructure } from "./user.slice";
 import { MenuOption } from "../components/menu/menu";
 

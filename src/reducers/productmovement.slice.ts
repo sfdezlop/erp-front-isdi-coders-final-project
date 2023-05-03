@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductMovementStructure } from "../models/productmovement.model";
-import { StockServerResponseType } from "../models/serverresponse.model";
+import { ProductMovementStructure } from "../models/collections.model";
 
 export type ProductMovementStateStructure = {
   filteredGallery: ProductMovementStructure[];
@@ -85,12 +84,6 @@ export const productMovementSlice = createSlice({
     ) {
       state.analytics = action.payload;
     },
-    loadStock(
-      state: ProductMovementStateStructure,
-      action: PayloadAction<StockServerResponseType>
-    ) {
-      state.stock = action.payload.results;
-    },
   },
 });
 
@@ -102,7 +95,6 @@ export const {
   loadFilteredCount,
   loadUnfilteredCount,
   loadAnalytics,
-  loadStock,
 } = productMovementSlice.actions;
 
 export const productMovementReducer = productMovementSlice.reducer;

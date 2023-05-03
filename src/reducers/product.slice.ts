@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductStructure } from "../models/product.model";
+import { ProductStructure } from "../models/collections.model";
 import { asyncLoadProductsGallery } from "./product.thunks";
 
 export type ProductStateStructure = {
