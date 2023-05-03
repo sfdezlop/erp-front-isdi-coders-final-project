@@ -2,7 +2,7 @@ import "./products.page.css";
 import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../../hooks/use.products";
-import { ProductStructure } from "../../../models/product.model";
+import { ProductStructure } from "../../../models/collections.model";
 import { ProductsRepo } from "../../../services/repositories/product.repo";
 import { RootState } from "../../../store/store";
 import { useNavigate } from "react-router-dom";

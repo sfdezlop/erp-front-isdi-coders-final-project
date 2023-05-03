@@ -1,7 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 
 import { productReducer, ProductStateStructure } from "./product.slice";
-import { ProductStructure } from "../models/product.model";
+import { ProductStructure } from "../models/collections.model";
 import { Filter } from "../services/repositories/product.repo";
 
 const mockInitialState: ProductStateStructure = {
