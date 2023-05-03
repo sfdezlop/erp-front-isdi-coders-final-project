@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../../hooks/use.users";
-import { UserStructure } from "../../models/user.model";
+import { UserStructure } from "../../models/collections.model";
 import { UsersRepo } from "../../services/repositories/user.repo";
 import "./login.css";
 import { initialState as initialUserState } from "../../reducers/user.slice";
@@ -17,6 +17,7 @@ export function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     if (localStorage.tokenERP !== initialUserState.userLoggedToken) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
+      navigate("/home");
     }
   });
 
