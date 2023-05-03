@@ -1,0 +1,44 @@
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { queryInput, queryOutput } from "../reducers/collection.slice";
+import { useApp } from "./use.app";
+import { CollectionsRepo } from "../services/repositories/collection.repo";
+
+export function useCollections(repo: CollectionsRepo) {
+  const collectionState = useSelector(
+    (state: RootState) => state.collectionState
+  );
+
+  const userState = useSelector((state: RootState) => state.userState);
+  const appState = useSelector((state: RootState) => state.appState);
+  const dispatch = useDispatch<AppDispatch>();
+  const tokenAtUserState = userState.userLoggedToken;
+  const tokenToUse = tokenAtUserState;
+
+  const { addError } = useApp();
+
+  const updateQueryInput = async (filter: any) => {
+    try {
+      await dispatch(queryInput(filter));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+    }
+  };
+
+  const updateQueryOutput = async (filter: any) => {
+    try {
+      await dispatch(queryOutput(filter));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+    }
+  };
+
+  return {
+    updateQueryInput,
+    updateQueryOutput,
+    queryInput,
+    queryOutput,
+  };
+}

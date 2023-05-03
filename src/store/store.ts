@@ -3,6 +3,7 @@ import { userReducer } from "../reducers/user.slice";
 import { productReducer } from "../reducers/product.slice";
 import { productMovementReducer } from "../reducers/productmovement.slice";
 import { appReducer } from "../reducers/app.slice";
+import { collectionReducer } from "../reducers/collection.slice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     productState: productReducer,
     productMovementState: productMovementReducer,
     appState: appReducer,
+    collectionState: collectionReducer,
   },
 });
 

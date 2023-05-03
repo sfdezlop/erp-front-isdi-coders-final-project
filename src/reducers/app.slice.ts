@@ -10,24 +10,55 @@ export type ErrorLogStructure = {
   errorCause: string;
 };
 export type AppStateStructure = {
+  queryInput: {
+    filterCollection: string;
+    filterField: string;
+    filterValue: string;
+    searchField: string;
+    searchValue: string;
+    filterSet: number;
+    filterRecordsPerSet: number;
+    orderField: string;
+    orderType: "asc" | "desc";
+    filterValueOptionsShown: string[];
+    pageShown: number;
+    queriedCount: number;
+    unQueriedCount: number;
+  };
   errorLog: ErrorLogStructure[];
   urlPage: string;
   storeLog: { date: string; user: string; log: {} };
 };
 
 export const initialState: AppStateStructure = {
+  queryInput: {
+    filterCollection: "initial",
+    filterField: "initial",
+    filterValue: "(select all)",
+    searchField: "initial",
+    searchValue: "",
+    filterSet: 1,
+    filterRecordsPerSet: 4,
+    orderField: "initial",
+    orderType: "asc",
+    filterValueOptionsShown: ["initial"],
+    pageShown: 1,
+    queriedCount: 10,
+    unQueriedCount: 10,
+  },
+
   errorLog: [
     {
       date: new Date().toString(),
-      user: "Initial",
-      origin: "Initial",
-      errorName: "Initial",
-      errorStack: "Initial",
-      errorMessage: "Initial",
-      errorCause: "Initial",
+      user: "No error",
+      origin: "No error",
+      errorName: "No error",
+      errorStack: "No error",
+      errorMessage: "No error",
+      errorCause: "No error",
     },
   ],
-  urlPage: "",
+  urlPage: "No error",
 
   storeLog: {
     date: new Date().toString(),
