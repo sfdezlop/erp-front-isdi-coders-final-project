@@ -5,6 +5,7 @@
 - Check that token at `localStorage` is reset when click in logout.
 - Remind me for xx days working properly.
 - Check the feedback of login when the email or password are wrong.
+- Link to 'awake' render.com server from login component.
 
 ## Microservices
 
@@ -15,9 +16,14 @@
 
 - DB: New db collection of universal dates `appsystemdates` to support data analysis when data is not available for any date (clustering by date). There will be only one db collection of days and the rest of periods (weeks, months, quarters and years) should be provided by views of this collection.
 
+## Filter
+
+- Add a new parameter to the filter based on search by regular expression. If a regex is indicated, the closed options will be ignored. Control the possibility of searching in string and number fields.
+
 ## Architecture
 
-- Usage of thunks and extrareducers.
+- Usage of thunks and extra reducers.
+- Normalizing the server respond to {results: []}
 - Universal filter with 'get' fetch that can be used to filter any collection at any tsx components.
 
 ## Navigation
@@ -61,9 +67,11 @@
 
 ## Filter
 
-- Release of order type (asc/des) feature in filter tsx components `filter.products.tsx` and `filter.productmovements.tsx`.
-- Release of info about number of records at the filtered collection (with and without filter).
-- Release of features of filter field, filter value, records to show in each page, pagination and number of available pages.
+- Order type (asc/des) feature in filter tsx components `filter.products.tsx` and `filter.productmovements.tsx`.
+- Info about number of records at the filtered collection (with and without filter).
+- Features of filter field, filter value, records to show in each page, pagination and number of available pages.
+- Feature of the option (select all) for the filter.
+- Values of filtering values options obtained by fetching a group aggregate method that shows in real time the value situation of db.
 
 ## Microservices
 
@@ -81,5 +89,14 @@
 
 ## Non critical bugs
 
+### DashboardPage
+
+- Strange behavior when deleting the dependency array of useEffect, even if it is empty. The app loops requesting continuously data to the backend.
+
+### ProductsPage
+
 - Strange behavior when deleting fake products. Some times, the gallery updates correctly after deletions and other not.
+
+### ProducMovementsPage
+
 - Strange behavior when deleting productmovements. Some times, the gallery updates correctly after deletions and other not.
