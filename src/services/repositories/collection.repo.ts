@@ -15,26 +15,31 @@ export class CollectionsRepo {
     queryInput: QueryInputCollectionStructure,
     token: string
   ): Promise<Partial<CollectionStructure>[]> {
-    const url =
+    const url = encodeURI(
       this.url +
-      "/collection=" +
-      queryInput.filterCollection +
-      "/read/&filterfield=" +
-      queryInput.filterField +
-      "&filtervalue=" +
-      queryInput.filterValue +
-      "&searchfield=" +
-      queryInput.searchField +
-      "&searchvalue=" +
-      queryInput.searchValue +
-      "&filterset=" +
-      queryInput.filterSet +
-      "&filterrecordsperset=" +
-      queryInput.filterRecordsPerSet +
-      "&orderfield=" +
-      queryInput.orderField +
-      "&ordertype=" +
-      queryInput.orderType;
+        "/collections/read/&collection=" +
+        queryInput.filterCollection +
+        "&filterfield=" +
+        queryInput.filterField +
+        "&filtervalue=" +
+        queryInput.filterValue +
+        "&searchfield=" +
+        queryInput.searchField +
+        "&searchvalue=" +
+        queryInput.searchValue +
+        "&searchtype=" +
+        queryInput.searchType +
+        "&queryset=" +
+        queryInput.querySet +
+        "&queryrecordsperset=" +
+        queryInput.queryRecordsPerSet +
+        "&orderfield=" +
+        queryInput.orderField +
+        "&ordertype=" +
+        queryInput.orderType
+    );
+
+    console.log(url);
     const resp = await fetch(url, {
       method: "GET",
       headers: {

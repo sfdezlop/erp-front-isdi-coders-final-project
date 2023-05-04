@@ -106,8 +106,9 @@ export type QueryInputCollectionStructure = {
   filterValue?: string;
   searchField?: string;
   searchValue?: string;
-  filterSet?: number;
-  filterRecordsPerSet?: number;
+  searchType?: "Begins with" | "Contains" | "Ends with" | "Exact match";
+  querySet?: number;
+  queryRecordsPerSet?: number;
   orderField?: string;
   orderType?: "asc" | "desc";
   primaryKey: string;

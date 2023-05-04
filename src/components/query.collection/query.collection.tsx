@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import "./query.collection.css";
-import { collectionFields, collections } from "../../models/collections.model";
+import {
+  QueryInputCollectionStructure,
+  collectionFields,
+  collections,
+} from "../../models/collections.model";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
 
@@ -14,6 +18,13 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
+
+  const searchTypeOptions = [
+    "Begins with",
+    "Contains",
+    "Ends with",
+    "Exact match",
+  ];
 
   const filterValueOptionsShown = [
     ...collectionState.queryOutput.filterValueOptionsShown,
@@ -26,22 +37,37 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
   const collectionFieldsToFilterBy = collectionFields.filter(
     (item) => item.collection === collectionState.queryInput.filterCollection
-
-    //collectionName
   );
 
   const collectionFieldsToSearchBy = collectionFields.filter(
     (item) => item.collection === collectionState.queryInput.filterCollection
-
-    //collectionName
   );
 
   const collectionFieldsToOrderBy = collectionFields.filter(
     (item) => item.collection === collectionState.queryInput.filterCollection
-
-    //collectionName
   );
+  const maximumPages =
+    collectionState.queryInput.queryRecordsPerSet === undefined
+      ? 1
+      : Math.floor(
+          collectionState.queryOutput.queriedCount /
+            collectionState.queryInput.queryRecordsPerSet
+        ) <
+        collectionState.queryOutput.queriedCount /
+          collectionState.queryInput.queryRecordsPerSet
+      ? Math.floor(
+          collectionState.queryOutput.queriedCount /
+            collectionState.queryInput.queryRecordsPerSet
+        )
+      : Math.floor(
+          collectionState.queryOutput.queriedCount /
+            collectionState.queryInput.queryRecordsPerSet
+        ) + 1;
 
+  const pagesArray: number[] = [1];
+  for (let i = 2; i <= maximumPages + 1; i++) {
+    pagesArray.push(i);
+  }
   const thisUrl = useSelector((state: RootState) => state.appState.urlPage);
   const repoCollection = new CollectionsRepo();
   const { updateQueryInput, updateQueryOutput } =
@@ -51,46 +77,30 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     event.preventDefault();
     const queryForm = event.currentTarget;
 
-    const queryInputObject = {
+    const queryInputFormObject: QueryInputCollectionStructure = {
       filterCollection: (queryForm.elements[0] as HTMLFormElement).value,
       filterField: (queryForm.elements[1] as HTMLFormElement).value,
-      filterValue: (queryForm.elements[2] as HTMLFormElement).value,
+      filterValue:
+        (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
+          ? ""
+          : (queryForm.elements[2] as HTMLFormElement).value,
+
+      // As agreed with the backend, the '(select all)' values for filters should be requested as ''
       searchField: (queryForm.elements[3] as HTMLFormElement).value,
-      searchValue: (queryForm.elements[4] as HTMLFormElement).value,
-      filterSet: 1,
-      filterRecordsPerSet: (queryForm.elements[5] as HTMLFormElement).value,
+      searchType: (queryForm.elements[4] as HTMLFormElement).value,
+      searchValue: (queryForm.elements[5] as HTMLFormElement).value,
+
       orderField: (queryForm.elements[6] as HTMLFormElement).value,
       orderType: (queryForm.elements[7] as HTMLFormElement).value,
+      queryRecordsPerSet: (queryForm.elements[8] as HTMLFormElement).value,
+      querySet: (queryForm.elements[9] as HTMLFormElement).value,
       primaryKey: "",
       primaryKeyValue: "",
     };
-    updateQueryInput(queryInputObject);
+    updateQueryInput(queryInputFormObject);
     // paginate(1);
     navigate(thisUrl);
   };
-
-  const maximumPages =
-    collectionState.queryInput.filterRecordsPerSet === undefined
-      ? 1
-      : Math.floor(
-          collectionState.queryOutput.queriedCount /
-            collectionState.queryInput.filterRecordsPerSet
-        ) <
-        collectionState.queryOutput.queriedCount /
-          collectionState.queryInput.filterRecordsPerSet
-      ? Math.floor(
-          collectionState.queryOutput.queriedCount /
-            collectionState.queryInput.filterRecordsPerSet
-        )
-      : Math.floor(
-          collectionState.queryOutput.queriedCount /
-            collectionState.queryInput.filterRecordsPerSet
-        ) + 1;
-
-  const pagesArray: number[] = [1];
-  for (let i = 2; i <= maximumPages + 1; i++) {
-    pagesArray.push(i);
-  }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,12 +169,25 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               </select>
             </label>
             <label className="queryCollection__label">
+              {"Search type "}
+              <select
+                name="search type"
+                defaultValue={collectionState.queryInput.searchType}
+              >
+                {collectionState.queryInput.searchType}
+                {searchTypeOptions.map((item) => (
+                  <option key={"searchType_" + item}>{item}</option>
+                ))}
+              </select>
+            </label>
+            <label className="queryCollection__label">
               {"Search value "}
               <input
                 name="search value"
                 defaultValue={collectionState.queryInput.searchValue}
               ></input>
             </label>
+
             <label className="queryCollection__label">
               {"Order by "}
               <select defaultValue={collectionState.queryInput.orderField}>
@@ -188,9 +211,9 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
             <label className="queryCollection__label">
               {"Records per page "}
               <select
-                defaultValue={collectionState.queryInput.filterRecordsPerSet}
+                defaultValue={collectionState.queryInput.queryRecordsPerSet}
               >
-                {collectionState.queryInput.filterRecordsPerSet}
+                {collectionState.queryInput.queryRecordsPerSet}
                 {recordsPerSet.map((item) => (
                   <option key={item}>{item}</option>
                 ))}
