@@ -7,10 +7,7 @@ import { Provider } from "react-redux";
 import { ProductMovementsRepo } from "../services/repositories/productmovement.repo";
 import { useProductMovements } from "./use.productmovements";
 import { ProductMovementStateStructure } from "../reducers/productmovement.slice";
-import {
-  ProductMovementServerResponseType,
-  StockServerResponseType,
-} from "../models/serverresponse.model";
+import { ProductMovementServerResponseType } from "../models/serverresponse.model";
 import { store } from "../store/store";
 import { ProductMovementStructure } from "../models/collections.model";
 
