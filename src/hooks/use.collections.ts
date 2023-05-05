@@ -3,7 +3,10 @@ import { AppDispatch, RootState } from "../store/store";
 import { queryInput, queryOutput } from "../reducers/collection.slice";
 import { useApp } from "./use.app";
 import { CollectionsRepo } from "../services/repositories/collection.repo";
-import { QueryInputCollectionStructure } from "../models/collections.model";
+import {
+  QueryInputCollectionStructure,
+  QueryOutputCollectionStructure,
+} from "../models/collections.model";
 
 export function useCollections(repo: CollectionsRepo) {
   const collectionState = useSelector(
@@ -22,7 +25,7 @@ export function useCollections(repo: CollectionsRepo) {
     queryInputFormObject: QueryInputCollectionStructure
   ) => {
     try {
-      const data = await repo.read(queryInputFormObject, tokenToUse);
+      await repo.read(queryInputFormObject, tokenToUse);
       await dispatch(queryInput(queryInputFormObject));
     } catch (error) {
       console.error((error as Error).message);
@@ -30,9 +33,11 @@ export function useCollections(repo: CollectionsRepo) {
     }
   };
 
-  const updateQueryOutput = async (filter: any) => {
+  const updateQueryOutput = async (
+    queryOutputData: QueryOutputCollectionStructure
+  ) => {
     try {
-      await dispatch(queryOutput(filter));
+      await dispatch(queryOutput(queryOutputData));
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, appState.urlPage);
