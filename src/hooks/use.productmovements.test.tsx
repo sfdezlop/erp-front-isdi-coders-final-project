@@ -58,10 +58,6 @@ describe("Given the useProducts hook", () => {
       results: [],
     } as unknown as ProductMovementServerResponseType;
 
-    mockStockResponse = {
-      results: [{ _id: "mockId", stock: 77 }],
-    } as unknown as StockServerResponseType;
-
     mockProductMovement = {
       id: "mockId",
     };
