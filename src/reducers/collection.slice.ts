@@ -29,8 +29,34 @@ export const initialState: CollectionStateStructure = {
     pageShown: 1,
     queriedCount: 1,
     unQueriedCount: 1,
-    gallery: [],
-    detail: [],
+    gallery: [
+      {
+        id: "id",
+        sku: "Sku",
+        shortDescription: "Short Description",
+        longDescription: "Long Description",
+        ean: "EAN",
+        brand: "Brand",
+        image: "Image",
+        userCreatorEmail: "User Creator Email",
+        costPerUnit: 0,
+        pricePerUnit: 0,
+      },
+    ],
+    detail: [
+      {
+        id: "id",
+        sku: "Sku",
+        shortDescription: "Short Description",
+        longDescription: "Long Description",
+        ean: "EAN",
+        brand: "Brand",
+        image: "Image",
+        userCreatorEmail: "User Creator Email",
+        costPerUnit: 0,
+        pricePerUnit: 0,
+      },
+    ],
   },
 };
 

@@ -1,6 +1,8 @@
 import { url_def } from "../../config";
 import {
   CollectionStructure,
+  GroupByQueryCollectionStructure,
+  GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
 } from "../../models/collections.model";
 
@@ -12,34 +14,33 @@ export class CollectionsRepo {
   }
 
   async read(
-    queryInput: QueryInputCollectionStructure,
+    query: QueryInputCollectionStructure,
     token: string
-  ): Promise<Partial<CollectionStructure>[]> {
+  ): Promise<{ results: [] }> {
     const url = encodeURI(
       this.url +
         "/collections/read/&collection=" +
-        queryInput.filterCollection +
+        query.filterCollection +
         "&filterfield=" +
-        queryInput.filterField +
+        query.filterField +
         "&filtervalue=" +
-        queryInput.filterValue +
+        query.filterValue +
         "&searchfield=" +
-        queryInput.searchField +
+        query.searchField +
         "&searchvalue=" +
-        queryInput.searchValue +
+        query.searchValue +
         "&searchtype=" +
-        queryInput.searchType +
+        query.searchType +
         "&queryset=" +
-        queryInput.querySet +
+        query.querySet +
         "&queryrecordsperset=" +
-        queryInput.queryRecordsPerSet +
+        query.queryRecordsPerSet +
         "&orderfield=" +
-        queryInput.orderField +
+        query.orderField +
         "&ordertype=" +
-        queryInput.orderType
+        query.orderType
     );
 
-    console.log(url);
     const resp = await fetch(url, {
       method: "GET",
       headers: {
@@ -50,10 +51,80 @@ export class CollectionsRepo {
 
     if (!resp.ok)
       throw new Error(
-        `Error http reading collection ${queryInput.filterCollection}: ${resp.status} ${resp.statusText}`
+        `Error http reading collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
       );
 
-    const data: Partial<CollectionStructure>[] = await resp.json();
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async groupBy(
+    query: GroupByQueryCollectionStructure,
+    token: string
+  ): Promise<{ results: { documents: number; aggregateSumValue: number }[] }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/groupby/&collection=" +
+        query.filterCollection +
+        "&firstgroupbyfield=" +
+        query.firstGroupByField +
+        "&secondgroupbyfield=" +
+        query.secondGroupByField +
+        "&searchfield=" +
+        query.searchField +
+        "&searchvalue=" +
+        query.searchValue +
+        "&searchtype=" +
+        query.searchType +
+        "&aggregatesumfield=" +
+        query.aggregateSumField
+    );
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http grouping by collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async groupBySet(
+    query: GroupBySetQueryCollectionStructure,
+    token: string
+  ): Promise<{ results: string[] }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/groupbyset/&collection=" +
+        query.filterCollection +
+        "&groupbyfield=" +
+        query.groupByField
+    );
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http obtaining grouped set of values of collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
 
     return data;
   }
