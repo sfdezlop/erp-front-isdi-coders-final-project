@@ -9,10 +9,6 @@ import {
 } from "../models/collections.model";
 
 export function useCollections(repo: CollectionsRepo) {
-  const collectionState = useSelector(
-    (state: RootState) => state.collectionState
-  );
-
   const userState = useSelector((state: RootState) => state.userState);
   const appState = useSelector((state: RootState) => state.appState);
   const dispatch = useDispatch<AppDispatch>();

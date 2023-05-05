@@ -70,8 +70,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   }
   const thisUrl = useSelector((state: RootState) => state.appState.urlPage);
   const repoCollection = new CollectionsRepo();
-  const { updateQueryInput, updateQueryOutput } =
-    useCollections(repoCollection);
+  const { updateQueryInput } = useCollections(repoCollection);
   const navigate = useNavigate();
   const handlerOnChange = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,7 +97,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       primaryKeyValue: "",
     };
     updateQueryInput(queryInputFormObject);
-    // paginate(1);
+    // Paginate(1);
     navigate(thisUrl);
   };
 
