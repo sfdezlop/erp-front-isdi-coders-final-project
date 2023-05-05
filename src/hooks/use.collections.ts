@@ -22,22 +22,17 @@ export function useCollections(repo: CollectionsRepo) {
   ) => {
     try {
       await repo.read(queryInputFormObject, tokenToUse);
-      await dispatch(queryInput(queryInputFormObject));
+      dispatch(queryInput(queryInputFormObject));
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, appState.urlPage);
     }
   };
 
-  const updateQueryOutput = async (
+  const updateQueryOutput = (
     queryOutputData: QueryOutputCollectionStructure
   ) => {
-    try {
-      await dispatch(queryOutput(queryOutputData));
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, appState.urlPage);
-    }
+    dispatch(queryOutput(queryOutputData));
   };
 
   return {

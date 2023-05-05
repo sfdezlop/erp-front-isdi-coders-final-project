@@ -97,7 +97,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       primaryKeyValue: "",
     };
     updateQueryInput(queryInputFormObject);
-    // Paginate(1);
     navigate(thisUrl);
   };
 

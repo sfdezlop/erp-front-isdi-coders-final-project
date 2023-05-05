@@ -6,13 +6,9 @@ import { Provider } from "react-redux";
 
 import { CollectionsRepo } from "../services/repositories/collection.repo";
 import { useCollections } from "./use.collections";
-import {
-  CollectionStateStructure,
-  initialState as initialCollectionState,
-} from "../reducers/collection.slice";
-import { UserServerResponseType } from "../models/serverresponse.model";
+import { CollectionStateStructure } from "../reducers/collection.slice";
+
 import { store } from "../store/store";
-import { CollectionStructure } from "../models/collections.model";
 
 describe("Given the useCollection hook", () => {
   let mockPayload: CollectionStateStructure;

@@ -39,10 +39,8 @@ export default function MovementsPage() {
   const navigate = useNavigate();
 
   const handlerClick = (event: SyntheticEvent) => {
-    const valueToDelete =
-      event.currentTarget.ariaLabel === null
-        ? ""
-        : event.currentTarget.ariaLabel;
+    const valueToDelete = event.currentTarget.ariaLabel ?? "";
+    //Nullish coalescing operator
     const keyToDelete = "_id";
     // When the key is id, its necessary to indicate _id in the fetch action
 

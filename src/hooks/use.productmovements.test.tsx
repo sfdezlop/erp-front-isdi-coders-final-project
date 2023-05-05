@@ -18,7 +18,7 @@ describe("Given the useProducts hook", () => {
   let mockPayload: ProductMovementStateStructure;
   let mockRepo: ProductMovementsRepo;
   let mockResponse: ProductMovementServerResponseType;
-  let mockStockResponse: StockServerResponseType;
+
   let mockProductMovement: Partial<ProductMovementStructure>;
 
   beforeEach(async () => {

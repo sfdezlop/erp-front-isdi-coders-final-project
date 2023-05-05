@@ -32,10 +32,7 @@ export default function ProductsPage() {
   const navigate = useNavigate();
 
   const handlerClick = (event: SyntheticEvent) => {
-    const valueToDetail =
-      event.currentTarget.ariaLabel === null
-        ? ""
-        : event.currentTarget.ariaLabel;
+    const valueToDetail = event.currentTarget.ariaLabel ?? "";
     const keyToDetail = "sku";
 
     detailCredentials(keyToDetail + "/" + valueToDetail);
