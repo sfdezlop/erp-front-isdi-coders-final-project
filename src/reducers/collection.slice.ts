@@ -13,9 +13,10 @@ export type CollectionStateStructure = {
 
 export const initialState: CollectionStateStructure = {
   queryFields: {
-    filterableFields: ["brand", "userCreator"],
-    searchableFields: ["brand", "sku"],
-    orderableFields: ["brand", "sku"],
+    collections: ["products", "productmovements"],
+    filterableFields: ["products_-_brand", "products_-_userCreator"],
+    searchableFields: ["products_-_brand", "products_-_sku"],
+    orderableFields: ["products_-_brand", "products_-_sku"],
   },
   queryInput: {
     filterCollection: "products",
@@ -32,7 +33,7 @@ export const initialState: CollectionStateStructure = {
     primaryKeyValue: "0000",
   },
   queryOutput: {
-    filterValueOptionsShown: ["Flores de Bach", "Yogi Tea", "Compra"],
+    filterValueOptionsShown: ["Flores de Bach", "Yogi Tea"],
     pageShown: 1,
     queriedCount: 1,
     unQueriedCount: 1,

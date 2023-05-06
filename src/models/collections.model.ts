@@ -1,4 +1,4 @@
-export const collections = ["products", "productmovements", "users"];
+// export const collections = ["products", "productmovements", "users"];
 
 export type CollectionNameStructure =
   | "appcollectionfields"
@@ -43,7 +43,7 @@ export const productStructureSample: ProductStructure = {
   costPerUnit: 0,
   pricePerUnit: 0,
 };
-const productStructureFields = Object.keys(productStructureSample);
+// const productStructureFields = Object.keys(productStructureSample);
 export type ProductMovementStructure = {
   id: string;
   productSku: string;
@@ -69,9 +69,9 @@ export const productMovementStructureSample: ProductMovementStructure = {
   costPerUnit: 0,
   pricePerUnit: 0,
 };
-const productMovementStructureFields = Object.keys(
-  productMovementStructureSample
-);
+// const productMovementStructureFields = Object.keys(
+//   productMovementStructureSample
+// );
 export type UserStructure = {
   id: string;
   email: string;
@@ -94,24 +94,24 @@ export const userStructureSample: UserStructure = {
   lastLogging: "Last logging",
 };
 
-const userStructureFields = Object.keys(userStructureSample);
+// const userStructureFields = Object.keys(userStructureSample);
 
-const collectionFieldsCreator = () => {
-  let collectionFields = [{ collection: "", field: "" }];
-  collectionFields.shift();
-  productStructureFields.forEach((element) =>
-    collectionFields.push({ collection: "products", field: element })
-  );
-  productMovementStructureFields.forEach((element) =>
-    collectionFields.push({ collection: "productmovements", field: element })
-  );
-  userStructureFields.forEach((element) =>
-    collectionFields.push({ collection: "users", field: element })
-  );
-  return collectionFields;
-};
+// const collectionFieldsCreator = () => {
+//   let collectionFields = [{ collection: "", field: "" }];
+//   collectionFields.shift();
+//   productStructureFields.forEach((element) =>
+//     collectionFields.push({ collection: "products", field: element })
+//   );
+//   productMovementStructureFields.forEach((element) =>
+//     collectionFields.push({ collection: "productmovements", field: element })
+//   );
+//   userStructureFields.forEach((element) =>
+//     collectionFields.push({ collection: "users", field: element })
+//   );
+//   return collectionFields;
+// };
 
-export const collectionFields = collectionFieldsCreator();
+// export const collectionFields = collectionFieldsCreator();
 
 export type CollectionStructure = ProductStructure &
   ProductMovementStructure &
@@ -120,6 +120,7 @@ export type CollectionStructure = ProductStructure &
 // collectionState Types:
 
 export type QueryFieldsCollectionStructure = {
+  collections: string[];
   filterableFields: string[];
   searchableFields: string[];
   orderableFields: string[];

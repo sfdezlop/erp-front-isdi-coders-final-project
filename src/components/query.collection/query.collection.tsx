@@ -3,13 +3,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import "./query.collection.css";
-import {
-  QueryInputCollectionStructure,
-  collectionFields,
-  collections,
-} from "../../models/collections.model";
+import { QueryInputCollectionStructure } from "../../models/collections.model";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
+import { render } from "react-dom";
 
 export type QueryCollectionProps = {
   collectionName: string;
@@ -18,6 +15,35 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
+
+  const collections = collectionState.queryFields.collections;
+  const collectionFilterableFields =
+    collectionState.queryFields.filterableFields
+      .filter(
+        (item) =>
+          item.split("_-_")[0] === collectionState.queryInput.filterCollection
+      )
+      .sort()
+
+      .map((item) => item.split("_-_")[1]);
+  const collectionSearchableFields =
+    collectionState.queryFields.searchableFields
+      .filter(
+        (item) =>
+          item.split("_-_")[0] === collectionState.queryInput.filterCollection
+      )
+      .sort()
+
+      .map((item) => item.split("_-_")[1]);
+
+  const collectionOrderableFields = collectionState.queryFields.orderableFields
+    .filter(
+      (item) =>
+        item.split("_-_")[0] === collectionState.queryInput.filterCollection
+    )
+    .sort()
+
+    .map((item) => item.split("_-_")[1]);
 
   const searchTypeOptions = [
     "Begins with",
@@ -35,17 +61,11 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     filterValueOptionsShown.sort();
 
   const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
-  const collectionFieldsToFilterBy = collectionFields.filter(
-    (item) => item.collection === collectionState.queryInput.filterCollection
-  );
 
-  const collectionFieldsToSearchBy = collectionFields.filter(
-    (item) => item.collection === collectionState.queryInput.filterCollection
-  );
+  // const collectionFieldsToSearchBy = collectionFields.filter(
+  //   (item) => item.collection === collectionState.queryInput.filterCollection
+  // );
 
-  const collectionFieldsToOrderBy = collectionFields.filter(
-    (item) => item.collection === collectionState.queryInput.filterCollection
-  );
   const maximumPages =
     collectionState.queryInput.queryRecordsPerSet === undefined
       ? 1
@@ -104,8 +124,9 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   };
 
   useEffect(() => {
+    updateQueryFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collectionState]);
+  }, [collectionState.queryInput, thisUrl]);
 
   return (
     <>
@@ -115,18 +136,21 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
             className="queryCollection__formContainer"
             onChange={handlerOnChange}
           >
+            {/* <form> */}
             <label className="queryCollection__label">
               {"Data collection "}
               <select
                 name="collection"
                 defaultValue={collectionState.queryInput.filterCollection}
+                onChange={() => {}}
               >
                 {collectionState.queryInput.filterCollection}
                 {collections.map((item) => (
-                  <option key={item}>{item}</option>
+                  <option key={item}>{item} </option>
                 ))}
               </select>
             </label>
+            {/* </form> */}
             <label className="queryCollection__label">
               {"Filter field "}
               <select
@@ -134,10 +158,8 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                 defaultValue={collectionState.queryInput.filterValue}
               >
                 {collectionState.queryInput.filterValue}
-                {collectionFieldsToFilterBy.map((item) => (
-                  <option key={"filter_" + item.collection + "_" + item.field}>
-                    {item.field}
-                  </option>
+                {collectionFilterableFields.map((item) => (
+                  <option key={"filter_" + item}>{item}</option>
                 ))}
               </select>
             </label>
@@ -162,10 +184,8 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                 defaultValue={collectionState.queryInput.filterValue}
               >
                 {collectionState.queryInput.filterValue}
-                {collectionFieldsToSearchBy.map((item) => (
-                  <option key={"search_" + item.collection + "_" + item.field}>
-                    {item.field}
-                  </option>
+                {collectionSearchableFields.map((item) => (
+                  <option key={"search_" + item}>{item}</option>
                 ))}
               </select>
             </label>
@@ -193,10 +213,8 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               {"Order by "}
               <select defaultValue={collectionState.queryInput.orderField}>
                 {collectionState.queryInput.orderField}
-                {collectionFieldsToOrderBy.map((item) => (
-                  <option key={"order" + item.collection + "_" + item.field}>
-                    {item.field}
-                  </option>
+                {collectionOrderableFields.map((item) => (
+                  <option key={"order_" + item}>{item}</option>
                 ))}
               </select>
             </label>

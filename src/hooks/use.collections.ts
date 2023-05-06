@@ -29,7 +29,17 @@ export function useCollections(repo: CollectionsRepo) {
 
   const updateQueryFields = async () => {
     try {
-      const data = await repo.read(
+      const dataCollections = await repo.groupBySet(
+        {
+          filterCollection: "appcollectionfields",
+          groupByField: "collectionName",
+        },
+        tokenToUse
+      );
+
+      const dataCollectionsResults = dataCollections.results;
+
+      const dataFields = await repo.read(
         {
           filterCollection: "appcollectionfields",
           filterField: "",
@@ -39,7 +49,7 @@ export function useCollections(repo: CollectionsRepo) {
           searchType: "Contains",
           querySet: 1,
           queryRecordsPerSet: 1000,
-          orderField: "id",
+          orderField: "collectionName",
           orderType: "asc",
           primaryKey: "",
           primaryKeyValue: "",
@@ -47,22 +57,21 @@ export function useCollections(repo: CollectionsRepo) {
         tokenToUse
       );
 
-      const dataResults: AppCollectionField[] = data.results;
-
-      console.log(dataResults);
+      const dataFieldsResults: AppCollectionField[] = dataFields.results;
 
       const queryFieldsData = {
-        filterableFields: dataResults
+        collections: dataCollectionsResults,
+        filterableFields: dataFieldsResults
           .filter((item) => item.filterable === true)
-          .map((item) => item.fieldName),
-        searchableFields: dataResults
+          .map((item) => item.collectionName + "_-_" + item.fieldName),
+        searchableFields: dataFieldsResults
           .filter((item) => item.searchable === true)
-          .map((item) => item.fieldName),
-        orderableFields: dataResults
+          .map((item) => item.collectionName + "_-_" + item.fieldName),
+        orderableFields: dataFieldsResults
           .filter((item) => item.orderable === true)
-          .map((item) => item.fieldName),
+          .map((item) => item.collectionName + "_-_" + item.fieldName),
       };
-      console.log(queryFieldsData);
+
       dispatch(queryFields(queryFieldsData));
     } catch (error) {
       console.error((error as Error).message);
