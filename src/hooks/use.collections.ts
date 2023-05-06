@@ -1,9 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { queryInput, queryOutput } from "../reducers/collection.slice";
+import {
+  queryFields,
+  queryInput,
+  queryOutput,
+} from "../reducers/collection.slice";
 import { useApp } from "./use.app";
 import { CollectionsRepo } from "../services/repositories/collection.repo";
 import {
+  AppCollectionField,
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
@@ -13,12 +18,57 @@ import {
 export function useCollections(repo: CollectionsRepo) {
   const userState = useSelector((state: RootState) => state.userState);
   const appState = useSelector((state: RootState) => state.appState);
+  const collectionState = useSelector(
+    (state: RootState) => state.collectionState
+  );
   const dispatch = useDispatch<AppDispatch>();
   const tokenAtUserState = userState.userLoggedToken;
   const tokenToUse = tokenAtUserState;
 
   const { addError } = useApp();
 
+  const updateQueryFields = async () => {
+    try {
+      const data = await repo.read(
+        {
+          filterCollection: "appcollectionfields",
+          filterField: "",
+          filterValue: "",
+          searchField: "collectionName",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: 1000,
+          orderField: "id",
+          orderType: "asc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        },
+        tokenToUse
+      );
+
+      const dataResults: AppCollectionField[] = data.results;
+
+      console.log(dataResults);
+
+      const queryFieldsData = {
+        filterableFields: dataResults
+          .filter((item) => item.filterable === true)
+          .map((item) => item.fieldName),
+        searchableFields: dataResults
+          .filter((item) => item.searchable === true)
+          .map((item) => item.fieldName),
+        orderableFields: dataResults
+          .filter((item) => item.orderable === true)
+          .map((item) => item.fieldName),
+      };
+      console.log(queryFieldsData);
+      dispatch(queryFields(queryFieldsData));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+    }
+  };
   const updateQueryInput = async (
     queryInputFormObject: QueryInputCollectionStructure
   ) => {
@@ -88,6 +138,7 @@ export function useCollections(repo: CollectionsRepo) {
   };
 
   return {
+    updateQueryFields,
     updateQueryInput,
     updateQueryOutput,
     queryInput,

@@ -1,15 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  QueryFieldsCollectionStructure,
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
 
 export type CollectionStateStructure = {
+  queryFields: QueryFieldsCollectionStructure;
   queryInput: QueryInputCollectionStructure;
   queryOutput: QueryOutputCollectionStructure;
 };
 
 export const initialState: CollectionStateStructure = {
+  queryFields: {
+    filterableFields: ["brand", "userCreator"],
+    searchableFields: ["brand", "sku"],
+    orderableFields: ["brand", "sku"],
+  },
   queryInput: {
     filterCollection: "products",
     filterField: "brand",
@@ -64,6 +71,12 @@ export const collectionSlice = createSlice({
   name: "collection",
   initialState,
   reducers: {
+    queryFields(
+      state: CollectionStateStructure,
+      action: PayloadAction<QueryFieldsCollectionStructure>
+    ) {
+      state.queryFields = action.payload;
+    },
     queryInput(
       state: CollectionStateStructure,
       action: PayloadAction<QueryInputCollectionStructure>
@@ -79,6 +92,6 @@ export const collectionSlice = createSlice({
   },
 });
 
-export const { queryInput, queryOutput } = collectionSlice.actions;
+export const { queryFields, queryInput, queryOutput } = collectionSlice.actions;
 
 export const collectionReducer = collectionSlice.reducer;

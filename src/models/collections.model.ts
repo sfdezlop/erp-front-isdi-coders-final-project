@@ -1,8 +1,22 @@
 export const collections = ["products", "productmovements", "users"];
 
-export type CollectionNameStructure = "products" | "productmovements" | "users";
+export type CollectionNameStructure =
+  | "appcollectionfields"
+  | "products"
+  | "productmovements"
+  | "users";
 
 //Collection documents types and samples
+
+export type AppCollectionField = {
+  id: string;
+  collectionName: string;
+  fieldName: string;
+  fieldShortDescription: string;
+  filterable: boolean;
+  searchable: boolean;
+  orderable: boolean;
+};
 
 export type ProductStructure = {
   id: string;
@@ -104,8 +118,15 @@ export type CollectionStructure = ProductStructure &
   UserStructure;
 
 // collectionState Types:
+
+export type QueryFieldsCollectionStructure = {
+  filterableFields: string[];
+  searchableFields: string[];
+  orderableFields: string[];
+};
 export type QueryInputCollectionStructure = {
   filterCollection: CollectionNameStructure;
+
   filterField: string;
   filterValue: string;
   searchField: string;
