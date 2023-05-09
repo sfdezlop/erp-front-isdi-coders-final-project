@@ -4,6 +4,7 @@ import {
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
+import { recordsPerSet } from "../components/query.collection/query.collection";
 
 export type CollectionStateStructure = {
   queryFields: QueryFieldsCollectionStructure;
@@ -21,35 +22,35 @@ export const initialState: CollectionStateStructure = {
   queryInput: {
     filterCollection: "products",
     filterField: "brand",
-    filterValue: "(select all)",
-    searchField: "brand",
+    filterValue: "",
+    searchField: "sku",
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
-    queryRecordsPerSet: 4,
-    orderField: "brand",
+    queryRecordsPerSet: recordsPerSet[0],
+    orderField: "pricePerUnit",
     orderType: "asc",
-    primaryKey: "sku",
+    primaryKey: "",
     primaryKeyValue: "",
   },
   queryOutput: {
-    filterValueOptionsShown: ["Flores de Bach", "Yogi Tea"],
+    filterValueOptionsShown: ["Flores de Bach"],
     pageShown: 1,
     queriedCount: 1,
     unQueriedCount: 1,
     gallery: [
-      {
-        id: "id",
-        sku: "Sku",
-        shortDescription: "Short Description",
-        longDescription: "Long Description",
-        ean: "EAN",
-        brand: "Brand",
-        image: "Image",
-        userCreatorEmail: "User Creator Email",
-        costPerUnit: 0,
-        pricePerUnit: 0,
-      },
+      // {
+      //   id: "id",
+      //   sku: "Sku",
+      //   shortDescription: "Short Description",
+      //   longDescription: "Long Description",
+      //   ean: "EAN",
+      //   brand: "Brand",
+      //   image: "Image",
+      //   userCreatorEmail: "User Creator Email",
+      //   costPerUnit: 0,
+      //   pricePerUnit: 0,
+      // },
     ],
     detail: [
       {

@@ -10,8 +10,8 @@ import { useCollections } from "../../hooks/use.collections";
 export type QueryCollectionProps = {
   collectionName: string;
 };
+export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
 export function QueryCollection({ collectionName }: QueryCollectionProps) {
-  const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
   const changeCollectionQueryInput = useRef({
     filterCollection: "products",
     filterField: "brand",
