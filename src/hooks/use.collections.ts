@@ -79,36 +79,36 @@ export function useCollections(repo: CollectionsRepo) {
     }
   };
   const updateQueryInput = async (
-    queryInputFormObject: QueryInputCollectionStructure
+    queryInputData: QueryInputCollectionStructure
   ) => {
     const groupByQueryForUnQueriedCount: GroupByQueryCollectionStructure = {
-      filterCollection: queryInputFormObject.filterCollection,
-      firstGroupByField: queryInputFormObject.filterField,
-      secondGroupByField: queryInputFormObject.filterField,
-      searchField: queryInputFormObject.filterField,
+      filterCollection: queryInputData.filterCollection,
+      firstGroupByField: queryInputData.filterField,
+      secondGroupByField: queryInputData.filterField,
+      searchField: queryInputData.filterField,
       searchValue: "",
       searchType: "Contains",
       aggregateSumField: "addedFieldForCountingDocuments",
     };
 
     const groupByQueryForQueriedCount: GroupByQueryCollectionStructure = {
-      filterCollection: queryInputFormObject.filterCollection,
-      firstGroupByField: queryInputFormObject.filterField,
-      secondGroupByField: queryInputFormObject.filterField,
-      searchField: queryInputFormObject.searchField,
-      searchValue: queryInputFormObject.searchValue,
-      searchType: queryInputFormObject.searchType,
+      filterCollection: queryInputData.filterCollection,
+      firstGroupByField: queryInputData.filterField,
+      secondGroupByField: queryInputData.filterField,
+      searchField: queryInputData.searchField,
+      searchValue: queryInputData.searchValue,
+      searchType: queryInputData.searchType,
       aggregateSumField: "addedFieldForCountingDocuments",
     };
 
     const groupBySetQueryForFilterValueOptionsShown: GroupBySetQueryCollectionStructure =
       {
-        filterCollection: queryInputFormObject.filterCollection,
-        groupByField: queryInputFormObject.filterField,
+        filterCollection: queryInputData.filterCollection,
+        groupByField: queryInputData.filterField,
       };
 
     try {
-      const gallery = await repo.read(queryInputFormObject, tokenToUse);
+      const gallery = await repo.read(queryInputData, tokenToUse);
       const groupByQueryForQueriedCountServerRespond: {
         results: {
           _id: string;
@@ -123,9 +123,10 @@ export function useCollections(repo: CollectionsRepo) {
           return groupByQueryForQueriedCountServerRespond.results[0].documents;
 
         const groupByFilteredServerRespondResults =
-          groupByQueryForQueriedCountServerRespond.results.filter(
-            (item) =>
-              item._id.split("_-_")[0] === queryInputFormObject.filterValue
+          groupByQueryForQueriedCountServerRespond.results.filter((item) =>
+            queryInputData.filterValue === ""
+              ? item
+              : item._id.split("_-_")[0] === queryInputData.filterValue
           );
         for (let i = 0; i < groupByFilteredServerRespondResults.length; i++) {
           acc = acc + groupByFilteredServerRespondResults[i].documents;
@@ -167,14 +168,14 @@ export function useCollections(repo: CollectionsRepo) {
 
       const queryOutputData: QueryOutputCollectionStructure = {
         filterValueOptionsShown: filterValueOptionsShown.results,
-        pageShown: queryInputFormObject.querySet ?? 1,
+        pageShown: queryInputData.querySet ?? 1,
         queriedCount: queriedCount(),
         unQueriedCount: unQueriedCount(),
         gallery: gallery.results,
         detail: [],
       };
 
-      dispatch(queryInput(queryInputFormObject));
+      dispatch(queryInput(queryInputData));
       dispatch(queryOutput(queryOutputData));
     } catch (error) {
       console.error((error as Error).message);
