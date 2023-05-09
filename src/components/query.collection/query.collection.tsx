@@ -107,6 +107,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
         });
 
       default:
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return (queryInputDefaultObject = {
           filterCollection: "products",
           filterField: "brand",
@@ -225,8 +226,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
 
   useEffect(() => {
     console.log("useEffect");
-
-    // updateQueryFields();
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (
       <form>
         <select>123</select>
@@ -260,6 +259,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     booleanChangeCollectionQueryInput.current
       ? updateQueryInput(copyOfChangeCollectionQueryInput.current)
       : updateQueryInput(queryInputShown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

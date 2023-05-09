@@ -18,9 +18,7 @@ import {
 export function useCollections(repo: CollectionsRepo) {
   const userState = useSelector((state: RootState) => state.userState);
   const appState = useSelector((state: RootState) => state.appState);
-  const collectionState = useSelector(
-    (state: RootState) => state.collectionState
-  );
+
   const dispatch = useDispatch<AppDispatch>();
   const tokenAtUserState = userState.userLoggedToken;
   const tokenToUse = tokenAtUserState;

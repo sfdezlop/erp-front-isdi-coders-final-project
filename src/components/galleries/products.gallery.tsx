@@ -13,18 +13,8 @@ export default function ProductsGallery() {
     (state: RootState) => state.collectionState.queryOutput.gallery
   );
 
-  const filterData = useSelector(
-    (state: RootState) => state.productState.filter
-  );
-
-  const pageNumber = useSelector(
-    (state: RootState) => state.productState.filteredPage
-  );
-
   const repoProduct = new ProductsRepo();
-  const { gallery } = useProducts(repoProduct);
   useEffect(() => {
-    // gallery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
