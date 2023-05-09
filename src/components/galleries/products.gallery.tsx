@@ -88,9 +88,9 @@ export default function ProductsGallery() {
                   >
                     <div>{"Stock (units):"} </div>
                     <div>
-                      {/* <ProductStock
+                      <ProductStock
                         sku={item.sku ? item.sku : ""}
-                      ></ProductStock> */}
+                      ></ProductStock>
                     </div>
                   </div>
                 </div>
