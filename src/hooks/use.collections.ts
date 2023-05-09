@@ -85,7 +85,7 @@ export function useCollections(repo: CollectionsRepo) {
       filterCollection: queryInputFormObject.filterCollection,
       firstGroupByField: queryInputFormObject.filterField,
       secondGroupByField: queryInputFormObject.filterField,
-      searchField: "brand",
+      searchField: queryInputFormObject.filterField,
       searchValue: "",
       searchType: "Contains",
       aggregateSumField: "addedFieldForCountingDocuments",
@@ -109,13 +109,54 @@ export function useCollections(repo: CollectionsRepo) {
 
     try {
       const gallery = await repo.read(queryInputFormObject, tokenToUse);
-      const unQueriedCount: {
-        results: { documents: number; aggregateSumValue: number }[];
-      } = await repo.groupBy(groupByQueryForUnQueriedCount, tokenToUse);
-
-      const queriedCount: {
-        results: { documents: number; aggregateSumValue: number }[];
+      const groupByQueryForQueriedCountServerRespond: {
+        results: {
+          _id: string;
+          documents: number;
+          aggregateSumValue: number;
+        }[];
       } = await repo.groupBy(groupByQueryForQueriedCount, tokenToUse);
+
+      const queriedCount = () => {
+        let acc = 0;
+        if (groupByQueryForQueriedCountServerRespond.results.length === 1)
+          return groupByQueryForQueriedCountServerRespond.results[0].documents;
+
+        const groupByFilteredServerRespondResults =
+          groupByQueryForQueriedCountServerRespond.results.filter(
+            (item) =>
+              item._id.split("_-_")[0] === queryInputFormObject.filterValue
+          );
+        for (let i = 0; i < groupByFilteredServerRespondResults.length; i++) {
+          acc = acc + groupByFilteredServerRespondResults[i].documents;
+        }
+        return acc;
+      };
+
+      const groupByQueryForUnQueriedCountServerRespond: {
+        results: {
+          _id: string;
+          documents: number;
+          aggregateSumValue: number;
+        }[];
+      } = await repo.groupBy(groupByQueryForUnQueriedCount, tokenToUse);
+      const unQueriedCount = () => {
+        let acc = 0;
+        if (groupByQueryForUnQueriedCountServerRespond.results.length === 1)
+          return groupByQueryForUnQueriedCountServerRespond.results[0]
+            .documents;
+
+        for (
+          let i = 0;
+          i < groupByQueryForUnQueriedCountServerRespond.results.length;
+          i++
+        ) {
+          acc =
+            acc +
+            groupByQueryForUnQueriedCountServerRespond.results[i].documents;
+        }
+        return acc;
+      };
 
       const filterValueOptionsShown: {
         results: string[];
@@ -127,11 +168,12 @@ export function useCollections(repo: CollectionsRepo) {
       const queryOutputData: QueryOutputCollectionStructure = {
         filterValueOptionsShown: filterValueOptionsShown.results,
         pageShown: queryInputFormObject.querySet ?? 1,
-        queriedCount: queriedCount.results[0].documents,
-        unQueriedCount: unQueriedCount.results[0].documents,
+        queriedCount: queriedCount(),
+        unQueriedCount: unQueriedCount(),
         gallery: gallery.results,
         detail: [],
       };
+
       dispatch(queryInput(queryInputFormObject));
       dispatch(queryOutput(queryOutputData));
     } catch (error) {

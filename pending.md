@@ -92,6 +92,17 @@
 ### DashboardPage
 
 - Strange behavior when deleting the dependency array of useEffect, even if it is empty. The app loops requesting continuously data to the backend.
+  See https://retool.com/blog/hooks-and-state-102-the-dependency-array-in-useeffect/:
+
+useEffect(() => {
+// This runs after every render creating infinite loops
+});
+
+useEffect(() => {
+// This runs only on mount (when the component appears)
+}, []);
+
+If you do have a dependency array, make sure that inside the useEffect, you’re not setting state variables that are also dependencies. If you are, the effect will run every time those state variables are changed, creating an infinite loop.
 
 ### ProductsPage
 

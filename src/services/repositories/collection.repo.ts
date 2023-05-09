@@ -62,7 +62,9 @@ export class CollectionsRepo {
   async groupBy(
     query: GroupByQueryCollectionStructure,
     token: string
-  ): Promise<{ results: { documents: number; aggregateSumValue: number }[] }> {
+  ): Promise<{
+    results: { _id: string; documents: number; aggregateSumValue: number }[];
+  }> {
     const url = encodeURI(
       this.url +
         "/collections/groupby/&collection=" +

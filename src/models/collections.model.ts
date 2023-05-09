@@ -1,10 +1,10 @@
 // export const collections = ["products", "productmovements", "users"];
 
-export type CollectionNameStructure =
-  | "appcollectionfields"
-  | "products"
-  | "productmovements"
-  | "users";
+// export type CollectionNameStructure =
+//   | "appcollectionfields"
+//   | "products"
+//   | "productmovements"
+//   | "users";
 
 //Collection documents types and samples
 
@@ -126,19 +126,21 @@ export type QueryFieldsCollectionStructure = {
   orderableFields: string[];
 };
 export type QueryInputCollectionStructure = {
-  filterCollection: CollectionNameStructure;
+  filterCollection: string;
 
   filterField: string;
   filterValue: string;
   searchField: string;
   searchValue: string;
-  searchType: "Begins with" | "Contains" | "Ends with" | "Exact match";
+  searchType: string;
+  // "Begins with" | "Contains" | "Ends with" | "Exact match"
   querySet: number;
   queryRecordsPerSet: number;
   orderField: string;
-  orderType: "asc" | "desc";
+  orderType: string;
+  // "asc" | "desc"
   primaryKey: string;
-  primaryKeyValue: string | number;
+  primaryKeyValue: string;
 };
 
 export type QueryOutputCollectionStructure = {
@@ -153,31 +155,34 @@ export type QueryOutputCollectionStructure = {
 //useCollection hook parameter types
 
 export type ReadQueryCollectionStructure = {
-  filterCollection: CollectionNameStructure;
+  filterCollection: string;
   filterField: string;
   filterValue: string;
   searchField: string;
   searchValue: string;
-  searchType: "Begins with" | "Contains" | "Ends with" | "Exact match";
+  searchType: string;
+  // "Begins with" | "Contains" | "Ends with" | "Exact match"
   querySet: number;
   queryRecordsPerSet: number;
   orderField: string;
-  orderType: "asc" | "desc";
+  orderType: string;
+  // "asc" | "desc"
   primaryKey: string;
   primaryKeyValue: string | number;
 };
 
 export type GroupByQueryCollectionStructure = {
-  filterCollection: CollectionNameStructure;
+  filterCollection: string;
   firstGroupByField: string;
   secondGroupByField: string;
   searchField: string;
   searchValue: string;
-  searchType: "Begins with" | "Contains" | "Ends with" | "Exact match";
+  searchType: string;
+  // "Begins with" | "Contains" | "Ends with" | "Exact match"
   aggregateSumField: string;
 };
 
 export type GroupBySetQueryCollectionStructure = {
-  filterCollection: CollectionNameStructure;
+  filterCollection: string;
   groupByField: string;
 };
