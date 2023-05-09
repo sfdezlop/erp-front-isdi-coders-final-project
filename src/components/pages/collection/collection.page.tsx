@@ -20,7 +20,7 @@ export default function CollectionPage() {
       return (
         <>
           <div className="collectionPage">
-            <h2 className="collection__heading">{params}</h2>
+            {/* <h2 className="collection__heading">{params}</h2> */}
             <QueryCollection collectionName="products"></QueryCollection>
             <ProductsGallery></ProductsGallery>
           </div>
@@ -31,7 +31,7 @@ export default function CollectionPage() {
       return (
         <>
           <div className="collectionPage">
-            <h2 className="collection__heading">{params}</h2>
+            {/* <h2 className="collection__heading">{params}</h2> */}
             <QueryCollection collectionName="productmovements"></QueryCollection>
           </div>
         </>

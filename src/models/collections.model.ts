@@ -127,7 +127,6 @@ export type QueryFieldsCollectionStructure = {
 };
 export type QueryInputCollectionStructure = {
   filterCollection: string;
-
   filterField: string;
   filterValue: string;
   searchField: string;
