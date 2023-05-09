@@ -1,4 +1,4 @@
-import { UserStructure } from "../../models/user.model";
+import { UserStructure } from "../../models/collections.model";
 import { UserServerResponseType } from "../../models/serverresponse.model";
 import { url_def } from "../../config";
 

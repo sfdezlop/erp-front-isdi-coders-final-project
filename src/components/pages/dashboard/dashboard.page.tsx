@@ -27,10 +27,10 @@ export default function DashboardPage() {
     useProductMovements(repoProductMovement);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     dashboardProductMovements();
-  });
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  //Warning: If dependency array is deleted, even if it is empty, the component loops
   return (
     <>
       <div className="dashboardPage">

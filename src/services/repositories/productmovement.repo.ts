@@ -3,7 +3,7 @@ import {
   StockServerResponseType,
 } from "../../models/serverresponse.model";
 import { url_def } from "../../config";
-import { ProductMovementStructure } from "../../models/productmovement.model";
+import { ProductMovementStructure } from "../../models/collections.model";
 
 type Filter = {
   filterField?: string;
@@ -269,6 +269,29 @@ export class ProductMovementsRepo {
       );
 
     const data = await resp.json();
+
+    return data;
+  }
+
+  async microserviceStock(
+    token: string,
+    extraUrl: string
+  ): Promise<StockServerResponseType> {
+    const url = this.url + extraUrl;
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading stock: ${resp.status} ${resp.statusText}`
+      );
+
+    const data: Promise<StockServerResponseType> = await resp.json();
 
     return data;
   }

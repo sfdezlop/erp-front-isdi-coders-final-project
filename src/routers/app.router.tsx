@@ -7,6 +7,7 @@ import MovementsPage from "../components/pages/movements/movements.page";
 import ProductsPage from "../components/pages/products/products.page";
 import { ErrorLog } from "../components/errorlog/errorlog";
 import DashboardPage from "../components/pages/dashboard/dashboard.page";
+import CollectionPage from "../components/pages/collection/collection.page";
 
 // import { lazy, Suspense } from "react";
 // const HomePage = lazy(() => import("../pages/home/home.page"));
@@ -24,7 +25,6 @@ export function AppRouter({ options }: AppRouterProps) {
     // <Suspense>
     <Routes>
       <Route path={"*"} element={<Login></Login>}></Route>
-
       <Route path={options[0].path} element={<HomePage></HomePage>}></Route>
       <Route
         path={options[1].path}
@@ -42,7 +42,11 @@ export function AppRouter({ options }: AppRouterProps) {
         path="/products/details/:productSEMDetails"
         element={<DetailPage></DetailPage>}
       ></Route>
-      <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>
+      <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>{" "}
+      <Route
+        path="/collections/:filter"
+        element={<CollectionPage></CollectionPage>}
+      ></Route>
     </Routes>
     // </Suspense>
   );

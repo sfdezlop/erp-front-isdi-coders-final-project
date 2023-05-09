@@ -1,4 +1,11 @@
+.loader__container {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  align-items: center;
+  padding: 5vh;
+}
 .loader__image {
-  width: 1000px;
-  background-color: blue;
+  width: 100px;
+  background-color: white;
 }

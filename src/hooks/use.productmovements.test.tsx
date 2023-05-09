@@ -7,18 +7,15 @@ import { Provider } from "react-redux";
 import { ProductMovementsRepo } from "../services/repositories/productmovement.repo";
 import { useProductMovements } from "./use.productmovements";
 import { ProductMovementStateStructure } from "../reducers/productmovement.slice";
-import {
-  ProductMovementServerResponseType,
-  StockServerResponseType,
-} from "../models/serverresponse.model";
+import { ProductMovementServerResponseType } from "../models/serverresponse.model";
 import { store } from "../store/store";
-import { ProductMovementStructure } from "../models/productmovement.model";
+import { ProductMovementStructure } from "../models/collections.model";
 
 describe("Given the useProducts hook", () => {
   let mockPayload: ProductMovementStateStructure;
   let mockRepo: ProductMovementsRepo;
   let mockResponse: ProductMovementServerResponseType;
-  let mockStockResponse: StockServerResponseType;
+
   let mockProductMovement: Partial<ProductMovementStructure>;
 
   beforeEach(async () => {
@@ -58,10 +55,6 @@ describe("Given the useProducts hook", () => {
       results: [],
     } as unknown as ProductMovementServerResponseType;
 
-    mockStockResponse = {
-      results: [{ _id: "mockId", stock: 77 }],
-    } as unknown as StockServerResponseType;
-
     mockProductMovement = {
       id: "mockId",
     };
@@ -76,7 +69,6 @@ describe("Given the useProducts hook", () => {
         create,
         deleteByKey,
         deleteById,
-        stock,
       } = useProductMovements(mockRepo);
 
       return (
@@ -101,7 +93,6 @@ describe("Given the useProducts hook", () => {
             deleteByKey
           </button>
           <button onClick={() => deleteById("mockId")}>deleteById</button>
-          <button onClick={() => stock()}>stock</button>
         </>
       );
     };
@@ -118,9 +109,9 @@ describe("Given the useProducts hook", () => {
   });
 
   describe("When the TestComponent is rendered", () => {
-    test("Then the 7 buttons should be in the document", async () => {
+    test("Then the 8 buttons should be in the document", async () => {
       const elements = await screen.findAllByRole("button");
-      expect(elements.length).toEqual(9);
+      expect(elements.length).toEqual(8);
     });
   });
 
@@ -214,17 +205,6 @@ describe("Given the useProducts hook", () => {
       await act(async () => userEvent.click(elements[7]));
 
       expect(mockRepo.deleteById).toHaveBeenCalled();
-    });
-  });
-
-  describe("When the stock button of TestComponent is clicked", () => {
-    test("Then the stock method of the repo should been called", async () => {
-      const elements = await screen.findAllByRole("button");
-      (mockRepo.stock as jest.Mock).mockResolvedValueOnce(mockStockResponse);
-
-      await act(async () => userEvent.click(elements[8]));
-
-      expect(mockRepo.stock).toHaveBeenCalled();
     });
   });
 });

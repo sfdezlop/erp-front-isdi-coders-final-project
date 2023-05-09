@@ -1,0 +1,26 @@
+.filterCollection__container {
+  padding-left: 0.5vh;
+  background-color: rgb(118, 116, 116);
+}
+
+.queryCollection__formContainer,
+.queryCollection__paginationContainer {
+  background-color: rgb(118, 116, 116);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  gap: 1vh;
+  align-items: top;
+  justify-items: center;
+  font-size: 1.8vh;
+  color: white;
+  padding: 0.2vh;
+}
+
+.queryCollection__label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.2vh;
+}

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { menuOptions, MenuOption } from "../components/menu/menu";
-import { UserStructure } from "../models/user.model";
+import { UserStructure } from "../models/collections.model";
+import { asyncLoadUsersGallery } from "./user.thunks";
 
 export type UserStateStructure = {
   userLoggedToken: string;
@@ -37,6 +38,20 @@ export const userSlice = createSlice({
     logoutToken(state: UserStateStructure, action: PayloadAction<string>) {
       state.userLoggedToken = action.payload;
     },
+  },
+
+  extraReducers(builder) {
+    builder.addCase(asyncLoadUsersGallery.pending, (state) => {
+      //To change state variables in async processes: state.loadingUsersStatus = "loading";
+    });
+    builder.addCase(asyncLoadUsersGallery.fulfilled, (state, action) => {
+      state.usersGallery = action.payload.results[2];
+
+      //To change state variables in async processes: state.loadingUsersStatus = "idle";
+    });
+    builder.addCase(asyncLoadUsersGallery.rejected, (state) => {
+      //To change state variables in async processes: state.loadingUsersStatus = "error";
+    });
   },
 });
 

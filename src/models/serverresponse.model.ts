@@ -7,11 +7,11 @@ export type ProductMovementServerResponseType = {
 };
 
 export type UserServerResponseType = {
-  results: [];
+  results: [string, object, []];
 };
 
 export type StockServerResponseType = {
-  results: { _id: string; stock: number }[];
+  results: number[];
 };
 
 export type StoreLogServerResponseType = {

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductStructure } from "../models/product.model";
+import { ProductStructure } from "../models/collections.model";
+import { asyncLoadProductsGallery } from "./product.thunks";
 
 export type ProductStateStructure = {
   filteredGallery: ProductStructure[];
@@ -88,6 +89,20 @@ export const productSlice = createSlice({
     ) {
       state.detail = action.payload;
     },
+  },
+
+  extraReducers(builder) {
+    builder.addCase(asyncLoadProductsGallery.pending, (state) => {
+      //To change state variables in async processes: state.loadingUsersStatus = "loading";
+    });
+    builder.addCase(asyncLoadProductsGallery.fulfilled, (state, action) => {
+      state.filteredGallery = action.payload.results;
+
+      //To change state variables in async processes: state.loadingUsersStatus = "idle";
+    });
+    builder.addCase(asyncLoadProductsGallery.rejected, (state) => {
+      //To change state variables in async processes: state.loadingUsersStatus = "error";
+    });
   },
 });
 

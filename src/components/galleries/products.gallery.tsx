@@ -1,17 +1,16 @@
-import "./products.page.css";
+import "./products.gallery.css";
 import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useProducts } from "../../../hooks/use.products";
-import { ProductStructure } from "../../../models/collections.model";
-import { ProductsRepo } from "../../../services/repositories/product.repo";
-import { RootState } from "../../../store/store";
+import { useProducts } from "../../hooks/use.products";
+import { ProductStructure } from "../../models/collections.model";
+import { ProductsRepo } from "../../services/repositories/product.repo";
+import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
-import { FilterProducts } from "../../filter.products/filter.products";
-import { ProductStock } from "../../microservices/product.stock/product.stock";
+import { ProductStock } from "../microservices/product.stock/product.stock";
 
-export default function ProductsPage() {
+export default function ProductsGallery() {
   const galleryArray = useSelector(
-    (state: RootState) => state.productState.filteredGallery
+    (state: RootState) => state.collectionState.queryOutput.gallery
   );
 
   const filterData = useSelector(
@@ -25,8 +24,9 @@ export default function ProductsPage() {
   const repoProduct = new ProductsRepo();
   const { gallery } = useProducts(repoProduct);
   useEffect(() => {
-    gallery(); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterData, pageNumber]);
+    // gallery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { detailCredentials } = useProducts(repoProduct);
   const navigate = useNavigate();
@@ -42,16 +42,15 @@ export default function ProductsPage() {
 
   return (
     <>
-      <div className="productsPage">
-        <h2 className="productsPage__heading">Products</h2>
-        <FilterProducts></FilterProducts>
-        <div className="productsPage__container">
-          <ul className="productsPage__list">
+      <div className="productsGallery">
+        <h2 className="productsGallery__heading">Products</h2>
+        <div className="productsGallery__container">
+          <ul className="productsGallery__list">
             {galleryArray.map((item: Partial<ProductStructure>) => (
-              <li className="productsPageCard" key={"li" + item.id}>
-                <div className="productsPageCard__imageContainer">
+              <li className="productsGalleryCard" key={"li" + item.id}>
+                <div className="productsGalleryCard__imageContainer">
                   <img
-                    className="productsPageCard__image"
+                    className="productsGalleryCard__image"
                     src={item.image}
                     alt={`${item.shortDescription} card`}
                     aria-label={item.sku}
@@ -60,18 +59,18 @@ export default function ProductsPage() {
                   ></img>
                 </div>
                 <div
-                  className="productsPageCard__shortDescription"
+                  className="productsGalleryCard__shortDescription"
                   key={"img" + item.id}
                 >
                   {item.shortDescription}
                 </div>
 
-                <div className="productsPageCard__details">
+                <div className="productsGalleryCard__details">
                   <div>Brand: {item.brand}</div>
-                  <div className="productsPageCard__skuContainer">
+                  <div className="productsGalleryCard__skuContainer">
                     <p>SKU: </p>
                     <p
-                      className="productsPageCard__sku"
+                      className="productsGalleryCard__sku"
                       aria-label={item.sku}
                       onClick={handlerClick}
                       title="click to see details"
@@ -84,14 +83,14 @@ export default function ProductsPage() {
                   <div>Cost (€): {item.costPerUnit}</div>
                   <div>Price (€): {item.pricePerUnit}</div>
                   <div
-                    className="productsPageCard__stockContainer"
+                    className="productsGalleryCard__stockContainer"
                     title="click to see details"
                   >
                     <div>{"Stock (units):"} </div>
                     <div>
-                      <ProductStock
+                      {/* <ProductStock
                         sku={item.sku ? item.sku : ""}
-                      ></ProductStock>
+                      ></ProductStock> */}
                     </div>
                   </div>
                 </div>

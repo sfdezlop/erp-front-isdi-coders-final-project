@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../../hooks/use.users";
-import { UserStructure } from "../../models/user.model";
+import { UserStructure } from "../../models/collections.model";
 import { UsersRepo } from "../../services/repositories/user.repo";
 import "./login.css";
 import { initialState as initialUserState } from "../../reducers/user.slice";
@@ -14,11 +14,13 @@ export function Login() {
   const { userLogin, userLoginWithToken } = useUsers(repoUser);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (localStorage.tokenERP !== initialUserState.userLoggedToken) {
       userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
-    }
-  });
+      navigate("/home");
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //The test loops when the deps array is removed, even if it is void
 
   const handlerSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -72,11 +74,6 @@ export function Login() {
         <button type="submit" className="login__button">
           Log In
         </button>
-        {/* <div>
-          <Link to="/register" className="login__register">
-            Forgot your password?
-          </Link>
-        </div> */}
       </form>
     </div>
   );

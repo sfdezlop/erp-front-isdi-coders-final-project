@@ -1,9 +1,9 @@
-import { ProductStructure } from "../../models/product.model";
+import { ProductStructure } from "../../models/collections.model";
 
 import { ProductServerResponseType } from "../../models/serverresponse.model";
 import { url_def } from "../../config";
 
-type Filter = {
+export type Filter = {
   filterField?: string;
   filterValue?: string;
   filterSet?: number;
@@ -231,7 +231,7 @@ export class ProductsRepo {
   async microserviceQueryByKeyValue(
     token: string,
     urlExtraPathId: string
-  ): Promise<string> {
+  ): Promise<string[]> {
     const url = this.url + "/" + urlExtraPathId;
 
     const resp = await fetch(url, {
@@ -245,8 +245,8 @@ export class ProductsRepo {
         `Error http reading product detail by key value: ${resp.status} ${resp.statusText}`
       );
 
-    const data = await resp.json();
+    const data: ProductServerResponseType = await resp.json();
 
-    return data.results as string;
+    return data.results;
   }
 }

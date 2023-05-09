@@ -8,18 +8,20 @@ import {
   loadFilteredCount,
   loadAnalytics,
   loadUnfilteredCount,
-  loadStock,
 } from "../reducers/productmovement.slice";
 
 import { ProductMovementsRepo } from "../services/repositories/productmovement.repo";
 import { useApp } from "./use.app";
-import { ProductMovementStructure } from "../models/productmovement.model";
+import { ProductMovementStructure } from "../models/collections.model";
 
 export function useProductMovements(repo: ProductMovementsRepo) {
   const productMovementStateData = useSelector(
     (state: RootState) => state.productMovementState
   );
   const userStateData = useSelector((state: RootState) => state.userState);
+  const actualUrlPage = useSelector(
+    (state: RootState) => state.appState.urlPage
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   const tokenAtUserState = userStateData.userLoggedToken;
@@ -59,7 +61,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await dispatch(loadFilterOptions(serverGroupByFieldResponse.results));
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
+      addError(error as Error, actualUrlPage);
     }
   };
 
@@ -68,7 +70,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await dispatch(loadFilter(filter));
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
+      addError(error as Error, actualUrlPage);
     }
   };
 
@@ -77,7 +79,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await dispatch(loadFilteredPage(page));
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
+      addError(error as Error, actualUrlPage);
     }
   };
 
@@ -93,7 +95,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await dispatch(loadUnfilteredCount(serverCountResponse.results[0]));
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/dashboard");
+      addError(error as Error, actualUrlPage);
     }
   };
 
@@ -101,9 +103,10 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     try {
       const result = await repo.stockBySku(tokenToUse, sku);
 
-      return result.results[0].stock;
+      return result.results[0];
     } catch (error) {
       console.error((error as Error).message);
+      addError(error as Error, actualUrlPage);
       return 0;
       //To guard the correct functionality or ProductStock component, it always return a number, even if the ProductStock component always render a 0 when the promise is not fulfilled
     }
@@ -116,6 +119,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await repo.create(tokenToUse, newProductMovement);
     } catch (error) {
       console.error((error as Error).message);
+      addError(error as Error, actualUrlPage);
     }
   };
 
@@ -124,7 +128,7 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await repo.deleteByKey(tokenToUse, query.key, query.value);
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
+      addError(error as Error, actualUrlPage);
     }
   };
   const deleteById = async (id: string) => {
@@ -132,17 +136,18 @@ export function useProductMovements(repo: ProductMovementsRepo) {
       await repo.deleteById(tokenToUse, id);
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/productmovements");
+      addError(error as Error, actualUrlPage);
     }
   };
 
-  const stock = async () => {
+  const microserviceStock = async (extraUrl: string) => {
     try {
-      const serverStockResponse = await repo.stock(tokenToUse);
-      await dispatch(loadStock(serverStockResponse));
+      const result = await repo.microserviceStock(tokenToUse, extraUrl);
+      return result;
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, "/products");
+      addError(error as Error, actualUrlPage);
+      return { results: [{ stock: 0 }] };
     }
   };
 
@@ -158,6 +163,6 @@ export function useProductMovements(repo: ProductMovementsRepo) {
     create,
     deleteByKey,
     deleteById,
-    stock,
+    microserviceStock,
   };
 }

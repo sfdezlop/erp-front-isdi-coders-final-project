@@ -5,7 +5,7 @@ export function Loader() {
     <div className="loader__container">
       <p>Loading...</p>
       <img
-        src="erp-circle-background-blue.png"
+        src="https://www.mcph.es/code/erp/logos/erp-circle-background-blue.png"
         alt="loader"
         className="loader__image"
       />

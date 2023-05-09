@@ -11,7 +11,7 @@ import {
   loadFilteredPage,
   loadUnFilteredCount,
 } from "../reducers/product.slice";
-import { ProductStructure } from "../models/product.model";
+import { ProductStructure } from "../models/collections.model";
 import { useApp } from "./use.app";
 import { ProductServerResponseType } from "../models/serverresponse.model";
 
@@ -107,7 +107,7 @@ export function useProducts(repo: ProductsRepo) {
       return result;
     } catch (error) {
       console.error((error as Error).message);
-      return "Info not found";
+      return ["Info not found"];
       //To guard the correct functionality or ProductKeValue microservice, it always return a string
     }
   };
