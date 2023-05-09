@@ -1,6 +1,5 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import "./query.collection.css";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
@@ -27,12 +26,8 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     primaryKeyValue: "",
   });
 
-  const [localChangeCollection, setLocalChangeCollection] = useState(false);
+  // const [localChangeCollection, setLocalChangeCollection] = useState(false);
   const booleanChangeCollectionQueryInput = useRef(false);
-
-  const repoCollection = new CollectionsRepo();
-  const { updateQueryFields, updateQueryInput } =
-    useCollections(repoCollection);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
@@ -165,26 +160,25 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     filterValueOptionsShown.sort();
 
   const maximumPages =
-    localRecordsPerSet === undefined
-      ? 1
-      : Math.floor(
-          collectionState.queryOutput.queriedCount / Number(localRecordsPerSet)
-        ) <
-        collectionState.queryOutput.queriedCount / Number(localRecordsPerSet)
+    Math.floor(
+      collectionState.queryOutput.queriedCount / localRecordsPerSet
+    ) ===
+    collectionState.queryOutput.queriedCount / localRecordsPerSet
       ? Math.floor(
-          collectionState.queryOutput.queriedCount / Number(localRecordsPerSet)
+          collectionState.queryOutput.queriedCount / localRecordsPerSet
         )
       : Math.floor(
-          collectionState.queryOutput.queriedCount / Number(localRecordsPerSet)
+          collectionState.queryOutput.queriedCount / localRecordsPerSet
         ) + 1;
 
   const pagesArray: number[] = [1];
-  for (let i = 2; i <= maximumPages + 1; i++) {
+  for (let i = 2; i <= maximumPages; i++) {
     pagesArray.push(i);
   }
-  const thisUrl = useSelector((state: RootState) => state.appState.urlPage);
 
-  const navigate = useNavigate();
+  const repoCollection = new CollectionsRepo();
+  const { updateQueryFields, updateQueryInput } =
+    useCollections(repoCollection);
   const handlerOnChange = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const queryForm = event.currentTarget;
@@ -213,31 +207,26 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       primaryKeyValue: "",
     };
 
-    // setQueryInput(queryInputFormObject);
-    // console.table(queryInputFormObject);
+    const copyOfChangeCollectionQueryInput = Object.assign(
+      changeCollectionQueryInput
+    );
 
-    // updateQueryInput(queryInputFormObject);
-
-    const xx = Object.assign(changeCollectionQueryInput);
-
-    // localChangeCollection
-    //   ? updateQueryInput(xx)
-    //   : updateQueryInput(queryInputFormObject);
     console.log(booleanChangeCollectionQueryInput.current);
-    console.table(xx.current);
+    console.table(copyOfChangeCollectionQueryInput.current);
     console.table(queryInputFormObject);
 
     booleanChangeCollectionQueryInput.current
-      ? updateQueryInput(xx.current)
+      ? updateQueryInput(copyOfChangeCollectionQueryInput.current)
       : updateQueryInput(queryInputFormObject);
 
-    setLocalChangeCollection(false);
+    // setLocalChangeCollection(false);
     booleanChangeCollectionQueryInput.current = false;
   };
 
   useEffect(() => {
     console.log("useEffect");
-    updateQueryFields();
+
+    // updateQueryFields();
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (
       <form>
         <select>123</select>
@@ -264,65 +253,38 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       primaryKey: "",
       primaryKeyValue: "",
     };
-    // console.table(queryInputShown);
-    // updateQueryInput(queryInputShown);
+    const copyOfChangeCollectionQueryInput = Object.assign(
+      changeCollectionQueryInput
+    );
+
+    booleanChangeCollectionQueryInput.current
+      ? updateQueryInput(copyOfChangeCollectionQueryInput.current)
+      : updateQueryInput(queryInputShown);
   }, []);
 
   return (
     <>
       <div className="queryCollection__container">
-        <div>
-          {/* <button
-            onClick={() => {
-              const presentForm = (document.querySelector(
-                "form"
-              ) as HTMLFormElement) ?? (
-                <form>
-                  <select>123</select>
-                </form>
-              );
-              const queryInputShown = {
-                filterCollection: (presentForm.elements[0] as HTMLFormElement)
-                  .value,
-                filterField: (presentForm.elements[1] as HTMLFormElement).value,
-                filterValue:
-                  (presentForm.elements[2] as HTMLFormElement).value ===
-                  "(select all)"
-                    ? ""
-                    : (presentForm.elements[2] as HTMLFormElement).value,
-
-                // As agreed with the backend, the '(select all)' values for filters should be requested as ''
-                searchField: (presentForm.elements[3] as HTMLFormElement).value,
-                searchType: (presentForm.elements[4] as HTMLFormElement).value,
-                searchValue: (presentForm.elements[5] as HTMLFormElement).value,
-
-                orderField: (presentForm.elements[6] as HTMLFormElement).value,
-                orderType: (presentForm.elements[7] as HTMLFormElement).value,
-                queryRecordsPerSet: (presentForm.elements[8] as HTMLFormElement)
-                  .value,
-                querySet: (presentForm.elements[9] as HTMLFormElement).value,
-                primaryKey: "",
-                primaryKeyValue: "",
-              };
-              console.table(queryInputShown);
-              updateQueryInput(queryInputShown);
-            }}
-          >
-            Act
-          </button> */}
-        </div>
-        <div>
+        <div className="queryCollection__formContainer">
+          <label className="queryCollection__label">
+            {"Parameter "}
+            <select defaultValue={"Value"}>
+              <option key={"Value Shown"}>{"Value"}</option>
+            </select>
+            <div>{"Local State"}</div>
+            <div>{"Global State"}</div>
+          </label>
           <form
             className="queryCollection__formContainer"
             onChange={handlerOnChange}
           >
             {/* <form> */}
             <label className="queryCollection__label">
-              {"Data collection to query "}
+              {"Collection to query "}
               <select
                 name="collection"
                 onChange={() => {
-                  setLocalChangeCollection(true);
+                  // setLocalChangeCollection(true);
                   booleanChangeCollectionQueryInput.current = true;
                   const presentForm = (document.querySelector(
                     "form"
@@ -331,7 +293,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                       <select>123</select>
                     </form>
                   );
-                  console.log(localChangeCollection);
+                  // console.log(localChangeCollection);
                   console.log(booleanChangeCollectionQueryInput.current);
                   changeCollectionQueryInput.current = queryInputDefault(
                     (presentForm.elements[0] as HTMLFormElement).value
@@ -613,7 +575,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.orderType}</div>
             </label>
             <label className="queryCollection__label">
-              {"Records per page "}
+              {"Docs/page "}
               <select
                 name="queryrecordsperset"
                 onChange={() => {
@@ -676,14 +638,17 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
         <div>
           <div className="queryCollection__paginationContainer">
             <div>
-              {"Collection records #: " +
+              {"# documents at collection: " +
                 collectionState.queryOutput.unQueriedCount}
             </div>
             <div>
-              {"Queried records #: " + collectionState.queryOutput.queriedCount}
+              {"# documents at query: " +
+                collectionState.queryOutput.queriedCount}
             </div>
-            <div>{"Available pages: " + maximumPages + 1}</div>
-            <div>{"Page shown: " + collectionState.queryOutput.pageShown}</div>
+            <div>{"# available pages: " + maximumPages}</div>
+            <div>
+              {"# page shown: " + collectionState.queryOutput.pageShown}
+            </div>
           </div>
         </div>
       </div>

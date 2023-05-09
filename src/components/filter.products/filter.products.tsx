@@ -85,13 +85,19 @@ export function FilterProducts() {
   );
 
   const maximumPages =
-    Math.floor(filteredCountData / filterRecordsPerSetDefault) <
+    Math.floor(filteredCountData / filterRecordsPerSetDefault) ===
     filteredCountData / filterRecordsPerSetDefault
       ? Math.floor(filteredCountData / filterRecordsPerSetDefault)
       : Math.floor(filteredCountData / filterRecordsPerSetDefault) + 1;
 
+  console.log(
+    filteredCountData,
+    filterRecordsPerSetDefault,
+    Math.floor(filteredCountData / filterRecordsPerSetDefault)
+  );
+
   const pagesArray = [];
-  for (let i = 1; i <= maximumPages + 1; i++) {
+  for (let i = 1; i <= maximumPages; i++) {
     pagesArray.push(i);
   }
 
@@ -190,7 +196,7 @@ export function FilterProducts() {
           >
             <p>Unfiltered records: {unFilteredCountData}</p>
             <p>Filtered records: {filteredCountData}</p>
-            <p>Available pages: {maximumPages + 1}</p>
+            <p>Available pages: {maximumPages}</p>
             <p>Page shown: {pageDefault}</p>
             <select className="pagination__pages" defaultValue={pageDefault}>
               {pageDefault}
