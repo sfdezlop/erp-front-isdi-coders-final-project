@@ -10,12 +10,17 @@
   flex-direction: row;
   flex-wrap: wrap;
 
-  gap: 1vh;
+  gap: 0.8vh;
   align-items: top;
   justify-items: center;
   font-size: 1.8vh;
   color: white;
   padding: 0.2vh;
+}
+
+.queryCollection__paginationContainer {
+  gap: 5vh;
+  color: yellow;
 }
 
 .queryCollection__label {

@@ -1,5 +1,6 @@
 .productsGallery {
   height: 84vh;
+  height: 78vh;
 }
 
 .productsGallery__heading {
@@ -12,6 +13,7 @@
 .productsGallery__container {
   background-color: white;
   height: 71vh;
+  height: 67vh;
   overflow-y: scroll;
   padding-top: 1vh;
   padding-bottom: 1vh;
