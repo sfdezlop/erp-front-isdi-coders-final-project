@@ -1,6 +1,5 @@
 import { url_def } from "../../config";
 import {
-  CollectionStructure,
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
