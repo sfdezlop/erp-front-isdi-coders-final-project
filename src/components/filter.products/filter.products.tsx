@@ -90,12 +90,6 @@ export function FilterProducts() {
       ? Math.floor(filteredCountData / filterRecordsPerSetDefault)
       : Math.floor(filteredCountData / filterRecordsPerSetDefault) + 1;
 
-  console.log(
-    filteredCountData,
-    filterRecordsPerSetDefault,
-    Math.floor(filteredCountData / filterRecordsPerSetDefault)
-  );
-
   const pagesArray = [];
   for (let i = 1; i <= maximumPages; i++) {
     pagesArray.push(i);
