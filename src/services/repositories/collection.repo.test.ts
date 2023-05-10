@@ -18,7 +18,8 @@ describe("Given the collection repo", () => {
       });
       const result = await repo.read(
         {} as QueryInputCollectionStructure,
-        "mockToken"
+        "mockToken",
+        "mockControlInfo"
       );
       expect(result).toEqual(mockValue);
     });
@@ -26,7 +27,8 @@ describe("Given the collection repo", () => {
       global.fetch = jest.fn().mockResolvedValue("Error test");
       const result = repo.read(
         {} as QueryInputCollectionStructure,
-        "mockToken"
+        "mockToken",
+        "mockControlInfo"
       );
       await expect(result).rejects.toThrow();
     });

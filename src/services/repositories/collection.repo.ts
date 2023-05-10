@@ -14,7 +14,9 @@ export class CollectionsRepo {
 
   async read(
     query: QueryInputCollectionStructure,
-    token: string
+
+    token: string,
+    controlInfo: string
   ): Promise<{ results: [] }> {
     const url = encodeURI(
       this.url +
@@ -37,7 +39,9 @@ export class CollectionsRepo {
         "&orderfield=" +
         query.orderField +
         "&ordertype=" +
-        query.orderType
+        query.orderType +
+        "&controlinfo=" +
+        controlInfo
     );
 
     const resp = await fetch(url, {
@@ -60,7 +64,8 @@ export class CollectionsRepo {
 
   async groupBy(
     query: GroupByQueryCollectionStructure,
-    token: string
+    token: string,
+    controlInfo: string
   ): Promise<{
     results: { _id: string; documents: number; aggregateSumValue: number }[];
   }> {
@@ -79,7 +84,9 @@ export class CollectionsRepo {
         "&searchtype=" +
         query.searchType +
         "&aggregatesumfield=" +
-        query.aggregateSumField
+        query.aggregateSumField +
+        "&controlinfo=" +
+        controlInfo
     );
 
     const resp = await fetch(url, {
@@ -102,14 +109,17 @@ export class CollectionsRepo {
 
   async groupBySet(
     query: GroupBySetQueryCollectionStructure,
-    token: string
+    token: string,
+    controlInfo: string
   ): Promise<{ results: string[] }> {
     const url = encodeURI(
       this.url +
         "/collections/groupbyset/&collection=" +
         query.filterCollection +
         "&groupbyfield=" +
-        query.groupByField
+        query.groupByField +
+        "&controlinfo=" +
+        controlInfo
     );
 
     const resp = await fetch(url, {

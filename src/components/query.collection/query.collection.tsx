@@ -5,22 +5,55 @@ import "./query.collection.css";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
+import React from "react";
+
+const componentFile = "query.collection.tsx";
+//To control the file and line of code where Hook functions are called
 
 export type QueryCollectionProps = {
   collectionName: string;
 };
 export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
 export function QueryCollection({ collectionName }: QueryCollectionProps) {
+  const formElements = useRef({
+    filterCollection: "products",
+    filterField: "brand",
+    filterValue: "",
+    searchField: "brand",
+    searchValue: "",
+    searchType: "Contains",
+    querySet: 1,
+    queryRecordsPerSet: recordsPerSet[0],
+    orderField: "brand",
+    orderType: "asc",
+    primaryKey: "",
+    primaryKeyValue: "",
+  });
   const changeCollectionQueryInput = useRef({
     filterCollection: "products",
     filterField: "brand",
     filterValue: "",
-    searchField: "sku",
+    searchField: "brand",
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
-    queryRecordsPerSet: recordsPerSet[1],
-    orderField: "sku",
+    queryRecordsPerSet: recordsPerSet[0],
+    orderField: "brand",
+    orderType: "asc",
+    primaryKey: "",
+    primaryKeyValue: "",
+  });
+
+  const changeFilterFieldQueryInput = useRef({
+    filterCollection: "products",
+    filterField: "brand",
+    filterValue: "",
+    searchField: "brand",
+    searchValue: "",
+    searchType: "Contains",
+    querySet: 1,
+    queryRecordsPerSet: recordsPerSet[0],
+    orderField: "brand",
     orderType: "asc",
     primaryKey: "",
     primaryKeyValue: "",
@@ -28,6 +61,8 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
 
   // const [localChangeCollection, setLocalChangeCollection] = useState(false);
   const booleanChangeCollectionQueryInput = useRef(false);
+  const booleanChangeFilterFieldQueryInput = useRef(false);
+  const renderNumber = useRef(1);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
@@ -84,7 +119,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
           searchType: "Contains",
           querySet: 1,
           queryRecordsPerSet: recordsPerSet[0],
-          orderField: "pricePerUnit",
+          orderField: "ean",
           orderType: "asc",
           primaryKey: "",
           primaryKeyValue: "",
@@ -195,10 +230,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       // As agreed with the backend, the '(select all)' values for filters should be requested as ''
       searchField: (queryForm.elements[3] as HTMLFormElement).value,
       searchType: (queryForm.elements[4] as HTMLFormElement).value,
-      searchValue:
-        (queryForm.elements[5] as HTMLFormElement).value === "(select all)"
-          ? ""
-          : (queryForm.elements[5] as HTMLFormElement).value,
+      searchValue: (queryForm.elements[5] as HTMLFormElement).value,
 
       orderField: (queryForm.elements[6] as HTMLFormElement).value,
       orderType: (queryForm.elements[7] as HTMLFormElement).value,
@@ -208,24 +240,88 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       primaryKeyValue: "",
     };
 
+    // formElements.current = queryInputFormObject;
+
     const copyOfChangeCollectionQueryInput = Object.assign(
       changeCollectionQueryInput
     );
 
-    console.log(booleanChangeCollectionQueryInput.current);
-    console.table(copyOfChangeCollectionQueryInput.current);
-    console.table(queryInputFormObject);
+    const copyOfChangeFilterFieldQueryInput = Object.assign(
+      changeFilterFieldQueryInput
+    );
+
+    // console.table(copyOfChangeCollectionQueryInput.current);
+    // console.table(queryInputFormObject);
 
     booleanChangeCollectionQueryInput.current
-      ? updateQueryInput(copyOfChangeCollectionQueryInput.current)
-      : updateQueryInput(queryInputFormObject);
+      ? updateQueryInput(
+          copyOfChangeCollectionQueryInput.current,
+          "componentFile_" + componentFile + "_line_223"
+        )
+      : updateQueryInput(
+          queryInputFormObject,
+          "componentFile_" + componentFile + "_line_227"
+        );
 
     // setLocalChangeCollection(false);
     booleanChangeCollectionQueryInput.current = false;
+
+    booleanChangeFilterFieldQueryInput.current
+      ? updateQueryInput(
+          copyOfChangeFilterFieldQueryInput.current,
+          "componentFile_" + componentFile + "_line_223"
+        )
+      : updateQueryInput(
+          queryInputFormObject,
+          "componentFile_" + componentFile + "_line_227"
+        );
+    booleanChangeFilterFieldQueryInput.current = false;
+  };
+
+  const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const queryForm = event.currentTarget;
+
+    const queryInputEventFormObject: QueryInputCollectionStructure = {
+      filterCollection: (queryForm.elements[0] as HTMLFormElement).value,
+      filterField: (queryForm.elements[1] as HTMLFormElement).value,
+      filterValue:
+        (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
+          ? ""
+          : (queryForm.elements[2] as HTMLFormElement).value,
+
+      // As agreed with the backend, the '(select all)' values for filters should be requested as ''
+      searchField: (queryForm.elements[3] as HTMLFormElement).value,
+      searchType: (queryForm.elements[4] as HTMLFormElement).value,
+      searchValue: (queryForm.elements[5] as HTMLFormElement).value,
+
+      orderField: (queryForm.elements[6] as HTMLFormElement).value,
+      orderType: (queryForm.elements[7] as HTMLFormElement).value,
+      queryRecordsPerSet: (queryForm.elements[8] as HTMLFormElement).value,
+      querySet: (queryForm.elements[9] as HTMLFormElement).value,
+      primaryKey: "",
+      primaryKeyValue: "",
+    };
+
+    formElements.current = queryInputEventFormObject;
+    updateQueryInput(
+      formElements.current,
+      "componentFile_" + componentFile + "_line_306"
+    );
   };
 
   useEffect(() => {
-    console.log("useEffect");
+    if (renderNumber.current === 1) {
+      updateQueryFields("componentFile_" + componentFile + "_line_238");
+      console.log("useEffect at query.collection.tsx");
+      console.log("renderNumber=", renderNumber.current);
+      console.log("updateQueryFields aplicado");
+    } else {
+      console.log("useEffect at query.collection.tsx");
+      console.log("renderNumber=", renderNumber.current);
+      console.log("updateQueryFields no aplicado");
+    }
+    renderNumber.current = renderNumber.current + 1;
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (
       <form>
         <select>123</select>
@@ -255,10 +351,20 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     const copyOfChangeCollectionQueryInput = Object.assign(
       changeCollectionQueryInput
     );
-
+    console.log(
+      "booleanChangeCollectionQueryInput: ",
+      booleanChangeCollectionQueryInput.current
+    );
     booleanChangeCollectionQueryInput.current
-      ? updateQueryInput(copyOfChangeCollectionQueryInput.current)
-      : updateQueryInput(queryInputShown);
+      ? updateQueryInput(
+          copyOfChangeCollectionQueryInput.current,
+          "componentFile_" + componentFile + "_line_282"
+        )
+      : updateQueryInput(
+          queryInputShown,
+          "componentFile_" + componentFile + "_line_286"
+        );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -266,23 +372,27 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     <>
       <div className="queryCollection__container">
         <div className="queryCollection__formContainer">
-          <label className="queryCollection__label">
+          <label className="queryCollection__label queryCollection__titles">
             {"Parameter "}
-            <select defaultValue={"Value"}>
-              <option key={"Value Shown"}>{"Value"}</option>
+            <select defaultValue={"Shown"}>
+              <option key={"Shown"}>{"Shown"}</option>
             </select>
+            <div>{"OnClick Value"}</div>
             <div>{"Local State"}</div>
             <div>{"Global State"}</div>
           </label>
           <form
             className="queryCollection__formContainer"
-            onChange={handlerOnChange}
+            onChange={handlerOnEvent}
+            onClick={handlerOnEvent}
+            onKeyUp={handlerOnEvent}
           >
             {/* <form> */}
             <label className="queryCollection__label">
               {"Collection to query "}
               <select
                 name="collection"
+                id="formElement0"
                 onChange={() => {
                   // setLocalChangeCollection(true);
                   booleanChangeCollectionQueryInput.current = true;
@@ -310,7 +420,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   setLocalFilterValue(
                     queryInputDefault(
                       (presentForm.elements[0] as HTMLFormElement).value
-                    ).filterValue.toString()
+                    ).filterValue
                   );
                   setLocalSearchField(
                     queryInputDefault(
@@ -344,7 +454,9 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                     ).queryRecordsPerSet
                   );
                   setLocalPageShown(1);
-                  updateQueryFields();
+                  updateQueryFields(
+                    "componentFile_" + componentFile + "_line_376"
+                  );
                 }}
               >
                 {localFilterCollection}
@@ -357,6 +469,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.filterCollection}</div>
               <div>{localFilterCollection}</div>
               <div>{collectionState.queryInput.filterCollection}</div>
             </label>
@@ -381,7 +494,40 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                       (presentForm.elements[0] as HTMLFormElement).value
                     ).filterValue
                   );
-                  updateQueryFields();
+
+                  changeFilterFieldQueryInput.current = {
+                    filterCollection: (
+                      presentForm.elements[0] as HTMLFormElement
+                    ).value,
+                    filterField: (presentForm.elements[1] as HTMLFormElement)
+                      .value,
+                    filterValue: "",
+
+                    // As agreed with the backend, the '(select all)' values for filters should be requested as ''
+                    searchField: (presentForm.elements[3] as HTMLFormElement)
+                      .value,
+                    searchType: (presentForm.elements[4] as HTMLFormElement)
+                      .value,
+                    searchValue: (presentForm.elements[5] as HTMLFormElement)
+                      .value,
+
+                    orderField: (presentForm.elements[6] as HTMLFormElement)
+                      .value,
+                    orderType: (presentForm.elements[7] as HTMLFormElement)
+                      .value,
+                    queryRecordsPerSet: (
+                      presentForm.elements[8] as HTMLFormElement
+                    ).value,
+                    querySet: (presentForm.elements[9] as HTMLFormElement)
+                      .value,
+                    primaryKey: "",
+                    primaryKeyValue: "",
+                  };
+                  booleanChangeFilterFieldQueryInput.current = true;
+
+                  updateQueryFields(
+                    "componentFile_" + componentFile + "_line_415"
+                  );
                 }}
               >
                 {localFilterField}
@@ -394,6 +540,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.filterField}</div>
               <div>{localFilterField}</div>
               <div>{collectionState.queryInput.filterField}</div>
             </label>
@@ -429,6 +576,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   )
                 )}
               </select>
+              <div>{formElements.current.filterValue}</div>
               <div>{localFilterValue}</div>
               <div>{collectionState.queryInput.filterValue}</div>
             </label>
@@ -460,6 +608,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.searchField}</div>
               <div>{localSearchField}</div>
               <div>{collectionState.queryInput.searchField}</div>
             </label>
@@ -490,11 +639,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.searchType}</div>
               <div>{localSearchType}</div>
               <div>{collectionState.queryInput.searchType}</div>
             </label>
             <label className="queryCollection__label">
-              {"Search value "}
+              {"Search value (case sensitive)"}
               <input
                 name="search_value"
                 value={localSearchValue}
@@ -511,6 +661,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   );
                 }}
               ></input>
+              <div>{formElements.current.searchValue}</div>
               <div>{localSearchValue}</div>
               <div>{collectionState.queryInput.searchValue}</div>
             </label>
@@ -542,6 +693,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.orderField}</div>
               <div>{localOrderField}</div>
               <div>{collectionState.queryInput.orderField}</div>
             </label>
@@ -571,6 +723,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   {"desc"}
                 </option>
               </select>
+              <div>{formElements.current.orderType}</div>
               <div>{localOrderType}</div>
               <div>{collectionState.queryInput.orderType}</div>
             </label>
@@ -601,6 +754,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.queryRecordsPerSet}</div>
               <div>{localRecordsPerSet}</div>
               <div>{collectionState.queryInput.queryRecordsPerSet}</div>
             </label>
@@ -630,6 +784,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   </option>
                 ))}
               </select>
+              <div>{formElements.current.querySet}</div>
               <div>{localPageShown}</div>
               <div>{collectionState.queryOutput.pageShown}</div>
             </label>

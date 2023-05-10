@@ -25,14 +25,15 @@ export function useCollections(repo: CollectionsRepo) {
 
   const { addError } = useApp();
 
-  const updateQueryFields = async () => {
+  const updateQueryFields = async (controlInfo: string) => {
     try {
       const dataCollections = await repo.groupBySet(
         {
           filterCollection: "appcollectionfields",
           groupByField: "collectionName",
         },
-        tokenToUse
+        tokenToUse,
+        controlInfo
       );
 
       const dataCollectionsResults = dataCollections.results;
@@ -52,7 +53,8 @@ export function useCollections(repo: CollectionsRepo) {
           primaryKey: "",
           primaryKeyValue: "",
         },
-        tokenToUse
+        tokenToUse,
+        controlInfo
       );
 
       const dataFieldsResults: AppCollectionField[] = dataFields.results;
@@ -77,7 +79,8 @@ export function useCollections(repo: CollectionsRepo) {
     }
   };
   const updateQueryInput = async (
-    queryInputData: QueryInputCollectionStructure
+    queryInputData: QueryInputCollectionStructure,
+    controlInfo: string
   ) => {
     const groupByQueryForUnQueriedCount: GroupByQueryCollectionStructure = {
       filterCollection: queryInputData.filterCollection,
@@ -106,14 +109,18 @@ export function useCollections(repo: CollectionsRepo) {
       };
 
     try {
-      const gallery = await repo.read(queryInputData, tokenToUse);
+      const gallery = await repo.read(queryInputData, tokenToUse, controlInfo);
       const groupByQueryForQueriedCountServerRespond: {
         results: {
           _id: string;
           documents: number;
           aggregateSumValue: number;
         }[];
-      } = await repo.groupBy(groupByQueryForQueriedCount, tokenToUse);
+      } = await repo.groupBy(
+        groupByQueryForQueriedCount,
+        tokenToUse,
+        controlInfo
+      );
 
       const queriedCount = () => {
         let acc = 0;
@@ -138,7 +145,11 @@ export function useCollections(repo: CollectionsRepo) {
           documents: number;
           aggregateSumValue: number;
         }[];
-      } = await repo.groupBy(groupByQueryForUnQueriedCount, tokenToUse);
+      } = await repo.groupBy(
+        groupByQueryForUnQueriedCount,
+        tokenToUse,
+        controlInfo
+      );
       const unQueriedCount = () => {
         let acc = 0;
         if (groupByQueryForUnQueriedCountServerRespond.results.length === 1)
@@ -161,7 +172,8 @@ export function useCollections(repo: CollectionsRepo) {
         results: string[];
       } = await repo.groupBySet(
         groupBySetQueryForFilterValueOptionsShown,
-        tokenToUse
+        tokenToUse,
+        controlInfo
       );
 
       const queryOutputData: QueryOutputCollectionStructure = {

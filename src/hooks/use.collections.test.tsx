@@ -32,7 +32,11 @@ describe("Given the useCollection hook", () => {
 
       return (
         <>
-          <button onClick={() => updateQueryInput(mockPayload.queryInput)}>
+          <button
+            onClick={() =>
+              updateQueryInput(mockPayload.queryInput, "mockControlInfo")
+            }
+          >
             updateQueryInput
           </button>
           <button onClick={() => updateQueryOutput(mockPayload.queryOutput)}>
