@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import "./collections.gallery.css";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
-import { Key } from "react";
+import { JsxElement } from "typescript";
+import { ReactNode } from "react";
 
 export default function CollectionsGallery() {
   const collectionState = useSelector(
@@ -16,8 +17,6 @@ export default function CollectionsGallery() {
 
   if (galleryCopy.length === 0) return <>no data available for your query</>;
 
-  const recordFields: string[] = Object.keys(galleryCopy[0]);
-  const recordData: string[] = Object.values(galleryCopy[0]);
   const recordFieldsFunction = (i: number): string[] => {
     return Object.keys(galleryCopy[i]);
   };
@@ -54,9 +53,6 @@ export default function CollectionsGallery() {
 
   console.table(recordsFieldsDataArray);
 
-  const repo = new CollectionsRepo();
-  // const {} = useCollections(repo);
-
   return (
     <>
       <div className="collectionsGallery">
@@ -64,20 +60,48 @@ export default function CollectionsGallery() {
           {collectionState.queryInput.filterCollection}
         </h2>
         <div className="collectionsGallery__recordsContainer">
-          {recordsFieldsDataArray.map((item) => (
-            <div
-              className="collectionsGallery__records"
-              key={recordsFieldsDataArray.indexOf(item)}
-            >
-              <div>{item.field}</div>
-              <div>{item.data}</div>
-            </div>
-          ))}
+          <div>
+            {(() => {
+              let records = [<div></div>];
+              for (let i = 0; i < 10; i++) {
+                records.push(
+                  <div>
+                    {recordsFieldsDataArray[i].field +
+                      ": " +
+                      recordsFieldsDataArray[i].data}
+                  </div>
+                );
+              }
+              records.shift();
+              return records;
+            })()}
+          </div>
         </div>
       </div>
     </>
   );
 }
+
+// return (
+//   <>
+//     <div className="collectionsGallery">
+//       <h2 className="collectionsGallery__heading">
+//         {collectionState.queryInput.filterCollection}
+//       </h2>
+//       <div className="collectionsGallery__recordsContainer">
+//         {recordsFieldsDataArray.map((item) => (
+//           <div
+//             className="collectionsGallery__records"
+//             key={recordsFieldsDataArray.indexOf(item)}
+//           >
+//             <div>{item.field}</div>
+//             <div>{item.data}</div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   </>
+// );
 
 // return (
 //   <>
