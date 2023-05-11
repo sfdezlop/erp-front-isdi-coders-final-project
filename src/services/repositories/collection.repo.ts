@@ -12,7 +12,7 @@ export class CollectionsRepo {
     this.url = url_def;
   }
 
-  async read(
+  async readRecords(
     query: QueryInputCollectionStructure,
 
     token: string,
@@ -20,7 +20,7 @@ export class CollectionsRepo {
   ): Promise<{ results: [] }> {
     const url = encodeURI(
       this.url +
-        "/collections/read/&collection=" +
+        "/collections/readrecords/&collection=" +
         query.filterCollection +
         "&filterfield=" +
         query.filterField +
@@ -54,7 +54,7 @@ export class CollectionsRepo {
 
     if (!resp.ok)
       throw new Error(
-        `Error http reading collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+        `Error http reading records at collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();

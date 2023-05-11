@@ -22,7 +22,7 @@ describe("Given the useCollection hook", () => {
     } as unknown as CollectionStateStructure;
 
     mockRepo = {
-      read: jest.fn(),
+      readRecords: jest.fn(),
     } as unknown as CollectionsRepo;
 
     mockResponse = [{ id: "mock" }];
@@ -67,12 +67,12 @@ describe("Given the useCollection hook", () => {
   describe("When the updateQueryInput button of TestComponent is clicked", () => {
     test("Then the read method of the repo should be called, and the value of queryInput property of collectionState should be the mockPayload", async () => {
       const elements = await screen.findAllByRole("button");
-      (mockRepo.read as jest.Mock).mockResolvedValueOnce(mockResponse);
+      (mockRepo.readRecords as jest.Mock).mockResolvedValueOnce(mockResponse);
       await act(async () => userEvent.click(elements[0]));
       const queryInput = store.getState().collectionState.queryInput;
 
       expect(queryInput).toEqual(mockPayload.queryInput);
-      expect(mockRepo.read).toHaveBeenCalled();
+      expect(mockRepo.readRecords).toHaveBeenCalled();
     });
   });
 

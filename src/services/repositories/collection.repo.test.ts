@@ -16,7 +16,7 @@ describe("Given the collection repo", () => {
         ok: true,
         json: jest.fn().mockResolvedValue(mockValue),
       });
-      const result = await repo.read(
+      const result = await repo.readRecords(
         {} as QueryInputCollectionStructure,
         "mockToken",
         "mockControlInfo"
@@ -25,7 +25,7 @@ describe("Given the collection repo", () => {
     });
     test("then if the fetch is NOT OK it throw error", async () => {
       global.fetch = jest.fn().mockResolvedValue("Error test");
-      const result = repo.read(
+      const result = repo.readRecords(
         {} as QueryInputCollectionStructure,
         "mockToken",
         "mockControlInfo"

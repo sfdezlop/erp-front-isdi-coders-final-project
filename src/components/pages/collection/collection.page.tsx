@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "../../loader/loader";
 import { QueryCollection } from "../../query.collection/query.collection";
 import ProductsGallery from "../../galleries/products.gallery";
+import CollectionsGallery from "../../galleries/collections.gallery";
 
 export default function CollectionPage() {
   const [renderNumber, setRenderNumber] = useState(1);
@@ -22,7 +23,8 @@ export default function CollectionPage() {
           <div className="collectionPage">
             {/* <h2 className="collection__heading">{params}</h2> */}
             <QueryCollection collectionName="products"></QueryCollection>
-            <ProductsGallery></ProductsGallery>
+            <CollectionsGallery></CollectionsGallery>
+            {/* <ProductsGallery></ProductsGallery> */}
           </div>
         </>
       );

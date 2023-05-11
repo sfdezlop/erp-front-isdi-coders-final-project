@@ -38,7 +38,7 @@ export function useCollections(repo: CollectionsRepo) {
 
       const dataCollectionsResults = dataCollections.results;
 
-      const dataFields = await repo.read(
+      const dataFields = await repo.readRecords(
         {
           filterCollection: "appcollectionfields",
           filterField: "",
@@ -109,7 +109,11 @@ export function useCollections(repo: CollectionsRepo) {
       };
 
     try {
-      const gallery = await repo.read(queryInputData, tokenToUse, controlInfo);
+      const gallery = await repo.readRecords(
+        queryInputData,
+        tokenToUse,
+        controlInfo
+      );
       const groupByQueryForQueriedCountServerRespond: {
         results: {
           _id: string;

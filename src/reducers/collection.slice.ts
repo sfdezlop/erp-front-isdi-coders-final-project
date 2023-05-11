@@ -12,45 +12,61 @@ export type CollectionStateStructure = {
   queryOutput: QueryOutputCollectionStructure;
 };
 
+const initialStateFormCongruency = {
+  queryFields: {
+    collections: ["products"],
+    filterableFields: ["products_-_brand"],
+    searchableFields: ["products_-_sku"],
+    orderableFields: ["products_-_ean"],
+  },
+};
+
 export const initialState: CollectionStateStructure = {
   queryFields: {
-    collections: ["products", "productmovements"],
-    filterableFields: ["products_-_brand", "products_-_userCreator"],
-    searchableFields: ["products_-_brand", "products_-_sku"],
-    orderableFields: ["products_-_brand", "products_-_sku"],
+    collections: initialStateFormCongruency.queryFields.collections,
+    filterableFields: initialStateFormCongruency.queryFields.filterableFields,
+    searchableFields: initialStateFormCongruency.queryFields.searchableFields,
+    orderableFields: initialStateFormCongruency.queryFields.orderableFields,
   },
   queryInput: {
-    filterCollection: "products",
-    filterField: "brand",
+    filterCollection: initialStateFormCongruency.queryFields.collections[0],
+    filterField:
+      initialStateFormCongruency.queryFields.filterableFields[0].split(
+        "_-_"
+      )[1],
     filterValue: "",
-    searchField: "sku",
+    searchField:
+      initialStateFormCongruency.queryFields.searchableFields[0].split(
+        "_-_"
+      )[1],
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
     queryRecordsPerSet: recordsPerSet[0],
-    orderField: "pricePerUnit",
+    orderField:
+      initialStateFormCongruency.queryFields.orderableFields[0].split("_-_")[1],
     orderType: "asc",
     primaryKey: "",
     primaryKeyValue: "",
   },
   queryOutput: {
-    filterValueOptionsShown: ["Flores de Bach"],
+    filterValueOptionsShown: [],
     pageShown: 1,
     queriedCount: 1,
     unQueriedCount: 1,
     gallery: [
-      // {
-      //   id: "id",
-      //   sku: "Sku",
-      //   shortDescription: "Short Description",
-      //   longDescription: "Long Description",
-      //   ean: "EAN",
-      //   brand: "Brand",
-      //   image: "Image",
-      //   userCreatorEmail: "User Creator Email",
-      //   costPerUnit: 0,
-      //   pricePerUnit: 0,
-      // },
+      {
+        id: "123456",
+        sku: "Sku",
+        shortDescription: "Short Description",
+        longDescription: "Long Description",
+        ean: "EAN",
+        brand: "Brand",
+        image: "Image",
+        userCreatorEmail: "User Creator Email",
+        costPerUnit: 0,
+        pricePerUnit: 0,
+      },
     ],
     detail: [
       {

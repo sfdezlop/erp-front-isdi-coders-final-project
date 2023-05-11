@@ -19,12 +19,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     filterCollection: "products",
     filterField: "brand",
     filterValue: "",
-    searchField: "brand",
+    searchField: "sku",
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
     queryRecordsPerSet: recordsPerSet[0],
-    orderField: "brand",
+    orderField: "ean",
     orderType: "asc",
     primaryKey: "",
     primaryKeyValue: "",
@@ -33,12 +33,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     filterCollection: "products",
     filterField: "brand",
     filterValue: "",
-    searchField: "brand",
+    searchField: "sku",
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
     queryRecordsPerSet: recordsPerSet[0],
-    orderField: "brand",
+    orderField: "ean",
     orderType: "asc",
     primaryKey: "",
     primaryKeyValue: "",
@@ -48,12 +48,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     filterCollection: "products",
     filterField: "brand",
     filterValue: "",
-    searchField: "brand",
+    searchField: "sku",
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
     queryRecordsPerSet: recordsPerSet[0],
-    orderField: "brand",
+    orderField: "ean",
     orderType: "asc",
     primaryKey: "",
     primaryKeyValue: "",
@@ -147,12 +147,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
           filterCollection: "products",
           filterField: "brand",
           filterValue: "",
-          searchField: "brand",
+          searchField: "sku",
           searchValue: "",
           searchType: "Contains",
           querySet: 1,
           queryRecordsPerSet: recordsPerSet[0],
-          orderField: "brand",
+          orderField: "ean",
           orderType: "asc",
           primaryKey: "",
           primaryKeyValue: "",
@@ -225,12 +225,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       filterValue:
         (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
           ? ""
-          : (queryForm.elements[2] as HTMLFormElement).value,
+          : (queryForm.elements[2] as HTMLFormElement).value.toString(),
 
       // As agreed with the backend, the '(select all)' values for filters should be requested as ''
       searchField: (queryForm.elements[3] as HTMLFormElement).value,
       searchType: (queryForm.elements[4] as HTMLFormElement).value,
-      searchValue: (queryForm.elements[5] as HTMLFormElement).value,
+      searchValue: (queryForm.elements[5] as HTMLFormElement).value.toString(),
 
       orderField: (queryForm.elements[6] as HTMLFormElement).value,
       orderType: (queryForm.elements[7] as HTMLFormElement).value,
@@ -288,12 +288,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       filterValue:
         (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
           ? ""
-          : (queryForm.elements[2] as HTMLFormElement).value,
+          : (queryForm.elements[2] as HTMLFormElement).value.toString(),
 
       // As agreed with the backend, the '(select all)' values for filters should be requested as ''
       searchField: (queryForm.elements[3] as HTMLFormElement).value,
       searchType: (queryForm.elements[4] as HTMLFormElement).value,
-      searchValue: (queryForm.elements[5] as HTMLFormElement).value,
+      searchValue: (queryForm.elements[5] as HTMLFormElement).value.toString(),
 
       orderField: (queryForm.elements[6] as HTMLFormElement).value,
       orderType: (queryForm.elements[7] as HTMLFormElement).value,
@@ -334,12 +334,14 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       filterValue:
         (presentForm.elements[2] as HTMLFormElement).value === "(select all)"
           ? ""
-          : (presentForm.elements[2] as HTMLFormElement).value,
+          : (presentForm.elements[2] as HTMLFormElement).value.toString(),
 
       // As agreed with the backend, the '(select all)' values for filters should be requested as ''
       searchField: (presentForm.elements[3] as HTMLFormElement).value,
       searchType: (presentForm.elements[4] as HTMLFormElement).value,
-      searchValue: (presentForm.elements[5] as HTMLFormElement).value,
+      searchValue: (
+        presentForm.elements[5] as HTMLFormElement
+      ).value.toString(),
 
       orderField: (presentForm.elements[6] as HTMLFormElement).value,
       orderType: (presentForm.elements[7] as HTMLFormElement).value,
@@ -661,9 +663,9 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                   );
                 }}
               ></input>
-              <div>{formElements.current.searchValue}</div>
-              <div>{localSearchValue}</div>
-              <div>{collectionState.queryInput.searchValue}</div>
+              <div>{formElements.current.searchValue.toString()}</div>
+              <div>{localSearchValue.toString()}</div>
+              <div>{collectionState.queryInput.searchValue.toString()}</div>
             </label>
 
             <label className="queryCollection__label">
