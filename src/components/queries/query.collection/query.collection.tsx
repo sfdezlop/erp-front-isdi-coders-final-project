@@ -345,7 +345,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                       <select>123</select>
                     </form>
                   );
-                  // console.log(localChangeCollection);
+
                   console.log(booleanChangeCollectionQueryInput.current);
                   changeCollectionQueryInput.current = queryInputDefault(
                     (presentForm.elements[0] as HTMLFormElement).value

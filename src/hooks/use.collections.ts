@@ -145,9 +145,10 @@ export function useCollections(repo: CollectionsRepo) {
               : item._id.split(stringSeparator)[0] ===
                 queryInputData.filterValue
           );
-        for (let i = 0; i < groupByFilteredServerRespondResults.length; i++) {
-          acc = acc + groupByFilteredServerRespondResults[i].documents;
-        }
+
+        groupByFilteredServerRespondResults.forEach(
+          (item) => (acc = acc + item.documents)
+        );
         return acc;
       };
 
@@ -168,15 +169,12 @@ export function useCollections(repo: CollectionsRepo) {
           return groupByQueryForUnQueriedCountServerRespond.results[0]
             .documents;
 
-        for (
-          let i = 0;
-          i < groupByQueryForUnQueriedCountServerRespond.results.length;
-          i++
-        ) {
-          acc =
-            acc +
-            groupByQueryForUnQueriedCountServerRespond.results[i].documents;
-        }
+        groupByQueryForUnQueriedCountServerRespond.results.forEach(
+          (element) => {
+            acc = acc + element.documents;
+          }
+        );
+
         return acc;
       };
 
