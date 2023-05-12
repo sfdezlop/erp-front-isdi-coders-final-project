@@ -5,8 +5,8 @@ import "./query.collection.css";
 import { QueryInputCollectionStructure } from "../../../models/collections.model";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
 import { useCollections } from "../../../hooks/use.collections";
-import React from "react";
 import { stringSeparator } from "../../../config";
+import { recordsPerSet } from "../../../reducers/collection.slice";
 
 const componentFile = "query.collection.tsx";
 //To control the file and line of code where Hook functions are called
@@ -14,7 +14,6 @@ const componentFile = "query.collection.tsx";
 export type QueryCollectionProps = {
   collectionName: string;
 };
-export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
 export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const formElements = useRef({
     filterCollection: "products",

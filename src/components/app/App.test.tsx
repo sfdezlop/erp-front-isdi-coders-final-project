@@ -10,7 +10,6 @@ import { store } from "../../store/store";
 jest.mock("../header/header");
 jest.mock("../footer/footer");
 jest.mock("../../routers/app.router");
-jest.mock("../query.collection/query.collection");
 
 describe("Given the App component", () => {
   describe("When it is rendered", () => {

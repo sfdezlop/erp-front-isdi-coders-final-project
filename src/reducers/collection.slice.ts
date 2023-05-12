@@ -4,7 +4,6 @@ import {
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
-import { recordsPerSet } from "../components/queries/query.collection/query.collection";
 import { stringSeparator } from "../config";
 
 export type CollectionStateStructure = {
@@ -21,6 +20,8 @@ const initialStateFormCongruency = {
     orderableFields: ["products" + stringSeparator + "ean"],
   },
 };
+
+export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
 
 export const initialState: CollectionStateStructure = {
   queryFields: {
