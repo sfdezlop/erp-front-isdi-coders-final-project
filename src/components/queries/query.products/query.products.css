@@ -1,0 +1,35 @@
+.filterProducts__forms {
+  display: flex;
+  background-color: rgb(118, 116, 116);
+}
+
+.filterProducts__form {
+  background-color: rgb(118, 116, 116);
+  display: flex;
+  gap: 3vh;
+  align-items: center;
+  justify-items: center;
+  font-size: 1.8vh;
+  color: white;
+  padding: 0.5vh;
+}
+
+.filterProducts__option {
+  font-size: 1.8vh;
+}
+
+.filterProducts__button {
+  font-size: 1.8vh;
+  padding: 0.5vh;
+}
+
+.filterProductsPagination__form {
+  background-color: rgb(118, 116, 116);
+  display: flex;
+  gap: 3vh;
+  align-items: center;
+  justify-items: center;
+  font-size: 1.8vh;
+  color: white;
+  padding: 0.5vh;
+}

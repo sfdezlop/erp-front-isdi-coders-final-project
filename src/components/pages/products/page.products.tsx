@@ -1,4 +1,4 @@
-import "./products.page.css";
+import "./page.products.css";
 import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../../hooks/use.products";
@@ -6,7 +6,7 @@ import { ProductStructure } from "../../../models/collections.model";
 import { ProductsRepo } from "../../../services/repositories/product.repo";
 import { RootState } from "../../../store/store";
 import { useNavigate } from "react-router-dom";
-import { FilterProducts } from "../../filter.products/filter.products";
+import { FilterProducts } from "../../queries/query.products/query.products";
 import { ProductStock } from "../../microservices/product.stock/product.stock";
 
 export default function ProductsPage() {

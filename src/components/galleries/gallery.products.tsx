@@ -1,4 +1,4 @@
-import "./products.gallery.css";
+import "./gallery.products.css";
 import { SyntheticEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../hooks/use.products";
@@ -8,7 +8,7 @@ import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { ProductStock } from "../microservices/product.stock/product.stock";
 
-export default function ProductsGallery() {
+export function ProductsGallery() {
   const galleryArray = useSelector(
     (state: RootState) => state.collectionState.queryOutput.gallery
   );

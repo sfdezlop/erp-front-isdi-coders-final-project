@@ -4,22 +4,22 @@ import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
 import { store } from "../../../store/store";
-import MovementsPage from "./movements.page";
+import { FilterProductMovements } from "./query.productmovements";
 
-describe("Given the MovementsPage component", () => {
+describe("Given the FilterProductMovements component", () => {
   beforeEach(async () => {
     await act(async () => {
       render(
         <Provider store={store}>
           <Router>
-            <MovementsPage></MovementsPage>
+            <FilterProductMovements></FilterProductMovements>
           </Router>
         </Provider>
       );
     });
   });
 
-  describe("When the MovementsPage component is rendered", () => {
+  describe("When the filter component is rendered", () => {
     test("Then it should contain the combobox role", () => {
       const elements = screen.getAllByRole("combobox");
       expect(elements[0]).toBeInTheDocument();

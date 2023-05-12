@@ -3,7 +3,7 @@
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import "./collections.gallery.css";
+import "./gallery.collections.css";
 
 export default function CollectionsGallery() {
   const collectionState = useSelector(

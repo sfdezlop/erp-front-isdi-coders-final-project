@@ -4,7 +4,7 @@ import {
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
-import { recordsPerSet } from "../components/query.collection/query.collection";
+import { recordsPerSet } from "../components/queries/query.collection/query.collection";
 import { stringSeparator } from "../config";
 
 export type CollectionStateStructure = {

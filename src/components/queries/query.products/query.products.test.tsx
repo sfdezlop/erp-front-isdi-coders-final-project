@@ -3,16 +3,16 @@
 import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
-import { store } from "../../store/store";
-import { FilterProductMovements } from "./filter.productmovements";
+import { store } from "../../../store/store";
+import { FilterProducts } from "./query.products";
 
-describe("Given the FilterProductMovements component", () => {
+describe("Given the FilterProducts component", () => {
   beforeEach(async () => {
     await act(async () => {
       render(
         <Provider store={store}>
           <Router>
-            <FilterProductMovements></FilterProductMovements>
+            <FilterProducts></FilterProducts>
           </Router>
         </Provider>
       );

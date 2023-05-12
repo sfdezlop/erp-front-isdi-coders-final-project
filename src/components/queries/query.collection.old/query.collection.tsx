@@ -1,12 +1,12 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { RootState } from "../../../store/store";
 import "./query.collection.css";
-import { QueryInputCollectionStructure } from "../../models/collections.model";
-import { CollectionsRepo } from "../../services/repositories/collection.repo";
-import { useCollections } from "../../hooks/use.collections";
+import { QueryInputCollectionStructure } from "../../../models/collections.model";
+import { CollectionsRepo } from "../../../services/repositories/collection.repo";
+import { useCollections } from "../../../hooks/use.collections";
 import React from "react";
-import { stringSeparator } from "../../config";
+import { stringSeparator } from "../../../config";
 
 const componentFile = "query.collection.tsx";
 //To control the file and line of code where Hook functions are called

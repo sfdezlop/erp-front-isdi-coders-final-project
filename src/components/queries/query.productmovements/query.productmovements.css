@@ -1,9 +1,9 @@
-.filter__forms {
+.filterProductMovements__forms {
   display: flex;
   background-color: rgb(118, 116, 116);
 }
 
-.filter__form {
+.filterProductMovements__form {
   background-color: rgb(118, 116, 116);
   display: flex;
   gap: 3vh;
@@ -14,16 +14,16 @@
   padding: 0.5vh;
 }
 
-.filter__option {
+.filterProductMovements__option {
   font-size: 1.8vh;
 }
 
-.filter__button {
+.filterProductMovements__button {
   font-size: 1.8vh;
   padding: 0.5vh;
 }
 
-.pagination__form {
+.filterProductMovementsPagination__form {
   background-color: rgb(118, 116, 116);
   display: flex;
   gap: 3vh;

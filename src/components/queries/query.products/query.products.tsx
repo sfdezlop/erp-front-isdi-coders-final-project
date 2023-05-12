@@ -1,10 +1,10 @@
 import { SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useProducts } from "../../hooks/use.products";
-import { ProductsRepo } from "../../services/repositories/product.repo";
-import { RootState } from "../../store/store";
-import "./filter.products.css";
+import { useProducts } from "../../../hooks/use.products";
+import { ProductsRepo } from "../../../services/repositories/product.repo";
+import { RootState } from "../../../store/store";
+import "./query.products.css";
 
 export function FilterProducts() {
   const navigate = useNavigate();
@@ -121,60 +121,60 @@ export function FilterProducts() {
 
   return (
     <>
-      <div className="filter_forms">
+      <div className="filterProducts_forms">
         <div>
           <form
-            className="filter__form"
+            className="filterProducts__form"
             onSubmit={handlerFilterSubmit}
             onChange={handlerFilterSubmit}
           >
             <label>Select a Brand:</label>
             <select
               name="marcas"
-              className="filter__selectField"
+              className="filterProducts__selectField"
               defaultValue={filterValueDefault}
             >
               {filterValueDefault}
               {filterOptionsArrayWithAllAndOrdered.map((item: string) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProducts__option" key={item}>
                   {item}
                 </option>
               ))}
             </select>
             <label>Order by:</label>
             <select
-              className="filter__orderByField"
+              className="filterProducts__orderByField"
               defaultValue={orderFieldDefault}
             >
               {orderFieldDefault}
               {orderByFields.map((item) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProducts__option" key={item}>
                   {item}
                 </option>
               ))}
             </select>
             <label>Order type:</label>
             <select
-              className="filter__orderType"
+              className="filterProducts__orderType"
               defaultValue={orderTypeDefault}
             >
               {orderTypeDefault}
 
-              <option className="orderType__option" key={"asc"}>
+              <option className="filterProductsOrderType__option" key={"asc"}>
                 {"asc"}
               </option>
-              <option className="orderType__option" key={"desc"}>
+              <option className="filterProductsOrderType__option" key={"desc"}>
                 {"desc"}
               </option>
             </select>
             <label>Records to show per page:</label>
             <select
-              className="filter__recordsPerSet"
+              className="filterProducts__recordsPerSet"
               defaultValue={filterRecordsPerSetDefault}
             >
               {filterRecordsPerSetDefault}
               {recordsPerSetArray.map((item) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProducts__option" key={item}>
                   {item}
                 </option>
               ))}
@@ -184,7 +184,7 @@ export function FilterProducts() {
         </div>
         <div>
           <form
-            className="pagination__form"
+            className="filterProductsPagination__form"
             onSubmit={handlerPaginationSubmit}
             onChange={handlerPaginationSubmit}
           >
@@ -192,10 +192,13 @@ export function FilterProducts() {
             <p>Filtered records: {filteredCountData}</p>
             <p>Available pages: {maximumPages}</p>
             <p>Page shown: {pageDefault}</p>
-            <select className="pagination__pages" defaultValue={pageDefault}>
+            <select
+              className="filterProductsPagination__pages"
+              defaultValue={pageDefault}
+            >
               {pageDefault}
               {pagesArray.map((item) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProducts__option" key={item}>
                   {item}
                 </option>
               ))}
