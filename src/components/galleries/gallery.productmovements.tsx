@@ -7,7 +7,6 @@ import { useProductMovements } from "../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
 import { RootState } from "../../store/store";
 import "./gallery.productmovements.css";
-import { useNavigate } from "react-router-dom";
 import { ProductKeyValue } from "../microservices/product.key/product.keyvalue";
 import { ProductStock } from "../microservices/product.stock/product.stock";
 
@@ -26,8 +25,6 @@ export function ProductMovementsGallery() {
     console.log("useEffect at gallery.productmovements.tsx");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const navigate = useNavigate();
 
   const handlerClick = (event: SyntheticEvent) => {
     const valueToDelete = event.currentTarget.ariaLabel ?? "";

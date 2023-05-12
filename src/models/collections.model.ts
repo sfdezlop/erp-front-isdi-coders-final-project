@@ -148,7 +148,9 @@ export type QueryOutputCollectionStructure = {
   queriedCount: number;
   unQueriedCount: number;
   gallery: Partial<CollectionStructure>[];
+  galleryInterface: String;
   detail: Partial<CollectionStructure>[];
+  detailInterface: String;
 };
 
 //useCollection hook parameter types

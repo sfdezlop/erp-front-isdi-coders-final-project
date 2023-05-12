@@ -71,6 +71,7 @@ export const initialState: CollectionStateStructure = {
         pricePerUnit: 0,
       },
     ],
+    galleryInterface: "custom",
     detail: [
       {
         id: "id",
@@ -85,6 +86,7 @@ export const initialState: CollectionStateStructure = {
         pricePerUnit: 0,
       },
     ],
+    detailInterface: "custom",
   },
 };
 

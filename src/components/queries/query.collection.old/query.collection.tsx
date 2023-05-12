@@ -319,12 +319,8 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     if (renderNumber.current === 1) {
       updateQueryFields("componentFile_" + componentFile + "_line_238");
       console.log("useEffect at query.collection.tsx");
-      console.log("renderNumber=", renderNumber.current);
-      console.log("updateQueryFields aplicado");
     } else {
       console.log("useEffect at query.collection.tsx");
-      console.log("renderNumber=", renderNumber.current);
-      console.log("updateQueryFields no aplicado");
     }
     renderNumber.current = renderNumber.current + 1;
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (

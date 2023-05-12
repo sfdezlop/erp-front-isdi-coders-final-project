@@ -1,4 +1,4 @@
-import "./detail.page.css";
+import "./page.detail.product.css";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../../hooks/use.products";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ProductStock } from "../../microservices/product.stock/product.stock";
 import { Loader } from "../../loader/loader";
 
-export default function DetailPage() {
+export default function DetailProductPage() {
   const [renderNumber, setRenderNumber] = useState(1);
 
   const userCreatorFullNames = useSelector(
@@ -82,19 +82,19 @@ export default function DetailPage() {
   } else {
     return (
       <>
-        <div className="detailPage">
-          <h2 className="detail__heading">Product Details</h2>
+        <div className="detailProductPage">
+          <h2 className="detailProductPage__heading">Product Details</h2>
           {detailProductData.map((item) => (
-            <article key={item.id} className="detail__article">
-              <div className="detail__container">
-                <div className="detail__imageContainer">
+            <article key={item.id} className="detailProductPage__article">
+              <div className="detailProductPage__container">
+                <div className="detailProductPage__imageContainer">
                   <img
-                    className="detail__image"
+                    className="detailProductPage__image"
                     src={item.image}
                     alt={`${item.shortDescription} card`}
                   ></img>
                 </div>
-                <div className="detail__dataContainer">
+                <div className="detailProductPage__dataContainer">
                   <div>Brand: {item.brand}</div>
                   <div>ID: {item.id}</div>
                   <div>SKU: {item.sku}</div>
@@ -102,7 +102,7 @@ export default function DetailPage() {
                   <div>Cost (€): {item.costPerUnit}</div>
                   <div>Price (€): {item.pricePerUnit}</div>
 
-                  <div className="detail__microServiceStock">
+                  <div className="detailProductPage__microServiceStock">
                     <div>{"Stock (units):"}</div>
                     <div>
                       <ProductStock sku={item.sku}></ProductStock>
@@ -122,26 +122,29 @@ export default function DetailPage() {
                       )[0].lastName}
                   </div>
                 </div>
-                <div className="detail__descriptionContainer">
-                  <div className="detail__shortDescription">
+                <div className="detailProductPage__descriptionContainer">
+                  <div className="detailProductPage__shortDescription">
                     Short Description: {item.shortDescription}
                   </div>
-                  <div className="detail__shortDescriptionInput"></div>
-                  <div className="detail__longDescription">
+                  <div className="detailProductPage__shortDescriptionInput"></div>
+                  <div className="detailProductPage__longDescription">
                     Long Description: {item.longDescription}
                   </div>
 
                   <div>
-                    <div className="detail__longDescriptionInput"></div>
+                    <div className="detailProductPage__longDescriptionInput"></div>
                   </div>
                 </div>
-                <div className="detail__buttonsContainer">
-                  <button className="detail__addButton" onClick={handlerAdd}>
+                <div className="detailProductPage__buttonsContainer">
+                  <button
+                    className="detailProductPage__addButton"
+                    onClick={handlerAdd}
+                  >
                     Add a Fake Product
                   </button>
                   {item.brand === "Fake" ? (
                     <button
-                      className="detail__deleteButton"
+                      className="detailProductPage__deleteButton"
                       onClick={handlerDelete}
                     >
                       Delete a Fake Product

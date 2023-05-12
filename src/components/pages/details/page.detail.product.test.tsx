@@ -4,7 +4,7 @@ import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
 import { store } from "../../../store/store";
-import DetailPage from "./detail.page";
+import DetailPage from "./page.detail.product";
 
 describe("Given the DetailPage component", () => {
   beforeEach(async () => {

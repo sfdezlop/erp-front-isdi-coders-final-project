@@ -220,68 +220,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const repoCollection = new CollectionsRepo();
   const { updateQueryFields, updateQueryInput } =
     useCollections(repoCollection);
-  const handlerOnChange = (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const queryForm = event.currentTarget;
-
-    const queryInputFormObject: QueryInputCollectionStructure = {
-      filterCollection: (queryForm.elements[0] as HTMLFormElement).value,
-      filterField: (queryForm.elements[1] as HTMLFormElement).value,
-      filterValue:
-        (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
-          ? ""
-          : (queryForm.elements[2] as HTMLFormElement).value.toString(),
-
-      // As agreed with the backend, the '(select all)' values for filters should be requested as ''
-      searchField: (queryForm.elements[3] as HTMLFormElement).value,
-      searchType: (queryForm.elements[4] as HTMLFormElement).value,
-      searchValue: (queryForm.elements[5] as HTMLFormElement).value.toString(),
-
-      orderField: (queryForm.elements[6] as HTMLFormElement).value,
-      orderType: (queryForm.elements[7] as HTMLFormElement).value,
-      queryRecordsPerSet: (queryForm.elements[8] as HTMLFormElement).value,
-      querySet: (queryForm.elements[9] as HTMLFormElement).value,
-      primaryKey: "",
-      primaryKeyValue: "",
-    };
-
-    // formElements.current = queryInputFormObject;
-
-    const copyOfChangeCollectionQueryInput = Object.assign(
-      changeCollectionQueryInput
-    );
-
-    const copyOfChangeFilterFieldQueryInput = Object.assign(
-      changeFilterFieldQueryInput
-    );
-
-    // console.table(copyOfChangeCollectionQueryInput.current);
-    // console.table(queryInputFormObject);
-
-    booleanChangeCollectionQueryInput.current
-      ? updateQueryInput(
-          copyOfChangeCollectionQueryInput.current,
-          "componentFile_" + componentFile + "_line_223"
-        )
-      : updateQueryInput(
-          queryInputFormObject,
-          "componentFile_" + componentFile + "_line_227"
-        );
-
-    // setLocalChangeCollection(false);
-    booleanChangeCollectionQueryInput.current = false;
-
-    booleanChangeFilterFieldQueryInput.current
-      ? updateQueryInput(
-          copyOfChangeFilterFieldQueryInput.current,
-          "componentFile_" + componentFile + "_line_223"
-        )
-      : updateQueryInput(
-          queryInputFormObject,
-          "componentFile_" + componentFile + "_line_227"
-        );
-    booleanChangeFilterFieldQueryInput.current = false;
-  };
 
   const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();

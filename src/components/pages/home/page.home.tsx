@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import "./home.page.css";
+import "./page.home.css";
 
 export default function HomePage() {
   const userLoggedObject = useSelector(

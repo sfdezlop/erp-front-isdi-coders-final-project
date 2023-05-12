@@ -1,4 +1,4 @@
-import "./collection.page.css";
+import "./page.collection.css";
 import { useEffect, useState } from "react";
 import { Loader } from "../../loader/loader";
 import { QueryCollection } from "../../queries/query.collection/query.collection";
@@ -11,8 +11,8 @@ import { ProductMovementsGallery } from "../../galleries/gallery.productmovement
 export default function CollectionPage() {
   const [renderNumber, setRenderNumber] = useState(1);
 
-  const filterCollection = useSelector(
-    (state: RootState) => state.collectionState.queryInput.filterCollection
+  const collectionState = useSelector(
+    (state: RootState) => state.collectionState
   );
 
   useEffect(() => {
@@ -21,7 +21,10 @@ export default function CollectionPage() {
 
   if (renderNumber === 1) return <Loader></Loader>;
 
-  if (filterCollection === "products")
+  if (
+    collectionState.queryInput.filterCollection === "products" &&
+    collectionState.queryOutput.galleryInterface === "custom"
+  )
     return (
       <>
         <div className="collectionPage">
@@ -31,13 +34,25 @@ export default function CollectionPage() {
         </div>
       </>
     );
+  if (
+    collectionState.queryInput.filterCollection === "productmovements" &&
+    collectionState.queryOutput.galleryInterface === "custom"
+  )
+    return (
+      <>
+        <div className="collectionPage">
+          <QueryCollection collectionName="products"></QueryCollection>
+          {/* <CollectionsGallery></CollectionsGallery> */}
+          <ProductMovementsGallery></ProductMovementsGallery>
+        </div>
+      </>
+    );
 
   return (
     <>
       <div className="collectionPage">
         <QueryCollection collectionName="products"></QueryCollection>
-        {/* <CollectionsGallery></CollectionsGallery> */}
-        <ProductMovementsGallery></ProductMovementsGallery>
+        <CollectionsGallery></CollectionsGallery>
       </div>
     </>
   );
