@@ -25,9 +25,8 @@
 .collectionsGallery__records {
   display: flex;
   flex-direction: column;
-  border-style: dashed;
-
-  gap: 4vh;
+  border-style: solid;
+  gap: 0.3vh;
 }
 
 .collectionsGallery__fieldsContainer,

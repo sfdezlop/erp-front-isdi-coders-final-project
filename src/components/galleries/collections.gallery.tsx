@@ -4,9 +4,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import "./collections.gallery.css";
-import { CollectionsRepo } from "../../services/repositories/collection.repo";
-import { JsxElement } from "typescript";
-import { ReactNode } from "react";
 
 export default function CollectionsGallery() {
   const collectionState = useSelector(
@@ -33,9 +30,6 @@ export default function CollectionsGallery() {
     return recordDataFunction(galleryCopy.indexOf(item));
   });
 
-  console.log(recordsFieldsFunction);
-  console.log(recordsDataFunction);
-
   let recordsFieldsDataArray: {
     record: number;
     field: number;
@@ -51,7 +45,34 @@ export default function CollectionsGallery() {
       });
   }
 
-  console.table(recordsFieldsDataArray);
+  const recordJSX = (i: number) => {
+    let tempArray = [<div></div>];
+
+    const recordsFieldsDataArrayFiltered = recordsFieldsDataArray.filter(
+      (item) => item.record === i
+    );
+    for (let j = 0; j < recordsFieldsDataArrayFiltered.length; j++) {
+      tempArray.push(
+        <div key={"record-" + i + "_keyvalue" + j}>
+          {recordsFieldsDataArrayFiltered[j].field +
+            ": " +
+            recordsFieldsDataArrayFiltered[j].data}
+        </div>
+      );
+    }
+    tempArray.shift();
+    return <div className="collectionsGallery__records">{tempArray}</div>;
+  };
+
+  const recordsJSX = () => {
+    let tempArray = [<div>Hola</div>];
+
+    for (let i = 0; i < galleryCopy.length; i++) {
+      tempArray = tempArray.concat(recordJSX(i));
+    }
+    tempArray.shift();
+    return tempArray;
+  };
 
   return (
     <>
@@ -59,28 +80,33 @@ export default function CollectionsGallery() {
         <h2 className="collectionsGallery__heading">
           {collectionState.queryInput.filterCollection}
         </h2>
+        {/* <div>{recordJSX(0)}</div> */}
+
         <div className="collectionsGallery__recordsContainer">
-          <div>
-            {(() => {
-              let records = [<div></div>];
-              for (let i = 0; i < 10; i++) {
-                records.push(
-                  <div>
-                    {recordsFieldsDataArray[i].field +
-                      ": " +
-                      recordsFieldsDataArray[i].data}
-                  </div>
-                );
-              }
-              records.shift();
-              return records;
-            })()}
-          </div>
+          {recordsJSX()}
         </div>
       </div>
     </>
   );
 }
+
+//JSX with for loop
+// <div>
+//   {(() => {
+//     let records = [<div></div>];
+//     for (let i = 0; i < 10; i++) {
+//       records.push(
+//         <div>
+//           {recordsFieldsDataArray[i].field +
+//             ": " +
+//             recordsFieldsDataArray[i].data}
+//         </div>
+//       );
+//     }
+//     records.shift();
+//     return records;
+//   })()}
+// </div>;
 
 // return (
 //   <>
