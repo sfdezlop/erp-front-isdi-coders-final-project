@@ -1,5 +1,6 @@
 .productMovementsGallery {
   height: 84vh;
+  height: 76vh;
 }
 
 .productMovementsGallery__heading {
@@ -10,8 +11,8 @@
 }
 
 .productMovementsGallery__container {
-  height: 71vh;
-  width: 98%;
+  /* height: 60vh; */
+  width: 99%;
 }
 
 .productMovementsGallery__fieldContainer {
@@ -34,8 +35,7 @@
   flex-direction: column;
   align-content: space-around;
   background-color: white;
-
-  height: 68vh;
+  height: 61.5vh;
   border-style: solid;
   border-width: 0.2px;
   border-color: #4472c4;

@@ -7,34 +7,25 @@ import { useProductMovements } from "../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
 import { RootState } from "../../store/store";
 import "./gallery.productmovements.css";
-import { FilterProductMovements } from "../queries/query.productmovements/query.productmovements";
 import { useNavigate } from "react-router-dom";
 import { ProductKeyValue } from "../microservices/product.key/product.keyvalue";
 import { ProductStock } from "../microservices/product.stock/product.stock";
 
 export function ProductMovementsGallery() {
   const filteredGalleryData = useSelector(
-    (state: RootState) => state.productMovementState.filteredGallery
-  );
-
-  const filterData = useSelector(
-    (state: RootState) => state.productMovementState.filter
-  );
-
-  const pageNumber = useSelector(
-    (state: RootState) => state.productMovementState.filteredPage
+    (state: RootState) => state.collectionState.queryOutput.gallery
   );
 
   const repo = new ProductMovementsRepo();
-  const { gallery, deleteByKey } = useProductMovements(repo);
+  const { deleteByKey } = useProductMovements(repo);
 
   const [renderToAvoidConfirmMalfunction, setRenderToAvoidConfirmMalfunction] =
     useState(0);
 
   useEffect(() => {
-    gallery();
+    console.log("useEffect at gallery.productmovements.tsx");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterData, pageNumber]);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -56,11 +47,9 @@ export function ProductMovementsGallery() {
       if (confirmation) {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         deleteByKey(query);
-        gallery();
-        navigate("/productmovements");
+
         setRenderToAvoidConfirmMalfunction(renderToAvoidConfirmMalfunction + 1);
       } else {
-        navigate("/productmovements");
       }
     };
 
@@ -76,7 +65,6 @@ export function ProductMovementsGallery() {
             renderToAvoidConfirmMalfunction +
             ")"}
         </h2>
-        <FilterProductMovements></FilterProductMovements>
         <div className="productMovementsGallery__container">
           <div className="productMovementsGallery__fieldContainer">
             <div className="productMovementsGallery__field">Date</div>
@@ -89,8 +77,8 @@ export function ProductMovementsGallery() {
             <div className="productMovementsGallery__field">Units</div>
             <div className="productMovementsGallery__field">Type</div>
             <div className="productMovementsGallery__field">TypeID</div>
-            <div className="productMovementsGallery__field">Cost/ut</div>
-            <div className="productMovementsGallery__field">Price/ut</div>
+            <div className="productMovementsGallery__field">Cost/unit</div>
+            <div className="productMovementsGallery__field">Price/unit</div>
             <div className="productMovementsGallery__field">Delete</div>
           </div>
           <div className="productMovementsGallery__dataContainer">
@@ -117,7 +105,7 @@ export function ProductMovementsGallery() {
                   ></ProductKeyValue>
                 </div>{" "}
                 <div className="productMovementsGallery__data">
-                  <ProductStock sku={item.productSku}></ProductStock>
+                  <ProductStock sku={item.productSku ?? ""}></ProductStock>
                 </div>
                 <div className="productMovementsGallery__data">
                   {item.batch}

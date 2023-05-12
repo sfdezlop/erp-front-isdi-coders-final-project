@@ -15,7 +15,7 @@ export function ProductsGallery() {
 
   const repoProduct = new ProductsRepo();
   useEffect(() => {
-    console.log("useEffect at products.gallery.tsx");
+    console.log("useEffect at gallery.products.tsx");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,11 +78,9 @@ export function ProductsGallery() {
                     title="click to see details"
                   >
                     <div>{"Stock (units):"} </div>
-                    {/* <div>
-                      <ProductStock
-                        sku={item.sku ? item.sku : ""}
-                      ></ProductStock>
-                    </div> */}
+                    <div>
+                      <ProductStock sku={item.sku ?? ""}></ProductStock>
+                    </div>
                   </div>
                 </div>
               </li>
