@@ -59,7 +59,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     primaryKeyValue: "",
   });
 
-  // const [localChangeCollection, setLocalChangeCollection] = useState(false);
   const booleanChangeCollectionQueryInput = useRef(false);
   const booleanChangeFilterFieldQueryInput = useRef(false);
   const renderNumber = useRef(1);
@@ -338,7 +337,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                 name="collection"
                 id="formElement0"
                 onChange={() => {
-                  // setLocalChangeCollection(true);
                   booleanChangeCollectionQueryInput.current = true;
                   const presentForm = (document.querySelector(
                     "form"
