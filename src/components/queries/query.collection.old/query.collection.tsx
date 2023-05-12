@@ -5,7 +5,6 @@ import "./query.collection.css";
 import { QueryInputCollectionStructure } from "../../../models/collections.model";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
 import { useCollections } from "../../../hooks/use.collections";
-import React from "react";
 import { stringSeparator } from "../../../config";
 
 const componentFile = "query.collection.tsx";
@@ -60,7 +59,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     primaryKeyValue: "",
   });
 
-  // const [localChangeCollection, setLocalChangeCollection] = useState(false);
   const booleanChangeCollectionQueryInput = useRef(false);
   const booleanChangeFilterFieldQueryInput = useRef(false);
   const renderNumber = useRef(1);
@@ -220,68 +218,6 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const repoCollection = new CollectionsRepo();
   const { updateQueryFields, updateQueryInput } =
     useCollections(repoCollection);
-  const handlerOnChange = (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const queryForm = event.currentTarget;
-
-    const queryInputFormObject: QueryInputCollectionStructure = {
-      filterCollection: (queryForm.elements[0] as HTMLFormElement).value,
-      filterField: (queryForm.elements[1] as HTMLFormElement).value,
-      filterValue:
-        (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
-          ? ""
-          : (queryForm.elements[2] as HTMLFormElement).value.toString(),
-
-      // As agreed with the backend, the '(select all)' values for filters should be requested as ''
-      searchField: (queryForm.elements[3] as HTMLFormElement).value,
-      searchType: (queryForm.elements[4] as HTMLFormElement).value,
-      searchValue: (queryForm.elements[5] as HTMLFormElement).value.toString(),
-
-      orderField: (queryForm.elements[6] as HTMLFormElement).value,
-      orderType: (queryForm.elements[7] as HTMLFormElement).value,
-      queryRecordsPerSet: (queryForm.elements[8] as HTMLFormElement).value,
-      querySet: (queryForm.elements[9] as HTMLFormElement).value,
-      primaryKey: "",
-      primaryKeyValue: "",
-    };
-
-    // formElements.current = queryInputFormObject;
-
-    const copyOfChangeCollectionQueryInput = Object.assign(
-      changeCollectionQueryInput
-    );
-
-    const copyOfChangeFilterFieldQueryInput = Object.assign(
-      changeFilterFieldQueryInput
-    );
-
-    // console.table(copyOfChangeCollectionQueryInput.current);
-    // console.table(queryInputFormObject);
-
-    booleanChangeCollectionQueryInput.current
-      ? updateQueryInput(
-          copyOfChangeCollectionQueryInput.current,
-          "componentFile_" + componentFile + "_line_223"
-        )
-      : updateQueryInput(
-          queryInputFormObject,
-          "componentFile_" + componentFile + "_line_227"
-        );
-
-    // setLocalChangeCollection(false);
-    booleanChangeCollectionQueryInput.current = false;
-
-    booleanChangeFilterFieldQueryInput.current
-      ? updateQueryInput(
-          copyOfChangeFilterFieldQueryInput.current,
-          "componentFile_" + componentFile + "_line_223"
-        )
-      : updateQueryInput(
-          queryInputFormObject,
-          "componentFile_" + componentFile + "_line_227"
-        );
-    booleanChangeFilterFieldQueryInput.current = false;
-  };
 
   const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -325,7 +261,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     renderNumber.current = renderNumber.current + 1;
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (
       <form>
-        <select>123</select>
+        <select>defensive</select>
       </form>
     );
 
@@ -390,14 +326,12 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
             onClick={handlerOnEvent}
             onKeyUp={handlerOnEvent}
           >
-            {/* <form> */}
             <label className="queryCollection__label">
               {"Collection to query "}
               <select
                 name="collection"
                 id="formElement0"
                 onChange={() => {
-                  // setLocalChangeCollection(true);
                   booleanChangeCollectionQueryInput.current = true;
                   const presentForm = (document.querySelector(
                     "form"
@@ -406,7 +340,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
                       <select>123</select>
                     </form>
                   );
-                  // console.log(localChangeCollection);
+
                   console.log(booleanChangeCollectionQueryInput.current);
                   changeCollectionQueryInput.current = queryInputDefault(
                     (presentForm.elements[0] as HTMLFormElement).value
@@ -476,7 +410,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{localFilterCollection}</div>
               <div>{collectionState.queryInput.filterCollection}</div>
             </label>
-            {/* </form> */}
+
             <label className="queryCollection__label">
               {"Filter field "}
               <select

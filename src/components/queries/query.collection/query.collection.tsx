@@ -266,7 +266,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     renderNumber.current = renderNumber.current + 1;
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (
       <form>
-        <select>123</select>
+        <select>defensive</select>
       </form>
     );
 

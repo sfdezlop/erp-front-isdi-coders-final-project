@@ -22,11 +22,11 @@ export default function CollectionsGallery() {
     return Object.values(galleryCopy[i]);
   };
 
-  const recordsFieldsFunction = galleryCopy.map((item: Number) => {
+  const recordsFieldsFunction = galleryCopy.map((item: number) => {
     return recordFieldsFunction(galleryCopy.indexOf(item));
   });
 
-  const recordsDataFunction = galleryCopy.map((item: Number) => {
+  const recordsDataFunction = galleryCopy.map((item: number) => {
     return recordDataFunction(galleryCopy.indexOf(item));
   });
 
@@ -46,7 +46,7 @@ export default function CollectionsGallery() {
   }
 
   const recordJSX = (i: number) => {
-    let tempArray = [<div></div>];
+    let tempArray = [<div key="recordToBeShifted"></div>];
 
     const recordsFieldsDataArrayFiltered = recordsFieldsDataArray.filter(
       (item) => item.record === i
@@ -65,7 +65,7 @@ export default function CollectionsGallery() {
   };
 
   const recordsJSX = () => {
-    let tempArray = [<div>Hola</div>];
+    let tempArray = [<div key="recordToBeShifted"></div>];
 
     for (let i = 0; i < galleryCopy.length; i++) {
       tempArray = tempArray.concat(recordJSX(i));
@@ -80,7 +80,6 @@ export default function CollectionsGallery() {
         <h2 className="collectionsGallery__heading">
           {collectionState.queryInput.filterCollection}
         </h2>
-        {/* <div>{recordJSX(0)}</div> */}
 
         <div className="collectionsGallery__recordsContainer">
           {recordsJSX()}
@@ -90,7 +89,7 @@ export default function CollectionsGallery() {
   );
 }
 
-//JSX with for loop
+// Example of JSX Element with for
 // <div>
 //   {(() => {
 //     let records = [<div></div>];
@@ -107,63 +106,3 @@ export default function CollectionsGallery() {
 //     return records;
 //   })()}
 // </div>;
-
-// return (
-//   <>
-//     <div className="collectionsGallery">
-//       <h2 className="collectionsGallery__heading">
-//         {collectionState.queryInput.filterCollection}
-//       </h2>
-//       <div className="collectionsGallery__recordsContainer">
-//         {recordsFieldsDataArray.map((item) => (
-//           <div
-//             className="collectionsGallery__records"
-//             key={recordsFieldsDataArray.indexOf(item)}
-//           >
-//             <div>{item.field}</div>
-//             <div>{item.data}</div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   </>
-// );
-
-// return (
-//   <>
-//     <div className="collectionsGallery">
-//       <h2 className="collectionsGallery__heading">
-//         {collectionState.queryInput.filterCollection}
-//       </h2>
-//       <div className="collectionsGallery__recordsContainer">
-//         {galleryCopy.map((item: string) => (
-//           <div
-//             className="collectionsGallery__records"
-//             key={galleryCopy.indexOf(item) + "_galleryCopy"}
-//           >
-//             <ul className="collectionsGallery__fieldsContainer">
-//               {recordFields.map((item1) => (
-//                 <li
-//                   className="collectionsGallery__fields"
-//                   key={recordFields.indexOf(item1) + "_recordFields"}
-//                 >
-//                   {item1}
-//                 </li>
-//               ))}
-//             </ul>
-//             <ul className="collectionsGallery__dataContainer">
-//               {recordData.map((item2) => (
-//                 <li
-//                   className="collectionsGallery__data"
-//                   key={recordData.indexOf(item2) + "_recordData"}
-//                 >
-//                   {item2}
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   </>
-// );

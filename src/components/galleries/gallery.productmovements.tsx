@@ -44,9 +44,7 @@ export function ProductMovementsGallery() {
       if (confirmation) {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         deleteByKey(query);
-
         setRenderToAvoidConfirmMalfunction(renderToAvoidConfirmMalfunction + 1);
-      } else {
       }
     };
 
