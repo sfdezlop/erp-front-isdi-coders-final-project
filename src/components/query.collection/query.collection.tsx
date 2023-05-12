@@ -6,6 +6,7 @@ import { QueryInputCollectionStructure } from "../../models/collections.model";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
 import React from "react";
+import { stringSeparator } from "../../config";
 
 const componentFile = "query.collection.tsx";
 //To control the file and line of code where Hook functions are called
@@ -163,22 +164,26 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const collections = collectionState.queryFields.collections;
   const collectionFilterableFields =
     collectionState.queryFields.filterableFields
-      .filter((item) => item.split("_-_")[0] === localFilterCollection)
+      .filter(
+        (item) => item.split(stringSeparator)[0] === localFilterCollection
+      )
       .sort()
 
-      .map((item) => item.split("_-_")[1]);
+      .map((item) => item.split(stringSeparator)[1]);
   const collectionSearchableFields =
     collectionState.queryFields.searchableFields
-      .filter((item) => item.split("_-_")[0] === localFilterCollection)
+      .filter(
+        (item) => item.split(stringSeparator)[0] === localFilterCollection
+      )
       .sort()
 
-      .map((item) => item.split("_-_")[1]);
+      .map((item) => item.split(stringSeparator)[1]);
 
   const collectionOrderableFields = collectionState.queryFields.orderableFields
-    .filter((item) => item.split("_-_")[0] === localFilterCollection)
+    .filter((item) => item.split(stringSeparator)[0] === localFilterCollection)
     .sort()
 
-    .map((item) => item.split("_-_")[1]);
+    .map((item) => item.split(stringSeparator)[1]);
 
   const searchTypeOptions = [
     "Begins with",

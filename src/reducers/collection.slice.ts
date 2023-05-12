@@ -5,6 +5,7 @@ import {
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
 import { recordsPerSet } from "../components/query.collection/query.collection";
+import { stringSeparator } from "../config";
 
 export type CollectionStateStructure = {
   queryFields: QueryFieldsCollectionStructure;
@@ -15,9 +16,9 @@ export type CollectionStateStructure = {
 const initialStateFormCongruency = {
   queryFields: {
     collections: ["products"],
-    filterableFields: ["products_-_brand"],
-    searchableFields: ["products_-_sku"],
-    orderableFields: ["products_-_ean"],
+    filterableFields: ["products" + stringSeparator + "brand"],
+    searchableFields: ["products" + stringSeparator + "sku"],
+    orderableFields: ["products" + stringSeparator + "ean"],
   },
 };
 
@@ -32,19 +33,21 @@ export const initialState: CollectionStateStructure = {
     filterCollection: initialStateFormCongruency.queryFields.collections[0],
     filterField:
       initialStateFormCongruency.queryFields.filterableFields[0].split(
-        "_-_"
+        stringSeparator
       )[1],
     filterValue: "",
     searchField:
       initialStateFormCongruency.queryFields.searchableFields[0].split(
-        "_-_"
+        stringSeparator
       )[1],
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
     queryRecordsPerSet: recordsPerSet[0],
     orderField:
-      initialStateFormCongruency.queryFields.orderableFields[0].split("_-_")[1],
+      initialStateFormCongruency.queryFields.orderableFields[0].split(
+        stringSeparator
+      )[1],
     orderType: "asc",
     primaryKey: "",
     primaryKeyValue: "",

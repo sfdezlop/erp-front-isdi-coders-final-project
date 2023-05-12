@@ -14,6 +14,7 @@ import {
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
+import { stringSeparator } from "../config";
 
 export function useCollections(repo: CollectionsRepo) {
   const userState = useSelector((state: RootState) => state.userState);
@@ -63,13 +64,19 @@ export function useCollections(repo: CollectionsRepo) {
         collections: dataCollectionsResults,
         filterableFields: dataFieldsResults
           .filter((item) => item.filterable === true)
-          .map((item) => item.collectionName + "_-_" + item.fieldName),
+          .map(
+            (item) => item.collectionName + stringSeparator + item.fieldName
+          ),
         searchableFields: dataFieldsResults
           .filter((item) => item.searchable === true)
-          .map((item) => item.collectionName + "_-_" + item.fieldName),
+          .map(
+            (item) => item.collectionName + stringSeparator + item.fieldName
+          ),
         orderableFields: dataFieldsResults
           .filter((item) => item.orderable === true)
-          .map((item) => item.collectionName + "_-_" + item.fieldName),
+          .map(
+            (item) => item.collectionName + stringSeparator + item.fieldName
+          ),
       };
 
       dispatch(queryFields(queryFieldsData));
@@ -135,7 +142,8 @@ export function useCollections(repo: CollectionsRepo) {
           groupByQueryForQueriedCountServerRespond.results.filter((item) =>
             queryInputData.filterValue === ""
               ? item
-              : item._id.split("_-_")[0] === queryInputData.filterValue
+              : item._id.split(stringSeparator)[0] ===
+                queryInputData.filterValue
           );
         for (let i = 0; i < groupByFilteredServerRespondResults.length; i++) {
           acc = acc + groupByFilteredServerRespondResults[i].documents;
