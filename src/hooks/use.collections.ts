@@ -192,9 +192,9 @@ export function useCollections(repo: CollectionsRepo) {
         queriedCount: queriedCount(),
         unQueriedCount: unQueriedCount(),
         gallery: gallery.results,
-        galleryInterface: "custom",
+        galleryInterface: "raw",
         detail: [],
-        detailInterface: "custom",
+        detailInterface: "raw",
       };
 
       dispatch(queryInput(queryInputData));

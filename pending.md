@@ -55,11 +55,92 @@
 
 ## Architecture
 
-- Supermodel, router, controller and repos at back and front to avoid duplications of methods when the app grows in the number of db collections to manage.
 - Back-Front communications: Transmission of error messages from back to front. Update the type/interface of HTTPError in back t allow new field for internal code of the errors and create a wiki db collection with them to help back team to identify the source of the errors received by the users.
 - Persistance: Register of the front `store` object at the db to boost the persistance of the app. Transmit the last store saved when the `loginWithToken` tool of the `useUser` hook is used.
 
 # Development goals achieved
+
+## Architecture
+
+### Parametric Architecture in Services and UIs for any Collection (PASUIC)
+
+Only one parametric data model, repo, controller and router developed in the backend to manage all collections of database. Only one repo, hook, query component and query gallery to read and group by collections. This avoid duplications of code when the app grows in the number of collections to manage. The query component substitute the older filter component with new select features (collection, filter by any defined field of the collection and with online update of sets of values to filter by, search by any defined field of the collection with regex patters to customize the results, order by by any defined field of the collection with asc/desc options and pagination). The counter of documents for queried and non queried count works synchronized with the query.
+
+The parametrization works thanks to a new db collection called `appcollectionfields` with these fields to categorize their behavior:
+
+- `collectionName`: name of the collection, as it is defined on the db.
+- `fieldName`: name of the field at the collection, as it is defined on it.
+- `fieldShortDescription`: prepared to customize parametric UI components with a non technical naming instead of fieldName
+- `filterable`: boolean to include (true) or not (false) the field in the query component filter options
+- `searchable`: boolean to include (true) or not (false) the field in the query component search options
+- `orderable`: boolean to include (true) or not (false) the field in the query component order by options
+
+Once a new collection has been added to the backend (data model and Schema), all the services of the backend are extended to the new collection following these steps:
+
+1.- At mongo atlas: Add documents to collection `appcollectionfields` for each field of the collection and categorize their behavior giving values to their properties.
+
+2.- At backend, file `collections.mongo.repo.ts`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement in function `queryInputDefault`.
+
+3.- At frontend, file `query.collection.tsx`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement of each class method to include this collection to the their functionalities.
+
+### Standard methods for services
+
+(W02): In order to simplify code in the backend, the repo and controller methods have the same naming and serve as many services as usually are demanded in db management thank to the usage of an important range of parameters. The naming is inspired in the CRUD nomenclator and the services are inspired in the SQL query common statements (select, where, group, join, order). The available methods for all the collection added to the parametric architecture (PASUIC):
+
+- `readRecords`. supply the reading customized service of records using the `mongoose` methods `find`, `skip`, `limit` and `sort` with these request parameters:
+
+  - `collection`
+  - `filterField`
+  - `filterValue`: With the '(select all)' option that permits to include all the options in the query. The options are obtained by fetching to the collection in every query to maintain updated info.
+  - `searchField`
+  - `searchValue`
+  - `searchType`: With regex patters that allows to offer a variety of searching types ('Begins with', 'Ends with', 'Contains' and 'Exact Math').
+  - `querySet`
+  - `queryRecordsPerSet`
+  - `orderField`
+  - `orderType`
+
+- `readRecordFieldValue`: supply the reading customized service of the value for a field of a record using the `mongoose` method `aggregate` with `$match`, `$addFields` and `$project` pipeline stages. This microservice allows to obtain info from any record at a collection with related data in the collection, as an SQL left join query works giving the possibility of showing this data in a UI component. The input parameters of the request are:
+
+  - `collection`
+  - `searchField`: With possibility of searching by id, managing the special behavior of this ObjectId field to match an string
+  - `searchValue`
+  - `outputFieldName`
+    The method responds always with data, even if it's not supplied by the mongoose method without error, to simulate the left join query, informing of the outputStatus (ok, if the value exists, and ko, if it does not exist).
+
+- `groupBy`: supply the grouping customized service up to 2 fields with searching option, adding the service of counting records or adding any numeric field by groups, using the `mongoose` method `aggregate` with `$match`, `$addFields` (with `$concat`, `$arrayElemAt` and `$split`), `$project`, `$group` (with `$sum`), `$group` and `$sort` pipeline stages. This microservice allows to obtain info used in the query UI component to count documents. The input parameters of the request are:
+
+  - `collection`
+  - `firstGroupByField`
+  - `secondGroupByField`
+  - `searchField`
+  - `searchValue`
+  - `searchType`
+  - `aggregateSumField`: by default a `addedFieldForCountingDocuments` field (with a value of 1 for each document) is added to count documents, but it's possible to include another field to work out the aggregate sum of values.
+    The method responds always with data, even if it's not supplied by the mongoose method without error. The defensive result has always the same structure (`{results: [{ _id: stringSeparator, documents: 0, aggregateSumValue: 0 }]}`), which is a partial of the result structure when there are results, to properly manage the response at the frontend.
+
+- `groupBySet`: supply the grouping customized service to respond with the resultant set of values using the `mongoose` method `aggregate` with `$group` (with `$min`), `$project` and `$sort` pipeline stages. This microservice allows to obtain info used in the query UI component to show the available data set of values when a field is selected to filter. The input parameters of the request are:
+  - `collection`
+  - `groupByField`
+    The method responds always with data, even if it's not supplied by the mongoose method without error. The defensive result has always the same structure (`{results: [{ set: '' }]}`), which is a partial of the result structure when there are results, to properly manage the response at the frontend.
+
+The router distribute traffic for each method using as path the same name as the method:
+
+- `collectionsRouter.get('/readrecords/:id', logged, controller.readRecords.bind(controller))`
+- `collectionsRouter.get('/readrecordfieldvalue/:id', logged, controller.readRecordFieldValue.bind(controller))`
+- `collectionsRouter.get('/groupby/:id', logged, controller.groupBy.bind(controller))`
+- `collectionsRouter.get('/groupbyset/:id', logged, controller.groupBySet.bind(controller))`
+
+### Migration to GET Methods
+
+(W02): All requests to the backend in the new parametric architecture has been refactored from the former post methods (like those used by older filter components) to new get methods, standardizing the query send and using the decodeURI and decodeURI options or urls to avoid conflicts. A sample of uri requests for each service are:
+
+- `readRecords`: /collections/readrecords/&collection=productmovements&filterfield=type&filtervalue=Compra&searchfield=productSku&searchvalue=2640&searchtype=Begins%20with&queryset=1&queryrecordsperset=4&orderfield=id&ordertype=asc&controlnfo=
+- `readRecordFieldValue`: /collections/readrecordfieldvalue/&collection=products&searchfield=\_id&searchvalue=641900273cdabdb1c8fd1861&outputfieldname=sku&controlinfo=
+- `groupBy`: /collections/groupby/&collection=products&firstgroupbyfield=brand&secondgroupbyfield=brand&searchfield=brand&searchvalue=&searchtype=Contains&aggregatesumfield=addedFieldForCountingDocuments&controlnfo=
+- `groupBySet`: /collections/groupbyset/&collection=appcollectionfields&groupbyfield=collectionName
+
+Please note that all the requests from the front end use at the end of the query a parameter `controlInfo` that can be used to identify e.g. the line of code where the method has been called for better debugging.
 
 ## Login
 

@@ -108,6 +108,21 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   function queryInputDefault(collection: string) {
     let queryInputDefaultObject;
     switch (collection) {
+      case "productmovements":
+        return (queryInputDefaultObject = {
+          filterCollection: "productmovements",
+          filterField: "type",
+          filterValue: "",
+          searchField: "batch",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: recordsPerSet[1],
+          orderField: "date",
+          orderType: "desc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        });
       case "products":
         return (queryInputDefaultObject = {
           filterCollection: "products",
@@ -124,17 +139,17 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
           primaryKeyValue: "",
         });
 
-      case "productmovements":
+      case "users":
         return (queryInputDefaultObject = {
-          filterCollection: "productmovements",
-          filterField: "type",
+          filterCollection: "users",
+          filterField: "role",
           filterValue: "",
-          searchField: "batch",
+          searchField: "lastName",
           searchValue: "",
           searchType: "Contains",
           querySet: 1,
           queryRecordsPerSet: recordsPerSet[1],
-          orderField: "date",
+          orderField: "lastLogging",
           orderType: "desc",
           primaryKey: "",
           primaryKeyValue: "",
