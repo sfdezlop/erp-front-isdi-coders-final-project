@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import "./dashboard.page.css";
+import "./page.dashboard.css";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useProductMovements } from "../../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";

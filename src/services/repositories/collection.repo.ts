@@ -1,6 +1,5 @@
 import { url_def } from "../../config";
 import {
-  CollectionStructure,
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
@@ -13,13 +12,15 @@ export class CollectionsRepo {
     this.url = url_def;
   }
 
-  async read(
+  async readRecords(
     query: QueryInputCollectionStructure,
-    token: string
+
+    token: string,
+    controlInfo: string
   ): Promise<{ results: [] }> {
     const url = encodeURI(
       this.url +
-        "/collections/read/&collection=" +
+        "/collections/readrecords/&collection=" +
         query.filterCollection +
         "&filterfield=" +
         query.filterField +
@@ -38,7 +39,9 @@ export class CollectionsRepo {
         "&orderfield=" +
         query.orderField +
         "&ordertype=" +
-        query.orderType
+        query.orderType +
+        "&controlinfo=" +
+        controlInfo
     );
 
     const resp = await fetch(url, {
@@ -51,7 +54,7 @@ export class CollectionsRepo {
 
     if (!resp.ok)
       throw new Error(
-        `Error http reading collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+        `Error http reading records at collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();
@@ -61,7 +64,8 @@ export class CollectionsRepo {
 
   async groupBy(
     query: GroupByQueryCollectionStructure,
-    token: string
+    token: string,
+    controlInfo: string
   ): Promise<{
     results: { _id: string; documents: number; aggregateSumValue: number }[];
   }> {
@@ -80,7 +84,9 @@ export class CollectionsRepo {
         "&searchtype=" +
         query.searchType +
         "&aggregatesumfield=" +
-        query.aggregateSumField
+        query.aggregateSumField +
+        "&controlinfo=" +
+        controlInfo
     );
 
     const resp = await fetch(url, {
@@ -103,14 +109,17 @@ export class CollectionsRepo {
 
   async groupBySet(
     query: GroupBySetQueryCollectionStructure,
-    token: string
+    token: string,
+    controlInfo: string
   ): Promise<{ results: string[] }> {
     const url = encodeURI(
       this.url +
         "/collections/groupbyset/&collection=" +
         query.filterCollection +
         "&groupbyfield=" +
-        query.groupByField
+        query.groupByField +
+        "&controlinfo=" +
+        controlInfo
     );
 
     const resp = await fetch(url, {

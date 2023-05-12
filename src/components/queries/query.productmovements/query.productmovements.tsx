@@ -1,10 +1,10 @@
 import { SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useProductMovements } from "../../hooks/use.productmovements";
-import { ProductMovementsRepo } from "../../services/repositories/productmovement.repo";
-import { RootState } from "../../store/store";
-import "../filter.products/filter.products.css";
+import { useProductMovements } from "../../../hooks/use.productmovements";
+import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
+import { RootState } from "../../../store/store";
+import "./query.productmovements.css";
 
 export function FilterProductMovements() {
   const navigate = useNavigate();
@@ -85,13 +85,13 @@ export function FilterProductMovements() {
   );
 
   const maximumPages =
-    Math.floor(filteredCountData / filterRecordsPerSetDefault) <
+    Math.floor(filteredCountData / filterRecordsPerSetDefault) ===
     filteredCountData / filterRecordsPerSetDefault
       ? Math.floor(filteredCountData / filterRecordsPerSetDefault)
       : Math.floor(filteredCountData / filterRecordsPerSetDefault) + 1;
 
   const pagesArray = [];
-  for (let i = 1; i <= maximumPages + 1; i++) {
+  for (let i = 1; i <= maximumPages; i++) {
     pagesArray.push(i);
   }
 
@@ -120,60 +120,65 @@ export function FilterProductMovements() {
 
   return (
     <>
-      <div className="filter_forms">
+      <div className="filterProductMovements_forms">
         <div>
           <form
-            className="filter__form"
+            className="filterProductMovements__form"
             onSubmit={handlerFilterSubmit}
             onChange={handlerFilterSubmit}
           >
             <label>Select a movement type:</label>
             <select
-              name="marcas"
-              className="filter__selectField"
+              className="filterProductMovements__selectField"
               defaultValue={filterValueDefault}
             >
               {filterValueDefault}
               {filterOptionsArrayWithAllAndOrdered.map((item: string) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProductMovements__option" key={item}>
                   {item}
                 </option>
               ))}
             </select>
             <label>Order by:</label>
             <select
-              className="filter__orderByField"
+              className="filterProductMovements__orderByField"
               defaultValue={orderFieldDefault}
             >
               {orderFieldDefault}
               {orderByFields.map((item) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProductMovements__option" key={item}>
                   {item}
                 </option>
               ))}
             </select>
             <label>Order type:</label>
             <select
-              className="filter__orderType"
+              className="filterProductMovements__orderType"
               defaultValue={orderTypeDefault}
             >
               {orderTypeDefault}
 
-              <option className="orderType__option" key={"asc"}>
+              <option
+                className="filterProductMovementsOrderType__option"
+                key={"asc"}
+              >
                 {"asc"}
               </option>
-              <option className="orderType__option" key={"desc"}>
+              <option
+                className="filterProductMovementsOrderType__option"
+                key={"desc"}
+              >
                 {"desc"}
               </option>
             </select>
             <label>Records to show per page:</label>
             <select
-              className="filter__recordsPerSet"
+              className="filterProductMovements__recordsPerSet"
               defaultValue={filterRecordsPerSetDefault}
             >
               {filterRecordsPerSetDefault}
               {recordsPerSetArray.map((item) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProductMovements__option" key={item}>
                   {item}
                 </option>
               ))}
@@ -183,19 +188,22 @@ export function FilterProductMovements() {
         </div>
         <div>
           <form
-            className="pagination__form"
+            className="filterProductMovementsPagination__form"
             onSubmit={handlerPaginationSubmit}
             onChange={handlerPaginationSubmit}
           >
             <p>Unfiltered records: {unFilteredCountData}</p>
             <p>Filtered records: {filteredCountData}</p>
 
-            <p>Available pages: {maximumPages + 1}</p>
+            <p>Available pages: {maximumPages}</p>
             <p>Page shown: {pageDefault}</p>
-            <select className="pagination__pages" defaultValue={pageDefault}>
+            <select
+              className="filterProductMovementsPagination__pages"
+              defaultValue={pageDefault}
+            >
               {pageDefault}
               {pagesArray.map((item) => (
-                <option className="filter__option" key={item}>
+                <option className="filterProductMovements__option" key={item}>
                   {item}
                 </option>
               ))}

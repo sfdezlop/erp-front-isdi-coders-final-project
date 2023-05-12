@@ -4,6 +4,7 @@ import {
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
 } from "../models/collections.model";
+import { stringSeparator } from "../config";
 
 export type CollectionStateStructure = {
   queryFields: QueryFieldsCollectionStructure;
@@ -11,35 +12,55 @@ export type CollectionStateStructure = {
   queryOutput: QueryOutputCollectionStructure;
 };
 
+const initialStateFormCongruency = {
+  queryFields: {
+    collections: ["products"],
+    filterableFields: ["products" + stringSeparator + "brand"],
+    searchableFields: ["products" + stringSeparator + "sku"],
+    orderableFields: ["products" + stringSeparator + "ean"],
+  },
+};
+
+export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
+
 export const initialState: CollectionStateStructure = {
   queryFields: {
-    collections: ["products", "productmovements"],
-    filterableFields: ["products_-_brand", "products_-_userCreator"],
-    searchableFields: ["products_-_brand", "products_-_sku"],
-    orderableFields: ["products_-_brand", "products_-_sku"],
+    collections: initialStateFormCongruency.queryFields.collections,
+    filterableFields: initialStateFormCongruency.queryFields.filterableFields,
+    searchableFields: initialStateFormCongruency.queryFields.searchableFields,
+    orderableFields: initialStateFormCongruency.queryFields.orderableFields,
   },
   queryInput: {
-    filterCollection: "products",
-    filterField: "brand",
-    filterValue: "(select all)",
-    searchField: "brand",
+    filterCollection: initialStateFormCongruency.queryFields.collections[0],
+    filterField:
+      initialStateFormCongruency.queryFields.filterableFields[0].split(
+        stringSeparator
+      )[1],
+    filterValue: "",
+    searchField:
+      initialStateFormCongruency.queryFields.searchableFields[0].split(
+        stringSeparator
+      )[1],
     searchValue: "",
     searchType: "Contains",
     querySet: 1,
-    queryRecordsPerSet: 4,
-    orderField: "brand",
+    queryRecordsPerSet: recordsPerSet[0],
+    orderField:
+      initialStateFormCongruency.queryFields.orderableFields[0].split(
+        stringSeparator
+      )[1],
     orderType: "asc",
-    primaryKey: "sku",
+    primaryKey: "",
     primaryKeyValue: "",
   },
   queryOutput: {
-    filterValueOptionsShown: ["Flores de Bach", "Yogi Tea"],
+    filterValueOptionsShown: [],
     pageShown: 1,
     queriedCount: 1,
     unQueriedCount: 1,
     gallery: [
       {
-        id: "id",
+        id: "123456",
         sku: "Sku",
         shortDescription: "Short Description",
         longDescription: "Long Description",
@@ -51,6 +72,7 @@ export const initialState: CollectionStateStructure = {
         pricePerUnit: 0,
       },
     ],
+    galleryInterface: "custom",
     detail: [
       {
         id: "id",
@@ -65,6 +87,7 @@ export const initialState: CollectionStateStructure = {
         pricePerUnit: 0,
       },
     ],
+    detailInterface: "custom",
   },
 };
 

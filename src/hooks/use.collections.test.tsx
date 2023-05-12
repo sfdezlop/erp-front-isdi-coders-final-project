@@ -17,22 +17,33 @@ describe("Given the useCollection hook", () => {
 
   beforeEach(async () => {
     mockPayload = {
+      queryFields: {},
       queryInput: {},
       queryOutput: {},
     } as unknown as CollectionStateStructure;
 
     mockRepo = {
-      read: jest.fn(),
+      readRecords: jest.fn(),
+      groupBy: jest.fn(),
+      groupBySet: jest.fn(),
     } as unknown as CollectionsRepo;
 
     mockResponse = [{ id: "mock" }];
 
     const TestComponent = function () {
-      const { updateQueryInput, updateQueryOutput } = useCollections(mockRepo);
+      const { updateQueryFields, updateQueryInput, updateQueryOutput } =
+        useCollections(mockRepo);
 
       return (
         <>
-          <button onClick={() => updateQueryInput(mockPayload.queryInput)}>
+          <button onClick={() => updateQueryFields("mockControlInfo")}>
+            updateQueryFields
+          </button>
+          <button
+            onClick={() =>
+              updateQueryInput(mockPayload.queryInput, "mockControlInfo")
+            }
+          >
             updateQueryInput
           </button>
           <button onClick={() => updateQueryOutput(mockPayload.queryOutput)}>
@@ -54,28 +65,35 @@ describe("Given the useCollection hook", () => {
   });
 
   describe("When the TestComponent is rendered", () => {
-    test("Then the 2 buttons should be in the document", async () => {
+    test("Then the 3 buttons should be in the document", async () => {
       const elements = await screen.findAllByRole("button");
-      expect(elements.length).toEqual(2);
+      expect(elements.length).toEqual(3);
     });
   });
 
-  describe("When the updateQueryInput button of TestComponent is clicked", () => {
-    test("Then the read method of the repo should be called, and the value of queryInput property of collectionState should be the mockPayload", async () => {
+  describe("When the updateQueryFields button of TestComponent is clicked", () => {
+    test("Then the groupBySet method of the repo should be called", async () => {
       const elements = await screen.findAllByRole("button");
-      (mockRepo.read as jest.Mock).mockResolvedValueOnce(mockResponse);
-      await act(async () => userEvent.click(elements[0]));
-      const queryInput = store.getState().collectionState.queryInput;
 
-      expect(queryInput).toEqual(mockPayload.queryInput);
-      expect(mockRepo.read).toHaveBeenCalled();
+      (mockRepo.groupBySet as jest.Mock).mockResolvedValueOnce(mockResponse);
+      await act(async () => userEvent.click(elements[0]));
+
+      expect(mockRepo.groupBySet).toHaveBeenCalled();
+    });
+  });
+  describe("When the updateQueryInput button of TestComponent is clicked", () => {
+    test("Then the readRecords method of the repo should be called", async () => {
+      const elements = await screen.findAllByRole("button");
+      (mockRepo.readRecords as jest.Mock).mockResolvedValueOnce(mockResponse);
+      await act(async () => userEvent.click(elements[1]));
+      expect(mockRepo.readRecords).toHaveBeenCalled();
     });
   });
 
   describe("When the updateQueryOutput button of TestComponent is clicked", () => {
     test("Then the value of queryOutput property of collectionState should be the mockPayload", async () => {
       const elements = await screen.findAllByRole("button");
-      await act(async () => userEvent.click(elements[1]));
+      await act(async () => userEvent.click(elements[2]));
       const queryOutput = store.getState().collectionState.queryOutput;
 
       expect(queryOutput).toEqual(mockPayload.queryOutput);

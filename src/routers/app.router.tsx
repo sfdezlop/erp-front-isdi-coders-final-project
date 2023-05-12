@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { MenuOption } from "../components/menu/menu";
 import { Login } from "../components/login/login";
-import DetailPage from "../components/pages/detail/detail.page";
-import HomePage from "../components/pages/home/home.page";
-import MovementsPage from "../components/pages/movements/movements.page";
-import ProductsPage from "../components/pages/products/products.page";
+import DetailPage from "../components/pages/details/page.detail.product";
+import HomePage from "../components/pages/home/page.home";
+import MovementsPage from "../components/pages/productmovements/page.productmovements";
+import ProductsPage from "../components/pages/products/page.products";
 import { ErrorLog } from "../components/errorlog/errorlog";
-import DashboardPage from "../components/pages/dashboard/dashboard.page";
-import CollectionPage from "../components/pages/collection/collection.page";
+import DashboardPage from "../components/pages/dashboard/page.dashboard";
+import CollectionPage from "../components/pages/collection/page.collection";
 
 // import { lazy, Suspense } from "react";
 // const HomePage = lazy(() => import("../pages/home/home.page"));
@@ -44,7 +44,7 @@ export function AppRouter({ options }: AppRouterProps) {
       ></Route>
       <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>{" "}
       <Route
-        path="/collections/:filter"
+        path="/collections/:collection"
         element={<CollectionPage></CollectionPage>}
       ></Route>
     </Routes>

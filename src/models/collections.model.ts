@@ -1,11 +1,3 @@
-// export const collections = ["products", "productmovements", "users"];
-
-// export type CollectionNameStructure =
-//   | "appcollectionfields"
-//   | "products"
-//   | "productmovements"
-//   | "users";
-
 //Collection documents types and samples
 
 export type AppCollectionField = {
@@ -43,7 +35,7 @@ export const productStructureSample: ProductStructure = {
   costPerUnit: 0,
   pricePerUnit: 0,
 };
-// const productStructureFields = Object.keys(productStructureSample);
+
 export type ProductMovementStructure = {
   id: string;
   productSku: string;
@@ -69,9 +61,7 @@ export const productMovementStructureSample: ProductMovementStructure = {
   costPerUnit: 0,
   pricePerUnit: 0,
 };
-// const productMovementStructureFields = Object.keys(
-//   productMovementStructureSample
-// );
+
 export type UserStructure = {
   id: string;
   email: string;
@@ -94,30 +84,11 @@ export const userStructureSample: UserStructure = {
   lastLogging: "Last logging",
 };
 
-// const userStructureFields = Object.keys(userStructureSample);
-
-// const collectionFieldsCreator = () => {
-//   let collectionFields = [{ collection: "", field: "" }];
-//   collectionFields.shift();
-//   productStructureFields.forEach((element) =>
-//     collectionFields.push({ collection: "products", field: element })
-//   );
-//   productMovementStructureFields.forEach((element) =>
-//     collectionFields.push({ collection: "productmovements", field: element })
-//   );
-//   userStructureFields.forEach((element) =>
-//     collectionFields.push({ collection: "users", field: element })
-//   );
-//   return collectionFields;
-// };
-
-// export const collectionFields = collectionFieldsCreator();
-
 export type CollectionStructure = ProductStructure &
   ProductMovementStructure &
   UserStructure;
 
-// collectionState Types:
+// CollectionState Types:
 
 export type QueryFieldsCollectionStructure = {
   collections: string[];
@@ -132,12 +103,12 @@ export type QueryInputCollectionStructure = {
   searchField: string;
   searchValue: string;
   searchType: string;
-  // "Begins with" | "Contains" | "Ends with" | "Exact match"
+  //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
   querySet: number;
   queryRecordsPerSet: number;
   orderField: string;
   orderType: string;
-  // "asc" | "desc"
+  //Options to use in the app: "asc" | "desc"
   primaryKey: string;
   primaryKeyValue: string;
 };
@@ -148,10 +119,12 @@ export type QueryOutputCollectionStructure = {
   queriedCount: number;
   unQueriedCount: number;
   gallery: Partial<CollectionStructure>[];
+  galleryInterface: string;
   detail: Partial<CollectionStructure>[];
+  detailInterface: string;
 };
 
-//useCollection hook parameter types
+//UseCollection hook parameter types:
 
 export type ReadQueryCollectionStructure = {
   filterCollection: string;
@@ -160,12 +133,12 @@ export type ReadQueryCollectionStructure = {
   searchField: string;
   searchValue: string;
   searchType: string;
-  // "Begins with" | "Contains" | "Ends with" | "Exact match"
+  //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
   querySet: number;
   queryRecordsPerSet: number;
   orderField: string;
   orderType: string;
-  // "asc" | "desc"
+  //Options to use in the app: "asc" | "desc"
   primaryKey: string;
   primaryKeyValue: string | number;
 };
@@ -177,7 +150,7 @@ export type GroupByQueryCollectionStructure = {
   searchField: string;
   searchValue: string;
   searchType: string;
-  // "Begins with" | "Contains" | "Ends with" | "Exact match"
+  //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
   aggregateSumField: string;
 };
 

@@ -1,5 +1,5 @@
 .productsGallery {
-  height: 84vh;
+  height: 76vh;
 }
 
 .productsGallery__heading {
@@ -11,7 +11,8 @@
 
 .productsGallery__container {
   background-color: white;
-  height: 71vh;
+  height: 64vh;
+  width: 99%;
   overflow-y: scroll;
   padding-top: 1vh;
   padding-bottom: 1vh;
@@ -29,12 +30,10 @@
 }
 
 .productsGalleryCard {
-  /* width: calc(20% - 0.1vh); */
   border-style: solid;
   border-width: 0.2px;
   border-color: #4472c4;
   border-radius: 2%;
-
   max-width: 20%;
   min-width: 300px;
   min-height: 25%;

@@ -4,24 +4,24 @@ import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter as Router } from "react-router-dom";
 import { store } from "../../../store/store";
-import DetailPage from "./detail.page";
+import { FilterProductMovements } from "./query.productmovements";
 
-describe("Given the DetailPage component", () => {
+describe("Given the FilterProductMovements component", () => {
   beforeEach(async () => {
     await act(async () => {
       render(
         <Provider store={store}>
           <Router>
-            <DetailPage></DetailPage>
+            <FilterProductMovements></FilterProductMovements>
           </Router>
         </Provider>
       );
     });
   });
 
-  describe("When the DetailPage component is rendered", () => {
-    test("Then it should contain the heading role", () => {
-      const elements = screen.getAllByRole("heading");
+  describe("When the filter component is rendered", () => {
+    test("Then it should contain the combobox role", () => {
+      const elements = screen.getAllByRole("combobox");
       expect(elements[0]).toBeInTheDocument();
     });
   });
