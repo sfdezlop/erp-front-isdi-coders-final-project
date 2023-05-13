@@ -71,6 +71,7 @@ export type UserStructure = {
   role: string;
   image: string;
   lastLogging: string;
+  language: string;
 };
 
 export const userStructureSample: UserStructure = {
@@ -82,6 +83,7 @@ export const userStructureSample: UserStructure = {
   role: "Role",
   image: "Image url",
   lastLogging: "Last logging",
+  language: "es",
 };
 
 export type CollectionStructure = ProductStructure &

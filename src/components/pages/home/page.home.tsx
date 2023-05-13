@@ -3,13 +3,7 @@ import { RootState } from "../../../store/store";
 import "./page.home.css";
 
 export default function HomePage() {
-  const userLoggedObject = useSelector(
-    (state: RootState) => state.userState.userLogged
-  );
-
-  const userLoggedToken = useSelector(
-    (state: RootState) => state.userState.userLoggedToken
-  );
+  const userState = useSelector((state: RootState) => state.userState);
 
   return (
     <>
@@ -19,12 +13,15 @@ export default function HomePage() {
           <section className="homePage__userLoggedProfile">
             <div>
               User logged:{" "}
-              {userLoggedObject.firstName + " " + userLoggedObject.lastName}
+              {userState.userLogged.firstName +
+                " " +
+                userState.userLogged.lastName}
             </div>
-            <div>Email: {userLoggedObject.email}</div>
-            <div>Rol: {userLoggedObject.role}</div>
+            <div>Email: {userState.userLogged.email}</div>
+            <div>Language: {userState.userLogged.language}</div>
+            <div>Rol: {userState.userLogged.role}</div>
             <div className="homePage__token">
-              Token at userState: {userLoggedToken}
+              Token at userState: {userState.userLoggedToken}
             </div>
             <div className="homePage__token">
               Token at localStorage: {localStorage.getItem("tokenERP")}

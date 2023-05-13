@@ -2,10 +2,48 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import "./gallery.collections.css";
 
+const translator = (originalText: string, language: string): string => {
+  const translatorDB = [
+    {
+      inputText: "longDescription",
+      outputTexts: [
+        { isoCode: "es", outputText: "descripción larga" },
+        { isoCode: "en", outputText: "long description" },
+      ],
+    },
+    {
+      inputText: "shortDescription",
+      outputTexts: [
+        { isoCode: "es", outputText: "descripción corta" },
+        { isoCode: "en", outputText: "short description" },
+      ],
+    },
+    {
+      inputText: "brand",
+      outputTexts: [
+        { isoCode: "es", outputText: "marca" },
+        { isoCode: "en", outputText: "brand" },
+      ],
+    },
+  ];
+
+  const translatorDBFilteredByInputText = translatorDB.filter(
+    (element) => element.inputText === originalText
+  );
+
+  if (translatorDBFilteredByInputText.length === 0) return originalText;
+
+  return translatorDBFilteredByInputText[0].outputTexts.filter(
+    (element) => element.isoCode === language
+  )[0].outputText;
+};
+
 export default function CollectionsGallery() {
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
+
+  const userState = useSelector((state: RootState) => state.userState);
 
   const galleryCopy = Object.assign(collectionState.queryOutput.gallery);
 
@@ -29,7 +67,7 @@ export default function CollectionsGallery() {
 
   let recordsFieldsDataArray: {
     record: number;
-    field: number;
+    field: string;
     data: string;
   }[] = [];
 
@@ -58,9 +96,14 @@ export default function CollectionsGallery() {
             "_keyvalue" +
             recordsFieldsDataArrayFiltered.indexOf(item)
           }
-          className="collectionsGallery__fieldDataContainer"
         >
-          {item.field + ": " + item.data}
+          <div className="collectionGalleryCard_fieldData">
+            <div className="collectionGalleryCard_field">
+              {translator(item.field, userState.userLogged.language) + ": "}
+            </div>
+            <div></div>
+            <div className="collectionGalleryCard_data">{item.data}</div>
+          </div>
         </div>
       )
     );
@@ -75,9 +118,7 @@ export default function CollectionsGallery() {
     //   );
     // }
     tempArray.shift();
-    return (
-      <div className="collectionsGallery__recordContainer">{tempArray}</div>
-    );
+    return <li className="collectionGalleryCard">{tempArray}</li>;
   };
 
   const recordsJSX = () => {
@@ -103,8 +144,8 @@ export default function CollectionsGallery() {
           {collectionState.queryInput.filterCollection}
         </h2>
 
-        <div className="collectionsGallery__recordsContainer">
-          {recordsJSX()}
+        <div className="collectionsGallery__container">
+          <ul className="collectionsGallery__list">{recordsJSX()}</ul>
         </div>
       </div>
     </>

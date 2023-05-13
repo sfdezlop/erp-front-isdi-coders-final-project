@@ -24,6 +24,7 @@ const mockFinalState: UserStateStructure = {
     role: "mockRole",
     image: "mockImage",
     lastLogging: "mockLastLogging",
+    language: "es",
   },
   userLoggedMenuOptions: [
     { label: "mockLabel", path: "mockPath" },
