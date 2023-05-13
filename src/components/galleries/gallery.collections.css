@@ -13,30 +13,25 @@
 }
 
 .collectionsGallery__recordsContainer {
-  display: flex;
-  flex-direction: column;
   height: 65vh;
   margin-left: 1rem;
   margin-top: 0.1rem;
   overflow-y: scroll;
-  gap: 2vh;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.collectionsGallery__records {
+.collectionsGallery__recordContainer {
   display: flex;
   flex-direction: column;
   border-style: solid;
-  gap: 0.3vh;
+  border-radius: 2%;
+  padding: 0.5rem;
+  max-width: 20%;
+  height: auto;
 }
 
-.collectionsGallery__fieldsContainer,
-.collectionsGallery__dataContainer {
-  display: flex;
-  flex-direction: row;
-}
-
-.collectionsGallery__fields,
-.collectionsGallery__data {
-  list-style: none;
-  width: 20%;
+.collectionsGallery__fieldDataContainer {
 }
