@@ -64,28 +64,28 @@
 
 ### Parametric Architecture in Services and UIs for any Collection (PASUIC)
 
-Only one parametric data model, repo, controller and router developed in the backend to manage all collections of database. Only one repo, hook, query component and query gallery to read and group by collections. This avoid duplications of code when the app grows in the number of collections to manage. The query component substitute the older filter component with new select features (collection, filter by any defined field of the collection and with online update of sets of values to filter by, search by any defined field of the collection with regex patters to customize the results, order by by any defined field of the collection with asc/desc options and pagination). The counter of documents for queried and non queried count works synchronized with the query.
+Only one parametric data model, repo, controller and router developed in the backend to manage all collections of database. Only one repo, hook, query component and query gallery to read and group by collections. This avoid duplications of code when the app grows in the number of collections to manage. The query component substitute the former approach of filter components (using POST methods) adding new features (selection of collection, filter by any defined field of the collection as filterable (see below) and with online update of sets of values to filter by, search by any defined field of the collection as searchable (see below) with regex patters to customize the results, order by by any defined field of the collection as searchable (see below) with asc/desc options and pagination). The counter of documents for queried and non queried count works simultaneously with the query to supply a consistent info about the results of the query at the UI components of the frontend.
 
-The parametrization works thanks to a new db collection called `appcollectionfields` with these fields to categorize their behavior:
+The parametrization works thanks to a new database collection called `appcollectionfields` with the following fields to categorize their behavior at the UI components of the frontend:
 
 - `collectionName`: name of the collection, as it is defined on the db.
-- `fieldName`: name of the field at the collection, as it is defined on it.
-- `fieldShortDescription`: prepared to customize parametric UI components with a non technical naming instead of fieldName
-- `filterable`: boolean to include (true) or not (false) the field in the query component filter options
-- `searchable`: boolean to include (true) or not (false) the field in the query component search options
-- `orderable`: boolean to include (true) or not (false) the field in the query component order by options
+- `fieldName`: name of the field at the collection, as it is defined on it. For mongodb field `_id` use `id` as `fieldName`.
+- `fieldShortDescription`: prepared to customize parametric UI components with a non technical naming instead of '`fieldName`'.
+- `filterable`: boolean to include (`true`) or not (`false`) the field in the query component filter options. For `fieldName===id`, set this property to `false`, because even if the `readRecords` repo method (see definitions below) has defensive code to work with the `id` `ObjectId` field, the `groupBy` and `groupBySet` repo methods (based on pipelines) does not work with `ObjectId` fields. As UI gallery component need the 3 repo methods to work with simultaneously (for reading documents, offer grouped distinct values to filter and count documents), this property must be set as `false` for any `ObjectId` fields at the collection.
+- `searchable`: boolean to include (`true`) or not (`false`) the field in the query component search options. This property must be set as `false` for any `ObjectId` fields at the collection
+- `orderable`: boolean to include (`true`) or not (`false`) the field in the query component order by options. This property must be set as `false` for any `ObjectId` fields at the collection
 
-Once a new collection has been added to the backend (data model and Schema), all the services of the backend are extended to the new collection following these steps:
+Once a new collection has been added to the backend (data model and Schema), all the services of the backend are extended to the new collection following only 3 steps:
 
-1.- At mongo atlas: Add documents to collection `appcollectionfields` for each field of the collection and categorize their behavior giving values to their properties.
+1.- At mongo atlas: Add documents to collection `appcollectionfields` for each field of the collection and categorize their behavior giving values to their properties. Please, remember that any field containing `ObjectId` values is set as `false` for fields `filterable`, `searchable` and `orderable` to prevent data inconsistences at UI components in the frontend.
 
 2.- At backend, file `collections.mongo.repo.ts`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement in function `queryInputDefault`.
 
-3.- At frontend, file `query.collection.tsx`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement of each class method to include this collection to the their functionalities.
+3.- At frontend, file `query.collection.tsx`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement of each class method to include this collection to the their functionalities. Please note that if in the properties of the mongo `Schema` at the backend one/any of the field/s is/are disabled in the `transform(document, returnedObject)` settings, this/these field/s will not be shown in the UI components, as there are not supplied by mongo db (e.g. `passwd` field at `userSchema`)
 
 ### Standard methods for services
 
-(W02): In order to simplify code in the backend, the repo and controller methods have the same naming and serve as many services as usually are demanded in db management thank to the usage of an important range of parameters. The naming is inspired in the CRUD nomenclator and the services are inspired in the SQL query common statements (select, where, group, join, order). The available methods for all the collection added to the parametric architecture (PASUIC):
+In order to simplify code in the backend, the repo and controller methods have the same naming and serve as many services as usually are demanded in database management, thanks to the intensive usage of a range of parameters. The naming is inspired in the CRUD nomenclator and the services are inspired in the SQL query common statements (select, where, group, join, order). The available methods for all the collection added to the parametric architecture (PASUIC):
 
 - `readRecords`. supply the reading customized service of records using the `mongoose` methods `find`, `skip`, `limit` and `sort` with these request parameters:
 
@@ -124,23 +124,52 @@ Once a new collection has been added to the backend (data model and Schema), all
   - `groupByField`
     The method responds always with data, even if it's not supplied by the mongoose method without error. The defensive result has always the same structure (`{results: [{ set: '' }]}`), which is a partial of the result structure when there are results, to properly manage the response at the frontend.
 
-The router distribute traffic for each method using as path the same name as the method:
+This strategy allows to work with a nearly 'global' endpoint ('/collections') to manage almost all the needed services (other specific services as users management and obtaining analytics should maintain their endpoints).
+The `router` for endpoint '/collections' distribute traffic for each method using as `path` the same naming used for the repo methods:
 
 - `collectionsRouter.get('/readrecords/:id', logged, controller.readRecords.bind(controller))`
 - `collectionsRouter.get('/readrecordfieldvalue/:id', logged, controller.readRecordFieldValue.bind(controller))`
 - `collectionsRouter.get('/groupby/:id', logged, controller.groupBy.bind(controller))`
 - `collectionsRouter.get('/groupbyset/:id', logged, controller.groupBySet.bind(controller))`
 
-### Migration to GET Methods
+### Migration to GET methods
 
-(W02): All requests to the backend in the new parametric architecture has been refactored from the former post methods (like those used by older filter components) to new get methods, standardizing the query send and using the decodeURI and decodeURI options or urls to avoid conflicts. A sample of uri requests for each service are:
+All requests to the backend in the new parametric architecture has been refactored from the former POST http methods approach (like those used by older filter UI components) to a new GET methods, standardizing the query send and using the decodeURI and decodeURI options or urls to avoid conflicts. A sample of uri requests for each service are:
 
 - `readRecords`: /collections/readrecords/&collection=productmovements&filterfield=type&filtervalue=Compra&searchfield=productSku&searchvalue=2640&searchtype=Begins%20with&queryset=1&queryrecordsperset=4&orderfield=id&ordertype=asc&controlnfo=
 - `readRecordFieldValue`: /collections/readrecordfieldvalue/&collection=products&searchfield=\_id&searchvalue=641900273cdabdb1c8fd1861&outputfieldname=sku&controlinfo=
 - `groupBy`: /collections/groupby/&collection=products&firstgroupbyfield=brand&secondgroupbyfield=brand&searchfield=brand&searchvalue=&searchtype=Contains&aggregatesumfield=addedFieldForCountingDocuments&controlnfo=
 - `groupBySet`: /collections/groupbyset/&collection=appcollectionfields&groupbyfield=collectionName
 
-Please note that all the requests from the front end use at the end of the query a parameter `controlInfo` that can be used to identify e.g. the line of code where the method has been called for better debugging.
+Please note that all the requests from the frontend use at the end of the query a parameter `controlInfo` that can be used to identify e.g. the line of code where the method has been called for better debugging.
+
+PENDING:
+
+- This migration to GET methods will facilitate the persistance of pages after forced updates by user, implementing a TBD process to login with token and redirect the url to the page with data.
+- To a better debugging, explore the possibility of identify automatically the file and code line of execution to add it as argument, instead of the actual strategy of hardcoding.
+
+## Log
+
+Thanks to a customized usage of `tokens` and `stream` options of `morgan` library, the stream of requests received by the backend is saved in a `dist/access.log` (which is deleted in each initialization of the server) with info about:
+
+- Date of the request
+- Authorization token used in the request headers
+- Host
+- http Method
+- url
+- Status code of the respond
+- Length of responds
+- Time between request and respond (in ms)
+
+Each request is saved in the log file separating the `morgan tokens` with the defined const `stringSeparator` '_-_' to facilitate its future export to a database. E.g.: '2023-05-12T20:24:12.081Z*-\_Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTYzMDk3M2QzM2QyNzk1N2VkZDdiMSIsImVtYWlsIjoic2ZkZXpsb3BAZ21haWwuY29tIiwiaWF0IjoxNjgzOTIyOTU0LCJleHAiOjE2ODQwMDkzNTR9.rG9thAI8DVJgITDvLIRjr9-ahXR3uEMwLE2Pn6BGm3U*-_localhost:4500_-_GET_-_/collections/readrecords/&collection=users&filterfield=role&filtervalue=user&searchfield=firstName&searchvalue=&searchtype=Contains&queryset=1&queryrecordsperset=4&orderfield=lastLogging&ordertype=desc&controlinfo=componentFile_query.collection.tsx_line_306_-_200_-_144_-\_25.417'
+
+To assure a coordinated work between backend and frontend, const `stringSeparator` must have the strict equal initialization in both apps (e.g. '_-_'). const `stringSeparator` are defined at /src/config.ts files of the backend and frontend. Please note that if your are going to use data in your data base with high probability of containing this string, change it to another one more complex to avoid malfunction on it.
+
+PENDING:
+
+- Transform the authorization token used in the request `headers` in the email of the user (through the decoding of token to obtain the payload) before its is registered in the log file.
+- Explore `morgan` tokens to try to save also data about response errors, as `debug` library supplies.
+- Export the log file to the database in order to save info even if the server reinitialized in order to obtain statistic data of usage of the server by user (e.g. for billing purposes).
 
 ## Login
 
