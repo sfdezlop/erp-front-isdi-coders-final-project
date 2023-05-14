@@ -77,7 +77,7 @@ The parametrization works thanks to a new database collection called `appcollect
 
 Once a new collection has been added to the backend (data model and Schema), all the services of the backend are extended to the new collection following only 3 steps:
 
-1.- At mongo atlas: Add documents to collection `appcollectionfields` for each field of the collection and categorize their behavior giving values to their properties. Please, remember that any field containing `ObjectId` values is set as `false` for fields `filterable`, `searchable` and `orderable` to prevent data inconsistences at UI components in the frontend.
+1.- At mongo atlas: Add documents to collection `appcollectionfields` for each field of the collection and categorize their behavior giving values to their properties. Please, remember that any field containing `ObjectId` values or an `object` must be set as `false` for fields `filterable`, `searchable` and `orderable` to prevent data inconsistences or malfunction at UI components in the frontend. At least, there must be one `filterable` field, one `searchable` field and one `orderable` field.
 
 2.- At backend, file `collections.mongo.repo.ts`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement in function `queryInputDefault`.
 

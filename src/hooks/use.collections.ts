@@ -4,6 +4,7 @@ import {
   queryFields,
   queryInput,
   queryOutput,
+  translations,
 } from "../reducers/collection.slice";
 import { useApp } from "./use.app";
 import { CollectionsRepo } from "../services/repositories/collection.repo";
@@ -19,6 +20,9 @@ import { stringSeparator } from "../config";
 export function useCollections(repo: CollectionsRepo) {
   const userState = useSelector((state: RootState) => state.userState);
   const appState = useSelector((state: RootState) => state.appState);
+  const collectionState = useSelector(
+    (state: RootState) => state.collectionState
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const tokenAtUserState = userState.userLoggedToken;
@@ -211,11 +215,60 @@ export function useCollections(repo: CollectionsRepo) {
     dispatch(queryOutput(queryOutputData));
   };
 
+  const updateTranslations = async (controlInfo: string) => {
+    try {
+      const dataCollections = await repo.readRecords(
+        {
+          filterCollection: "translations",
+          filterField: "inputText",
+          filterValue: "",
+          searchField: "inputText",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: 1000,
+          orderField: "inputText",
+          orderType: "asc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        },
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataCollectionsResults = dataCollections.results;
+
+      dispatch(translations(dataCollectionsResults));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+    }
+  };
+
+  const translate = (originalText: string): string => {
+    const translations = collectionState.translations;
+
+    const userLanguage = userState.userLogged.language ?? "es";
+
+    const translationsFilteredByInputText = translations.filter(
+      (element) => element.inputText === originalText
+    );
+
+    if (translationsFilteredByInputText.length === 0) return originalText;
+
+    return translationsFilteredByInputText[0].outputTexts.filter(
+      (element) => element.isoCode === userLanguage
+    )[0].outputText;
+  };
+
   return {
     updateQueryFields,
     updateQueryInput,
     updateQueryOutput,
+    updateTranslations,
+    translate,
     queryInput,
     queryOutput,
+    translations,
   };
 }

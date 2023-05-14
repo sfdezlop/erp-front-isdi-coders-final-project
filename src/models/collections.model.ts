@@ -9,7 +9,18 @@ export type AppCollectionField = {
   searchable: boolean;
   orderable: boolean;
 };
-
+export type ProductMovementStructure = {
+  id: string;
+  productSku: string;
+  batch: string;
+  date: string;
+  type: string;
+  typeId: string;
+  store: string;
+  units: number;
+  costPerUnit: number;
+  pricePerUnit: number;
+};
 export type ProductStructure = {
   id: string;
   sku: string;
@@ -23,43 +34,41 @@ export type ProductStructure = {
   pricePerUnit: number;
 };
 
-export const productStructureSample: ProductStructure = {
-  id: "id",
-  sku: "Sku",
-  shortDescription: "Short Description",
-  longDescription: "Long Description",
-  ean: "EAN",
-  brand: "Brand",
-  image: "Image",
-  userCreatorEmail: "User Creator Email",
-  costPerUnit: 0,
-  pricePerUnit: 0,
+// export const productStructureSample: ProductStructure = {
+//   id: "id",
+//   sku: "Sku",
+//   shortDescription: "Short Description",
+//   longDescription: "Long Description",
+//   ean: "EAN",
+//   brand: "Brand",
+//   image: "Image",
+//   userCreatorEmail: "User Creator Email",
+//   costPerUnit: 0,
+//   pricePerUnit: 0,
+// };
+
+// export const productMovementStructureSample: ProductMovementStructure = {
+//   id: "id",
+//   productSku: "SKU",
+//   batch: "Batch",
+//   date: "Date of the product movement",
+//   type: "Type of product movement",
+//   typeId: "Id of type of product movement",
+//   store: "Store",
+//   units: 0,
+//   costPerUnit: 0,
+//   pricePerUnit: 0,
+// };
+
+export type TranslationOutputTextStructure = {
+  isoCode: string;
+  outputText: string;
 };
 
-export type ProductMovementStructure = {
+export type TranslationStructure = {
   id: string;
-  productSku: string;
-  batch: string;
-  date: string;
-  type: string;
-  typeId: string;
-  store: string;
-  units: number;
-  costPerUnit: number;
-  pricePerUnit: number;
-};
-
-export const productMovementStructureSample: ProductMovementStructure = {
-  id: "id",
-  productSku: "SKU",
-  batch: "Batch",
-  date: "Date of the product movement",
-  type: "Type of product movement",
-  typeId: "Id of type of product movement",
-  store: "Store",
-  units: 0,
-  costPerUnit: 0,
-  pricePerUnit: 0,
+  inputText: string;
+  outputTexts: TranslationOutputTextStructure[];
 };
 
 export type UserStructure = {
@@ -74,17 +83,17 @@ export type UserStructure = {
   language: string;
 };
 
-export const userStructureSample: UserStructure = {
-  id: "id",
-  email: "email",
-  passwd: "Password",
-  firstName: "First Name",
-  lastName: "Last Name",
-  role: "Role",
-  image: "Image url",
-  lastLogging: "Last logging",
-  language: "es",
-};
+// export const userStructureSample: UserStructure = {
+//   id: "id",
+//   email: "email",
+//   passwd: "Password",
+//   firstName: "First Name",
+//   lastName: "Last Name",
+//   role: "Role",
+//   image: "Image url",
+//   lastLogging: "Last logging",
+//   language: "es",
+// };
 
 export type CollectionStructure = ProductStructure &
   ProductMovementStructure &

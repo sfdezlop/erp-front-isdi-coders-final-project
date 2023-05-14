@@ -138,7 +138,21 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
           primaryKey: "",
           primaryKeyValue: "",
         });
-
+      case "translations":
+        return (queryInputDefaultObject = {
+          filterCollection: "translations",
+          filterField: "inputText",
+          filterValue: "",
+          searchField: "inputText",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: recordsPerSet[0],
+          orderField: "inputText",
+          orderType: "asc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        });
       case "users":
         return (queryInputDefaultObject = {
           filterCollection: "users",
@@ -231,7 +245,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   }
 
   const repoCollection = new CollectionsRepo();
-  const { updateQueryFields, updateQueryInput } =
+  const { updateQueryFields, updateQueryInput, updateTranslations } =
     useCollections(repoCollection);
 
   const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -269,6 +283,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   useEffect(() => {
     if (renderNumber.current === 1) {
       updateQueryFields("componentFile_" + componentFile + "_line_238");
+      updateTranslations("componentFile_" + componentFile + "267");
       console.log("useEffect at query.collection.tsx");
       console.log("renderNumber=", renderNumber.current);
       console.log("updateQueryFields aplicado");

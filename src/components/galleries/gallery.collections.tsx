@@ -1,49 +1,16 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import "./gallery.collections.css";
-
-const translator = (originalText: string, language: string): string => {
-  const translatorDB = [
-    {
-      inputText: "longDescription",
-      outputTexts: [
-        { isoCode: "es", outputText: "descripción larga" },
-        { isoCode: "en", outputText: "long description" },
-      ],
-    },
-    {
-      inputText: "shortDescription",
-      outputTexts: [
-        { isoCode: "es", outputText: "descripción corta" },
-        { isoCode: "en", outputText: "short description" },
-      ],
-    },
-    {
-      inputText: "brand",
-      outputTexts: [
-        { isoCode: "es", outputText: "marca" },
-        { isoCode: "en", outputText: "brand" },
-      ],
-    },
-  ];
-
-  const translatorDBFilteredByInputText = translatorDB.filter(
-    (element) => element.inputText === originalText
-  );
-
-  if (translatorDBFilteredByInputText.length === 0) return originalText;
-
-  return translatorDBFilteredByInputText[0].outputTexts.filter(
-    (element) => element.isoCode === language
-  )[0].outputText;
-};
+import { CollectionsRepo } from "../../services/repositories/collection.repo";
+import { useCollections } from "../../hooks/use.collections";
 
 export default function CollectionsGallery() {
+  const repoCollection = new CollectionsRepo();
+  const { translate } = useCollections(repoCollection);
+
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
-
-  const userState = useSelector((state: RootState) => state.userState);
 
   const galleryCopy = Object.assign(collectionState.queryOutput.gallery);
 
@@ -54,7 +21,9 @@ export default function CollectionsGallery() {
   };
 
   const recordDataFunction = (i: number): string[] => {
-    return Object.values(galleryCopy[i]);
+    return Object.values(galleryCopy[i]).map((item) => JSON.stringify(item));
+
+    //Defensive: JSON.stringify for cases when data is an object or contains objects
   };
 
   const recordsFieldsFunction = galleryCopy.map((item: number) => {
@@ -76,7 +45,15 @@ export default function CollectionsGallery() {
       recordsFieldsDataArray.push({
         record: i,
         field: recordsFieldsFunction[i][j],
-        data: recordsDataFunction[i][j],
+        data:
+          recordsDataFunction[i][j].startsWith('"') &&
+          recordsDataFunction[i][j].endsWith('"')
+            ? //Defensive hardcode: JSON.stringify always return a " character when it starts with ", but we maintain this aditional condition to take care about OS where the JSON.stringify does not work with ")
+              recordsDataFunction[i][j].slice(
+                1,
+                recordsDataFunction[i][j].length - 1
+              )
+            : recordsDataFunction[i][j],
       });
   }
 
@@ -99,7 +76,7 @@ export default function CollectionsGallery() {
         >
           <div className="collectionGalleryCard_fieldData">
             <div className="collectionGalleryCard_field">
-              {translator(item.field, userState.userLogged.language) + ": "}
+              {translate(item.field) + ": "}
             </div>
             <div></div>
             <div className="collectionGalleryCard_data">{item.data}</div>
@@ -141,7 +118,7 @@ export default function CollectionsGallery() {
     <>
       <div className="collectionsGallery">
         <h2 className="collectionsGallery__heading">
-          {collectionState.queryInput.filterCollection}
+          {translate(collectionState.queryInput.filterCollection)}
         </h2>
 
         <div className="collectionsGallery__container">

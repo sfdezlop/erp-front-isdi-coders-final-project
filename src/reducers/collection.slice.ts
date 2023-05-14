@@ -3,10 +3,12 @@ import {
   QueryFieldsCollectionStructure,
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
+  TranslationStructure,
 } from "../models/collections.model";
 import { stringSeparator } from "../config";
 
 export type CollectionStateStructure = {
+  translations: TranslationStructure[];
   queryFields: QueryFieldsCollectionStructure;
   queryInput: QueryInputCollectionStructure;
   queryOutput: QueryOutputCollectionStructure;
@@ -24,6 +26,7 @@ const initialStateFormCongruency = {
 export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
 
 export const initialState: CollectionStateStructure = {
+  translations: [],
   queryFields: {
     collections: initialStateFormCongruency.queryFields.collections,
     filterableFields: initialStateFormCongruency.queryFields.filterableFields,
@@ -113,9 +116,16 @@ export const collectionSlice = createSlice({
     ) {
       state.queryOutput = action.payload;
     },
+    translations(
+      state: CollectionStateStructure,
+      action: PayloadAction<TranslationStructure[]>
+    ) {
+      state.translations = action.payload;
+    },
   },
 });
 
-export const { queryFields, queryInput, queryOutput } = collectionSlice.actions;
+export const { queryFields, queryInput, queryOutput, translations } =
+  collectionSlice.actions;
 
 export const collectionReducer = collectionSlice.reducer;
