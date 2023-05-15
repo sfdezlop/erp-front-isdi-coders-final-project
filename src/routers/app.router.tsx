@@ -44,7 +44,7 @@ export function AppRouter({ options }: AppRouterProps) {
       ></Route>
       <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>{" "}
       <Route
-        path="/collections/:collection"
+        path="/collections/readrecords/:collection"
         element={<CollectionPage></CollectionPage>}
       ></Route>
     </Routes>

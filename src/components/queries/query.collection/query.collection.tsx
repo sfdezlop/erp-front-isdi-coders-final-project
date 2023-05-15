@@ -7,6 +7,7 @@ import { CollectionsRepo } from "../../../services/repositories/collection.repo"
 import { useCollections } from "../../../hooks/use.collections";
 import { stringSeparator } from "../../../config";
 import { recordsPerSet } from "../../../reducers/collection.slice";
+import { useNavigate } from "react-router-dom";
 
 const componentFile = "query.collection.tsx";
 //To control the file and line of code where Hook functions are called
@@ -247,6 +248,38 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const repoCollection = new CollectionsRepo();
   const { updateQueryFields, updateQueryInput, updateTranslations } =
     useCollections(repoCollection);
+  const navigate = useNavigate();
+  navigate(
+    "/collections/readrecords/&collection=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .filterCollection +
+      "&filterfield=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .filterField +
+      "&filtervalue=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .filterValue +
+      "&searchfield=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .searchField +
+      "&searchvalue=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .searchValue +
+      "&searchtype=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .searchType +
+      "&queryset=" +
+      queryInputDefault(collectionState.queryInput.filterCollection).querySet +
+      "&queryrecordsperset=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .queryRecordsPerSet +
+      "&orderfield=" +
+      queryInputDefault(collectionState.queryInput.filterCollection)
+        .orderField +
+      "&ordertype=" +
+      queryInputDefault(collectionState.queryInput.filterCollection).orderType +
+      "&controlinfo="
+  );
 
   const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -277,6 +310,29 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
     updateQueryInput(
       formElements.current,
       "componentFile_" + componentFile + "_line_306"
+    );
+    navigate(
+      "/collections/readrecords/&collection=" +
+        queryInputEventFormObject.filterCollection +
+        "&filterfield=" +
+        queryInputEventFormObject.filterField +
+        "&filtervalue=" +
+        queryInputEventFormObject.filterValue +
+        "&searchfield=" +
+        queryInputEventFormObject.searchField +
+        "&searchvalue=" +
+        queryInputEventFormObject.searchValue +
+        "&searchtype=" +
+        queryInputEventFormObject.searchType +
+        "&queryset=" +
+        queryInputEventFormObject.querySet +
+        "&queryrecordsperset=" +
+        queryInputEventFormObject.queryRecordsPerSet +
+        "&orderfield=" +
+        queryInputEventFormObject.orderField +
+        "&ordertype=" +
+        queryInputEventFormObject.orderType +
+        "&controlinfo="
     );
   };
 
