@@ -359,11 +359,11 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       updateTranslations("componentFile_" + componentFile + "267");
       console.log("useEffect at query.collection.tsx");
       console.log("renderNumber=", renderNumber.current);
-      console.log("updateQueryFields aplicado");
+      console.log("updateQueryFields applied");
     } else {
       console.log("useEffect at query.collection.tsx");
       console.log("renderNumber=", renderNumber.current);
-      console.log("updateQueryFields no aplicado");
+      console.log("updateQueryFields not applied");
     }
     renderNumber.current = renderNumber.current + 1;
     const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (

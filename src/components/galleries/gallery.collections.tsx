@@ -3,8 +3,6 @@ import { RootState } from "../../store/store";
 import "./gallery.collections.css";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
-import { JsxOpeningElement } from "typescript";
-import { HTMLAttributes } from "react";
 
 export default function CollectionsGallery() {
   const repoCollection = new CollectionsRepo();
@@ -55,7 +53,7 @@ export default function CollectionsGallery() {
         data:
           recordsDataFunction[i][j].startsWith('"') &&
           recordsDataFunction[i][j].endsWith('"')
-            ? //Defensive hardcode: JSON.stringify always return a " character when it starts with ", but we maintain this aditional condition to take care about OS where the JSON.stringify does not work with ")
+            ? //Defensive hardcode: JSON.stringify always return a " character when it starts with ", but we maintain this additional condition to take care about OS where the JSON.stringify does not work with ")
               recordsDataFunction[i][j].slice(
                 1,
                 recordsDataFunction[i][j].length - 1

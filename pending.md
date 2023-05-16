@@ -218,6 +218,6 @@ If you do have a dependency array, make sure that inside the useEffect, you’re
 
 - Strange behavior when deleting fake products. Some times, the gallery updates correctly after deletions and other not.
 
-### ProducMovementsPage
+### ProductMovementsPage
 
 - Strange behavior when deleting productmovements. Some times, the gallery updates correctly after deletions and other not.
