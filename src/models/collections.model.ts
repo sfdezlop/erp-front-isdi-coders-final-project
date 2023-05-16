@@ -8,6 +8,13 @@ export type AppCollectionField = {
   filterable: boolean;
   searchable: boolean;
   orderable: boolean;
+  htmlTag: string;
+  mongoType: string;
+  createShow: string;
+  detailShow: string;
+  galleryShow: string;
+  updateShow: string;
+  relatedCollectionField: string;
 };
 export type ProductMovementStructure = {
   id: string;

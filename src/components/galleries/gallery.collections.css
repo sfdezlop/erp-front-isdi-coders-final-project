@@ -52,7 +52,7 @@
   word-wrap: break-word;
 } */
 
-.collectionGalleryCard_fieldData {
+.collectionGalleryCard__fieldData {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -61,10 +61,16 @@
   word-break: break-all;
 }
 
-.collectionGalleryCard_field {
+.collectionGalleryCard__field {
   font-weight: bold;
 }
 
-.collectionGalleryCard_data {
+.collectionGalleryCard__data {
   align-content: flex-end;
+}
+
+.collectionGalleryCard__dataImage {
+  max-height: 19vh;
+  margin-bottom: 1rem;
+  padding: 2vh;
 }

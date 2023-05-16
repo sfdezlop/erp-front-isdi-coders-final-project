@@ -3,6 +3,8 @@ import { RootState } from "../../store/store";
 import "./gallery.collections.css";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
+import { JsxOpeningElement } from "typescript";
+import { HTMLAttributes } from "react";
 
 export default function CollectionsGallery() {
   const repoCollection = new CollectionsRepo();
@@ -38,6 +40,11 @@ export default function CollectionsGallery() {
     record: number;
     field: string;
     data: string;
+    galleryShow: string;
+    htmlTag: string;
+    relatedCollectionField: string;
+
+    // htmlCloseTag: JsxOpeningElement;
   }[] = [];
 
   for (let i = 0; i < recordsFieldsFunction.length; i++) {
@@ -54,8 +61,13 @@ export default function CollectionsGallery() {
                 recordsDataFunction[i][j].length - 1
               )
             : recordsDataFunction[i][j],
+        galleryShow: "010",
+        htmlTag: recordsFieldsFunction[i][j] === "image" ? "img" : "div",
+        relatedCollectionField: "",
       });
   }
+
+  console.table(recordsFieldsDataArray);
 
   const recordJSX = (i: number) => {
     let tempArray = [<div key="elementToBeShifted"></div>];
@@ -74,12 +86,23 @@ export default function CollectionsGallery() {
             recordsFieldsDataArrayFiltered.indexOf(item)
           }
         >
-          <div className="collectionGalleryCard_fieldData">
-            <div className="collectionGalleryCard_field">
+          <div className="collectionGalleryCard__fieldData">
+            <div className="collectionGalleryCard__field">
               {translate(item.field) + ": "}
             </div>
             <div></div>
-            <div className="collectionGalleryCard_data">{item.data}</div>
+            {item.htmlTag === "img" ? (
+              <div className="collectionGalleryCard__data">
+                <img
+                  src={item.data}
+                  alt={item.data + "" + item.data}
+                  className="collectionGalleryCard__dataImage"
+                ></img>
+              </div>
+            ) : (
+              <div className="collectionGalleryCard__data">{item.data}</div>
+            )}
+            {/* <div className="collectionGalleryCard__data">{item.data}</div> */}
           </div>
         </div>
       )

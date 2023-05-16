@@ -109,6 +109,21 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   function queryInputDefault(collection: string) {
     let queryInputDefaultObject;
     switch (collection) {
+      case "appcollectionfields":
+        return (queryInputDefaultObject = {
+          filterCollection: "appcollectionfields",
+          filterField: "collectionName",
+          filterValue: "",
+          searchField: "fieldName",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: recordsPerSet[1],
+          orderField: "galleryShow",
+          orderType: "asc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        });
       case "productmovements":
         return (queryInputDefaultObject = {
           filterCollection: "productmovements",
@@ -240,8 +255,10 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
           collectionState.queryOutput.queriedCount / localRecordsPerSet
         ) + 1;
 
+  const maximumPagesToShow = maximumPages > 100 ? 100 : maximumPages;
+
   const pagesArray: number[] = [1];
-  for (let i = 2; i <= maximumPages; i++) {
+  for (let i = 2; i <= maximumPagesToShow; i++) {
     pagesArray.push(i);
   }
 
