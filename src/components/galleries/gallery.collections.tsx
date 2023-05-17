@@ -3,18 +3,29 @@ import { RootState } from "../../store/store";
 import "./gallery.collections.css";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
+import { orderByPropertyAnArrayOfObjects } from "../../services/helpers/functions";
+import { Link } from "react-router-dom";
+
+const componentFile = "gallery.collections.tsx";
+//To control the file and line of code where Hook functions are called
 
 export default function CollectionsGallery() {
   const repoCollection = new CollectionsRepo();
-  const { translate } = useCollections(repoCollection);
+  const { translate, updateTranslations, updateAppCollectionFields } =
+    useCollections(repoCollection);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
 
+  if (collectionState.queryOutput.gallery.length === 0)
+    return (
+      <>
+        no data available for your query, please change the parameters of your
+        query
+      </>
+    );
   const galleryCopy = Object.assign(collectionState.queryOutput.gallery);
-
-  if (galleryCopy.length === 0) return <>no data available for your query</>;
 
   const recordFieldsFunction = (i: number): string[] => {
     return Object.keys(galleryCopy[i]);
@@ -35,21 +46,64 @@ export default function CollectionsGallery() {
   });
 
   let recordsFieldsDataArray: {
+    collection: string;
     record: number;
-    field: string;
+    fieldName: string;
     data: string;
-    galleryShow: string;
+    galleryShow: number;
     htmlTag: string;
     relatedCollectionField: string;
-
-    // htmlCloseTag: JsxOpeningElement;
   }[] = [];
+  const recordsGalleryShowFunction = (
+    collection: string,
+    fieldName: string
+  ): string => {
+    return collectionState.appCollectionFields.filter(
+      (item) =>
+        item.collectionName === collection && item.fieldName === fieldName
+    ).length === 0
+      ? "000"
+      : collectionState.appCollectionFields.filter(
+          (item) =>
+            item.collectionName === collection && item.fieldName === fieldName
+        )[0].galleryShow;
+  };
 
+  const recordsHtmlTagFunction = (
+    collection: string,
+    fieldName: string
+  ): string => {
+    return collectionState.appCollectionFields.filter(
+      (item) =>
+        item.collectionName === collection && item.fieldName === fieldName
+    ).length === 0
+      ? "div"
+      : collectionState.appCollectionFields.filter(
+          (item) =>
+            item.collectionName === collection && item.fieldName === fieldName
+        )[0].htmlTag;
+  };
+
+  const recordsRelatedCollectionFieldFunction = (
+    collection: string,
+    fieldName: string
+  ): string => {
+    return collectionState.appCollectionFields.filter(
+      (item) =>
+        item.collectionName === collection && item.fieldName === fieldName
+    ).length === 0
+      ? ""
+      : collectionState.appCollectionFields.filter(
+          (item) =>
+            item.collectionName === collection && item.fieldName === fieldName
+        )[0].relatedCollectionField;
+  };
   for (let i = 0; i < recordsFieldsFunction.length; i++) {
     for (let j = 0; j < recordsDataFunction[i].length; j++)
       recordsFieldsDataArray.push({
+        collection: collectionState.queryInput.filterCollection,
         record: i,
-        field: recordsFieldsFunction[i][j],
+        fieldName: recordsFieldsFunction[i][j],
         data:
           recordsDataFunction[i][j].startsWith('"') &&
           recordsDataFunction[i][j].endsWith('"')
@@ -59,34 +113,55 @@ export default function CollectionsGallery() {
                 recordsDataFunction[i][j].length - 1
               )
             : recordsDataFunction[i][j],
-        galleryShow: "010",
-        htmlTag: recordsFieldsFunction[i][j] === "image" ? "img" : "div",
-        relatedCollectionField: "",
+        galleryShow:
+          1000 +
+          1000 * i +
+          Number(
+            recordsGalleryShowFunction(
+              collectionState.queryInput.filterCollection,
+              recordsFieldsFunction[i][j]
+            )
+          ),
+
+        htmlTag: recordsHtmlTagFunction(
+          collectionState.queryInput.filterCollection,
+          recordsFieldsFunction[i][j]
+        ),
+        relatedCollectionField: recordsRelatedCollectionFieldFunction(
+          collectionState.queryInput.filterCollection,
+          recordsFieldsFunction[i][j]
+        ),
       });
   }
 
-  console.table(recordsFieldsDataArray);
+  const recordsFieldsDataArrayToShow: typeof recordsFieldsDataArray =
+    orderByPropertyAnArrayOfObjects(
+      recordsFieldsDataArray.filter(
+        (item) => item.galleryShow % 1000 > 0
+      ) as [],
+      "galleryShow",
+      "asc"
+    );
 
   const recordJSX = (i: number) => {
     let tempArray = [<div key="elementToBeShifted"></div>];
 
-    const recordsFieldsDataArrayFiltered = recordsFieldsDataArray.filter(
-      (item) => item.record === i
-    );
+    const recordsFieldsDataArrayFilteredByRecord =
+      recordsFieldsDataArrayToShow.filter((item) => item.record === i);
 
-    recordsFieldsDataArrayFiltered.forEach((item) =>
+    recordsFieldsDataArrayFilteredByRecord.forEach((item) =>
       tempArray.push(
         <div
           key={
             "record-" +
             i +
             "_keyvalue" +
-            recordsFieldsDataArrayFiltered.indexOf(item)
+            recordsFieldsDataArrayFilteredByRecord.indexOf(item)
           }
         >
           <div className="collectionGalleryCard__fieldData">
             <div className="collectionGalleryCard__field">
-              {translate(item.field) + ": "}
+              {translate(item.fieldName) + ": "}
             </div>
             <div></div>
             {item.htmlTag === "img" ? (
@@ -97,10 +172,24 @@ export default function CollectionsGallery() {
                   className="collectionGalleryCard__dataImage"
                 ></img>
               </div>
+            ) : item.relatedCollectionField.split("_-_").length === 2 ? (
+              <Link
+                to={encodeURI(
+                  "/collections/readrecords/&collection=" +
+                    item.relatedCollectionField.split("_-_")[0] +
+                    "&filterfield=&filtervalue=&searchfield=" +
+                    item.relatedCollectionField.split("_-_")[1] +
+                    "&searchvalue=" +
+                    item.data +
+                    "&searchtype=Exact match&queryset=1&queryrecordsperset=1&orderfield=id&ordertype=asc&controlnfo=detail"
+                )}
+                className="collectionGalleryCard__link"
+              >
+                <div className="collectionGalleryCard__data">{item.data}</div>
+              </Link>
             ) : (
               <div className="collectionGalleryCard__data">{item.data}</div>
             )}
-            {/* <div className="collectionGalleryCard__data">{item.data}</div> */}
           </div>
         </div>
       )

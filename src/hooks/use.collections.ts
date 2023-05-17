@@ -5,11 +5,12 @@ import {
   queryInput,
   queryOutput,
   translations,
+  appCollectionFields,
 } from "../reducers/collection.slice";
 import { useApp } from "./use.app";
 import { CollectionsRepo } from "../services/repositories/collection.repo";
 import {
-  AppCollectionField,
+  AppCollectionFieldStructure,
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
@@ -62,7 +63,8 @@ export function useCollections(repo: CollectionsRepo) {
         controlInfo
       );
 
-      const dataFieldsResults: AppCollectionField[] = dataFields.results;
+      const dataFieldsResults: AppCollectionFieldStructure[] =
+        dataFields.results;
 
       const queryFieldsData = {
         collections: dataCollectionsResults,
@@ -245,6 +247,36 @@ export function useCollections(repo: CollectionsRepo) {
     }
   };
 
+  const updateAppCollectionFields = async (controlInfo: string) => {
+    try {
+      const dataCollections = await repo.readRecords(
+        {
+          filterCollection: "appcollectionfields",
+          filterField: "collectionName",
+          filterValue: "",
+          searchField: "collectionName",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: 1000,
+          orderField: "collectionName",
+          orderType: "asc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        },
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataCollectionsResults = dataCollections.results;
+
+      dispatch(appCollectionFields(dataCollectionsResults));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+    }
+  };
+
   const translate = (originalText: string): string => {
     const translations = collectionState.translations;
 
@@ -267,8 +299,11 @@ export function useCollections(repo: CollectionsRepo) {
     updateQueryOutput,
     updateTranslations,
     translate,
+    updateAppCollectionFields,
+
     queryInput,
     queryOutput,
     translations,
+    appCollectionFields,
   };
 }

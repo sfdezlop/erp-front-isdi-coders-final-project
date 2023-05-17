@@ -68,3 +68,33 @@ export const americanShortFormatOfADate = (a: Date): string => {
   const result = year + dateSeparator + month + dateSeparator + day;
   return result;
 };
+
+export const orderByPropertyAnArrayOfObjects = (
+  a: [],
+  b: string,
+  c: string
+) => {
+  // Parameter a is the array to order
+  // Parameter b is the property to order by
+  // Parameter c is the type of order ("asc" or "desc")
+  const result = a.sort((item1, item2) => {
+    if (c === "desc") {
+      if (item1[b] === item2[b]) {
+        return 0;
+      }
+      if (item1[b] < item2[b]) {
+        return 1;
+      }
+      return -1;
+    } else {
+      if (item1[b] === item2[b]) {
+        return 0;
+      }
+      if (item1[b] > item2[b]) {
+        return 1;
+      }
+      return -1;
+    }
+  });
+  return result;
+};

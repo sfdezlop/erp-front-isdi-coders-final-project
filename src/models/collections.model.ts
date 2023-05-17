@@ -1,6 +1,6 @@
 //Collection documents types and samples
 
-export type AppCollectionField = {
+export type AppCollectionFieldStructure = {
   id: string;
   collectionName: string;
   fieldName: string;

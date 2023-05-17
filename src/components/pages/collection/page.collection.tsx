@@ -7,7 +7,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { ProductsGallery } from "../../galleries/gallery.products";
 import { ProductMovementsGallery } from "../../galleries/gallery.productmovements";
+import { useCollections } from "../../../hooks/use.collections";
+import { CollectionsRepo } from "../../../services/repositories/collection.repo";
 
+const componentFile = "page.collection.tsx";
 export default function CollectionPage() {
   const [renderNumber, setRenderNumber] = useState(1);
 
@@ -15,7 +18,18 @@ export default function CollectionPage() {
     (state: RootState) => state.collectionState
   );
 
+  const repoCollection = new CollectionsRepo();
+
+  const { updateQueryFields, updateTranslations, updateAppCollectionFields } =
+    useCollections(repoCollection);
+
   useEffect(() => {
+    if (renderNumber === 1) {
+      updateQueryFields("componentFile_" + componentFile + "_line_27");
+      updateTranslations("componentFile_" + componentFile + "_line_27");
+      updateAppCollectionFields("componentFile_" + componentFile + "_line_27");
+    }
+
     setRenderNumber(renderNumber + 1); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

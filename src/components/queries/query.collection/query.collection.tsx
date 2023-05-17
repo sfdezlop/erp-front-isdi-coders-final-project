@@ -263,40 +263,44 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   }
 
   const repoCollection = new CollectionsRepo();
-  const { updateQueryFields, updateQueryInput, updateTranslations } =
-    useCollections(repoCollection);
+  const {
+    updateQueryFields,
+    updateQueryInput,
+    updateTranslations,
+    updateAppCollectionFields,
+  } = useCollections(repoCollection);
   const navigate = useNavigate();
-  navigate(
-    "/collections/readrecords/&collection=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .filterCollection +
-      "&filterfield=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .filterField +
-      "&filtervalue=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .filterValue +
-      "&searchfield=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .searchField +
-      "&searchvalue=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .searchValue +
-      "&searchtype=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .searchType +
-      "&queryset=" +
-      queryInputDefault(collectionState.queryInput.filterCollection).querySet +
-      "&queryrecordsperset=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .queryRecordsPerSet +
-      "&orderfield=" +
-      queryInputDefault(collectionState.queryInput.filterCollection)
-        .orderField +
-      "&ordertype=" +
-      queryInputDefault(collectionState.queryInput.filterCollection).orderType +
-      "&controlinfo="
-  );
+  // navigate(
+  //   "/collections/readrecords/&collection=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .filterCollection +
+  //     "&filterfield=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .filterField +
+  //     "&filtervalue=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .filterValue +
+  //     "&searchfield=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .searchField +
+  //     "&searchvalue=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .searchValue +
+  //     "&searchtype=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .searchType +
+  //     "&queryset=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection).querySet +
+  //     "&queryrecordsperset=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .queryRecordsPerSet +
+  //     "&orderfield=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection)
+  //       .orderField +
+  //     "&ordertype=" +
+  //     queryInputDefault(collectionState.queryInput.filterCollection).orderType +
+  //     "&controlinfo="
+  // );
 
   const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -328,35 +332,36 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
       formElements.current,
       "componentFile_" + componentFile + "_line_306"
     );
-    navigate(
-      "/collections/readrecords/&collection=" +
-        queryInputEventFormObject.filterCollection +
-        "&filterfield=" +
-        queryInputEventFormObject.filterField +
-        "&filtervalue=" +
-        queryInputEventFormObject.filterValue +
-        "&searchfield=" +
-        queryInputEventFormObject.searchField +
-        "&searchvalue=" +
-        queryInputEventFormObject.searchValue +
-        "&searchtype=" +
-        queryInputEventFormObject.searchType +
-        "&queryset=" +
-        queryInputEventFormObject.querySet +
-        "&queryrecordsperset=" +
-        queryInputEventFormObject.queryRecordsPerSet +
-        "&orderfield=" +
-        queryInputEventFormObject.orderField +
-        "&ordertype=" +
-        queryInputEventFormObject.orderType +
-        "&controlinfo="
-    );
+    // navigate(
+    //   "/collections/readrecords/&collection=" +
+    //     queryInputEventFormObject.filterCollection +
+    //     "&filterfield=" +
+    //     queryInputEventFormObject.filterField +
+    //     "&filtervalue=" +
+    //     queryInputEventFormObject.filterValue +
+    //     "&searchfield=" +
+    //     queryInputEventFormObject.searchField +
+    //     "&searchvalue=" +
+    //     queryInputEventFormObject.searchValue +
+    //     "&searchtype=" +
+    //     queryInputEventFormObject.searchType +
+    //     "&queryset=" +
+    //     queryInputEventFormObject.querySet +
+    //     "&queryrecordsperset=" +
+    //     queryInputEventFormObject.queryRecordsPerSet +
+    //     "&orderfield=" +
+    //     queryInputEventFormObject.orderField +
+    //     "&ordertype=" +
+    //     queryInputEventFormObject.orderType +
+    //     "&controlinfo="
+    // );
   };
 
   useEffect(() => {
     if (renderNumber.current === 1) {
-      updateQueryFields("componentFile_" + componentFile + "_line_238");
-      updateTranslations("componentFile_" + componentFile + "267");
+      updateQueryFields("componentFile_" + componentFile + "_line_357");
+      // updateTranslations("componentFile_" + componentFile + "_line_357");
+      // updateAppCollectionFields("componentFile_" + componentFile + "_line_357");
       console.log("useEffect at query.collection.tsx");
       console.log("renderNumber=", renderNumber.current);
       console.log("updateQueryFields applied");
@@ -435,7 +440,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
           >
             {/* <form> */}
             <label className="queryCollection__label">
-              {"Collection to query "}
+              {"Collection to query"}
               <select
                 name="collection"
                 id="formElement0"
@@ -520,7 +525,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
             </label>
             {/* </form> */}
             <label className="queryCollection__label">
-              {"Filter field "}
+              {"Filter field"}
               <select
                 name="filter_field"
                 onChange={() => {
@@ -590,7 +595,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.filterField}</div>
             </label>
             <label className="queryCollection__label">
-              {"Filter value "}
+              {"Filter value"}
               <select
                 name="filter_value"
                 onChange={() => {
@@ -626,7 +631,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.filterValue}</div>
             </label>
             <label className="queryCollection__label">
-              {"Search field "}
+              {"Search field"}
               <select
                 name="search_field"
                 onChange={() => {
@@ -658,7 +663,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.searchField}</div>
             </label>
             <label className="queryCollection__label">
-              {"Search type "}
+              {"Search type"}
               <select
                 name="search_type"
                 onChange={() => {
@@ -689,7 +694,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.searchType}</div>
             </label>
             <label className="queryCollection__label">
-              {"Search value (case sensitive)"}
+              {"Search value (case sens.)"}
               <input
                 name="search_value"
                 value={localSearchValue}
@@ -712,7 +717,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
             </label>
 
             <label className="queryCollection__label">
-              {"Order by "}
+              {"Order by"}
               <select
                 name="order_field"
                 onChange={() => {
@@ -743,7 +748,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.orderField}</div>
             </label>
             <label className="queryCollection__label">
-              {"Order type "}
+              {"Order type"}
               <select
                 name="order_type"
                 onChange={() => {
@@ -773,7 +778,7 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
               <div>{collectionState.queryInput.orderType}</div>
             </label>
             <label className="queryCollection__label">
-              {"Docs/page "}
+              {"Docs/page"}
               <select
                 name="queryrecordsperset"
                 onChange={() => {

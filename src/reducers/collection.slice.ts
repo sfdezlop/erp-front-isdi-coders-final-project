@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  AppCollectionFieldStructure,
   QueryFieldsCollectionStructure,
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
@@ -8,10 +9,11 @@ import {
 import { stringSeparator } from "../config";
 
 export type CollectionStateStructure = {
-  translations: TranslationStructure[];
   queryFields: QueryFieldsCollectionStructure;
   queryInput: QueryInputCollectionStructure;
   queryOutput: QueryOutputCollectionStructure;
+  translations: TranslationStructure[];
+  appCollectionFields: AppCollectionFieldStructure[];
 };
 
 const initialStateFormCongruency = {
@@ -26,7 +28,6 @@ const initialStateFormCongruency = {
 export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
 
 export const initialState: CollectionStateStructure = {
-  translations: [],
   queryFields: {
     collections: initialStateFormCongruency.queryFields.collections,
     filterableFields: initialStateFormCongruency.queryFields.filterableFields,
@@ -92,6 +93,8 @@ export const initialState: CollectionStateStructure = {
     ],
     detailInterface: "raw",
   },
+  translations: [],
+  appCollectionFields: [],
 };
 
 export const collectionSlice = createSlice({
@@ -122,10 +125,21 @@ export const collectionSlice = createSlice({
     ) {
       state.translations = action.payload;
     },
+    appCollectionFields(
+      state: CollectionStateStructure,
+      action: PayloadAction<AppCollectionFieldStructure[]>
+    ) {
+      state.appCollectionFields = action.payload;
+    },
   },
 });
 
-export const { queryFields, queryInput, queryOutput, translations } =
-  collectionSlice.actions;
+export const {
+  queryFields,
+  queryInput,
+  queryOutput,
+  translations,
+  appCollectionFields,
+} = collectionSlice.actions;
 
 export const collectionReducer = collectionSlice.reducer;
