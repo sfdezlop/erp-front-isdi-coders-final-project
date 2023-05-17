@@ -334,34 +334,34 @@ export function QueryCollection({
       formElements.current,
       "componentFile_" + componentFile + "_line_306"
     );
-    navigate(
-      "/collections/readrecords/&collection=" +
-        queryInputEventFormObject.filterCollection +
-        "&filterfield=" +
-        queryInputEventFormObject.filterField +
-        "&filtervalue=" +
-        queryInputEventFormObject.filterValue +
-        "&searchfield=" +
-        queryInputEventFormObject.searchField +
-        "&searchvalue=" +
-        queryInputEventFormObject.searchValue +
-        "&searchtype=" +
-        queryInputEventFormObject.searchType +
-        "&queryset=" +
-        queryInputEventFormObject.querySet +
-        "&queryrecordsperset=" +
-        queryInputEventFormObject.queryRecordsPerSet +
-        "&orderfield=" +
-        queryInputEventFormObject.orderField +
-        "&ordertype=" +
-        queryInputEventFormObject.orderType +
-        "&controlinfo="
-    );
+    // navigate(
+    //   "/collections/readrecords/&collection=" +
+    //     queryInputEventFormObject.filterCollection +
+    //     "&filterfield=" +
+    //     queryInputEventFormObject.filterField +
+    //     "&filtervalue=" +
+    //     queryInputEventFormObject.filterValue +
+    //     "&searchfield=" +
+    //     queryInputEventFormObject.searchField +
+    //     "&searchvalue=" +
+    //     queryInputEventFormObject.searchValue +
+    //     "&searchtype=" +
+    //     queryInputEventFormObject.searchType +
+    //     "&queryset=" +
+    //     queryInputEventFormObject.querySet +
+    //     "&queryrecordsperset=" +
+    //     queryInputEventFormObject.queryRecordsPerSet +
+    //     "&orderfield=" +
+    //     queryInputEventFormObject.orderField +
+    //     "&ordertype=" +
+    //     queryInputEventFormObject.orderType +
+    //     "&controlinfo="
+    // );
   };
 
   useEffect(() => {
     if (renderNumber.current === 1) {
-      // updateQueryFields("componentFile_" + componentFile + "_line_357");
+      updateQueryFields("componentFile_" + componentFile + "_line_357");
       console.log("useEffect at query.collection.tsx");
     } else {
       console.log("useEffect at query.collection.tsx");
@@ -372,52 +372,6 @@ export function QueryCollection({
         <select>defensive code</select>
       </form>
     );
-
-    const decodedQueryCollectionProps = decodeURI(queryCollectionProps);
-    (presentForm.elements[0] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&collection=")[1]
-        .split("&filterfield=")[0];
-    (presentForm.elements[1] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&filterfield=")[1]
-        .split("&filtervalue=")[0];
-    (presentForm.elements[2] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&filtervalue=")[1]
-        .split("&searchfield=")[0] === ""
-        ? "(select all)"
-        : decodedQueryCollectionProps
-            .split("filtervalue=")[1]
-            .split("&searchfield=")[0];
-    (presentForm.elements[3] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&searchfield=")[1]
-        .split("&searchvalue=")[0];
-    (presentForm.elements[4] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&searchtype=")[1]
-        .split("&queryset=")[0];
-    (presentForm.elements[5] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&searchvalue=")[1]
-        .split("&searchtype=")[0];
-    (presentForm.elements[6] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&orderfield=")[1]
-        .split("&ordertype=")[0];
-    (presentForm.elements[7] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&ordertype=")[1]
-        .split("&controlinfo=")[0];
-    (presentForm.elements[8] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&queryrecordsperset=")[1]
-        .split("&orderfield=")[0];
-    (presentForm.elements[9] as HTMLFormElement).value =
-      decodedQueryCollectionProps
-        .split("&queryset=")[1]
-        .split("&queryrecordsperset=")[0];
 
     const queryInputShown = {
       filterCollection: (presentForm.elements[0] as HTMLFormElement).value,
@@ -448,15 +402,15 @@ export function QueryCollection({
       "booleanChangeCollectionQueryInput: ",
       booleanChangeCollectionQueryInput.current
     );
-    // booleanChangeCollectionQueryInput.current
-    //   ? updateQueryInput(
-    //       copyOfChangeCollectionQueryInput.current,
-    //       "componentFile_" + componentFile + "_line_282"
-    //     )
-    //   : updateQueryInput(
-    //       queryInputShown,
-    //       "componentFile_" + componentFile + "_line_286"
-    //     );
+    booleanChangeCollectionQueryInput.current
+      ? updateQueryInput(
+          copyOfChangeCollectionQueryInput.current,
+          "componentFile_" + componentFile + "_line_282"
+        )
+      : updateQueryInput(
+          queryInputShown,
+          "componentFile_" + componentFile + "_line_286"
+        );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -476,7 +430,7 @@ export function QueryCollection({
           </label>
           <form
             className="queryCollection__formContainer"
-            onChange={handlerOnEvent}
+            // onChange={handlerOnEvent}
             // onClick={handlerOnEvent}
             // onKeyUp={handlerOnEvent}
           >
