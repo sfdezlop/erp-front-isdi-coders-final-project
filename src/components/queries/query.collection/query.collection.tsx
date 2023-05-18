@@ -135,7 +135,6 @@ export function QueryCollection({
   const handlerOnChangeCollection = (
     event: SyntheticEvent<HTMLSelectElement>
   ) => {
-    event.preventDefault();
     const selector = event.currentTarget;
     const filterCollection = (selector as HTMLSelectElement).value;
 
@@ -145,28 +144,29 @@ export function QueryCollection({
       queryFormObject,
       "componentFile_" + componentFile + "_line_133"
     );
+
     navigate(navigationURIToQueryPage(queryFormObject));
   };
 
   const handlerOnChangeFilterField = (
     event: SyntheticEvent<HTMLSelectElement>
   ) => {
-    event.preventDefault();
+    const selector = event.currentTarget;
+
+    (selector.nextSibling as HTMLSelectElement).value = "(select all)";
+
     const queryFormObject: QueryInputCollectionStructure =
       queryInputOnChangeCollection(collectionState.queryInput.filterCollection);
 
-    const queryFormObjectTransformed = Object.assign(queryFormObject);
+    const queryFormObjectTransformed = queryFormObject;
     queryFormObjectTransformed.filterValue = "";
     queryFormObjectTransformed.querySet = 1;
-
-    console.table(queryFormObjectTransformed);
 
     updateQueryInput(
       queryFormObjectTransformed,
       "componentFile_" + componentFile + "_line_165"
     );
-
-    navigate("/" + queryCollectionProps);
+    navigate(navigationURIToQueryPage(queryFormObjectTransformed));
   };
 
   const handlerOnChangeForm = (event: SyntheticEvent<HTMLFormElement>) => {
