@@ -1,7 +1,7 @@
 .collectionsGallery {
   /* height: 84vh; */
   height: 71vh;
-  width: 98%;
+  width: 100%;
   font-size: 0.8rem;
 }
 
@@ -15,7 +15,7 @@
 .collectionsGallery__container {
   background-color: white;
   height: 64vh;
-  width: 99%;
+  width: 100%;
   overflow-y: scroll;
   padding-top: 1vh;
   padding-bottom: 1vh;
@@ -28,7 +28,9 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  gap: 1rem;
+
+  column-gap: 1%;
+  row-gap: 2vh;
   margin: 0 auto;
 }
 
@@ -37,8 +39,8 @@
   border-width: 0.2px;
   border-color: #4472c4;
   border-radius: 2%;
-  max-width: 20%;
-  min-width: 300px;
+  max-width: 22%;
+  min-width: 22%;
   min-height: 25%;
   padding: 0.5rem;
   text-align: left;
@@ -72,5 +74,5 @@
 .collectionGalleryCard__dataImage {
   max-height: 19vh;
   margin-bottom: 1rem;
-  padding: 2vh;
+  padding: 1vh;
 }

@@ -9,14 +9,9 @@ import { ProductsGallery } from "../../galleries/gallery.products";
 import { ProductMovementsGallery } from "../../galleries/gallery.productmovements";
 import { useCollections } from "../../../hooks/use.collections";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
-import { useLocation, useNavigate } from "react-router-dom";
-import { QueryInputCollectionStructure } from "../../../models/collections.model";
 
 const componentFile = "page.collection.tsx";
 export default function CollectionPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
   const [renderNumber, setRenderNumber] = useState(1);
 
   const collectionState = useSelector(
@@ -65,9 +60,7 @@ export default function CollectionPage() {
         collectionState.queryInput,
         "componentFile_" + componentFile + "_line_61"
       );
-      navigate("/" + encodeURI(queryCollectionPropsInput));
     }
-
     setRenderNumber(renderNumber + 1); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
