@@ -1,7 +1,6 @@
 import { recordsPerSet } from "../../../reducers/collection.slice";
 
 export function queryInputOnChangeCollection(collection: string) {
-  let queryInputOnChangeCollectionObject;
   switch (collection) {
     case "appcollectionfields":
       return {
