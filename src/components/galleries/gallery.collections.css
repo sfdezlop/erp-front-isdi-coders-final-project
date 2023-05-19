@@ -72,9 +72,11 @@
 }
 
 .collectionGalleryCard__dataImage {
-  max-height: 19vh;
+  max-width: 15rem;
+  max-height: 10rem;
   margin-bottom: 1rem;
-  padding: 1vh;
+  padding-top: 4vh;
+  padding-left: 4vh;
 }
 
 .collectionsGallery__noDataContainer {

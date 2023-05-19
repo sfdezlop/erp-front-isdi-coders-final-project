@@ -241,11 +241,17 @@ export function CollectionsGallery() {
                 to={encodeURI(
                   "/collections/readrecords/&collection=" +
                     item.relatedCollectionField.split("_-_")[0] +
-                    "&filterfield=&filtervalue=&searchfield=" +
+                    "&filterfield=" +
+                    item.relatedCollectionField.split("_-_")[1] +
+                    "&filtervalue=&searchfield=" +
                     item.relatedCollectionField.split("_-_")[1] +
                     "&searchvalue=" +
                     item.data +
-                    "&searchtype=Exact match&queryset=1&queryrecordsperset=1&orderfield=id&ordertype=asc&controlinfo="
+                    "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                    recordsPerSet[0] +
+                    "&orderfield=" +
+                    item.relatedCollectionField.split("_-_")[1] +
+                    "&ordertype=asc&controlinfo="
                 )}
                 className="collectionGalleryCard__link"
               >

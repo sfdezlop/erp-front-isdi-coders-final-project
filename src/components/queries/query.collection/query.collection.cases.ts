@@ -17,6 +17,21 @@ export function queryInputOnChangeCollection(collection: string) {
         primaryKey: "",
         primaryKeyValue: "",
       };
+    case "brands":
+      return {
+        filterCollection: "brands",
+        filterField: "brandName",
+        filterValue: "",
+        searchField: "brandName",
+        searchValue: "",
+        searchType: "Contains",
+        querySet: 1,
+        queryRecordsPerSet: recordsPerSet[0],
+        orderField: "brandName",
+        orderType: "asc",
+        primaryKey: "",
+        primaryKeyValue: "",
+      };
     case "productmovements":
       return {
         filterCollection: "productmovements",

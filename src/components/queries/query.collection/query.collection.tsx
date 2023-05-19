@@ -180,10 +180,14 @@ export function QueryCollection({
     const queryDefaultModified = {
       filterCollection: collectionState.queryInput.filterCollection,
       filterField: collectionState.queryInput.filterField,
-      filterValue: filterValue.toString(),
+      filterValue:
+        filterValue.toString() === "(select all)" ? "" : filterValue.toString(),
       searchField: collectionState.queryInput.searchField,
       searchValue: "",
-      searchType: collectionState.queryInput.searchType,
+      searchType:
+        collectionState.queryInput.searchType === "Exact match"
+          ? "Contains"
+          : collectionState.queryInput.searchType,
       querySet: 1,
       queryRecordsPerSet: collectionState.queryInput.queryRecordsPerSet,
       orderField: collectionState.queryInput.orderField,
