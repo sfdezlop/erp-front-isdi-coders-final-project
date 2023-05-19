@@ -1,11 +1,6 @@
 import { useDispatch } from "react-redux";
-import {
-  TranslationStructure,
-  UserStructure,
-} from "../models/collections.model";
-import { CollectionStructure } from "../models/collections.model";
+import { UserStructure } from "../models/collections.model";
 import { UsersRepo } from "../services/repositories/user.repo";
-import { CollectionsRepo } from "../services/repositories/collection.repo";
 
 import { AppDispatch } from "../store/store";
 import {
@@ -16,20 +11,9 @@ import {
   logoutToken,
 } from "../reducers/user.slice";
 
-// import {
-//   initialState as initialCollectionState,
-//   translations,
-//   appCollectionFields,
-// } from "../reducers/collection.slice";
 import { useApp } from "./use.app";
-// import { useCollections } from "./use.collections";
-
-// const componentFile = "use.users.tsx";
 
 export function useUsers(repo: UsersRepo) {
-  // const repoCollection = new CollectionsRepo();
-  // const { updateTranslations, updateAppCollectionFields } =
-  //   useCollections(repoCollection);
   const dispatch = useDispatch<AppDispatch>();
 
   const { addError } = useApp();
@@ -53,9 +37,6 @@ export function useUsers(repo: UsersRepo) {
       console.error((error as Error).message);
       addError(error as Error, "/home");
     }
-
-    // updateTranslations("componentFile_" + componentFile + "_line_78");
-    // updateAppCollectionFields("componentFile_" + componentFile + "_line_78");
   };
 
   const userLoginWithToken = async (
@@ -78,9 +59,6 @@ export function useUsers(repo: UsersRepo) {
       console.error((error as Error).message);
       addError(error as Error, "/home");
     }
-
-    // updateTranslations("componentFile_" + componentFile + "_line_78");
-    // updateAppCollectionFields("componentFile_" + componentFile + "_line_78");
   };
 
   const userLogout = () => {
