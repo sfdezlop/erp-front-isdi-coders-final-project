@@ -4,15 +4,19 @@ import "./gallery.collections.css";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
 import { orderByPropertyAnArrayOfObjects } from "../../services/helpers/functions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SyntheticEvent } from "react";
+import { QueryInputCollectionStructure } from "../../models/collections.model";
+import { navigationURIToQueryPage } from "../queries/query.collection/query.collection";
+import { recordsPerSet } from "../../reducers/collection.slice";
 
 const componentFile = "gallery.collections.tsx";
 //To control the file and line of code where Hook functions are called
 
-export default function CollectionsGallery() {
+export function CollectionsGallery() {
+  const navigate = useNavigate();
   const repoCollection = new CollectionsRepo();
-  const { translate, updateTranslations, updateAppCollectionFields } =
-    useCollections(repoCollection);
+  const { translate, updateQueryInput } = useCollections(repoCollection);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
@@ -21,8 +25,18 @@ export default function CollectionsGallery() {
   if (collectionState.queryOutput.gallery.length === 0)
     return (
       <>
-        no data available for your query, please change the parameters of your
-        query
+        <div className={"collectionsGallery__noDataContainer"}>
+          <img
+            className={"collectionsGallery__noDataImage"}
+            src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-616.jpg?w=740&t=st=1684516984~exp=1684517584~hmac=5f4ebde1ef5d6ae87fad3f1da34b98e6ea6eae54187e048053d42b90dcc4194f"
+            alt="no data"
+          />
+
+          <div className={"collectionsGallery__noDataText"}>
+            Sorry, we haven`t found the data you are looking for. Please change
+            the arguments of your query.
+          </div>
+        </div>
       </>
     );
   const galleryCopy = Object.assign(collectionState.queryOutput.gallery);
@@ -143,6 +157,56 @@ export default function CollectionsGallery() {
       "asc"
     );
 
+  const handlerOnClickLinkedDiv = (event: SyntheticEvent<HTMLDivElement>) => {
+    console.log("handlerOnClickLinkedDiv");
+    const clickedDiv = event.currentTarget;
+    const clickedDivAriaLabel = clickedDiv.ariaLabel ?? "";
+
+    const queryObject: QueryInputCollectionStructure = {
+      filterCollection: clickedDivAriaLabel
+        .split("/collections/readrecords/&collection=")[1]
+        .split("&filterfield=")[0],
+      filterField: clickedDivAriaLabel
+        .split("&filterfield=")[1]
+        .split("&filtervalue=")[0],
+      filterValue: clickedDivAriaLabel
+        .split("&filtervalue=")[1]
+        .split("&searchfield=")[0],
+      searchField: clickedDivAriaLabel
+        .split("&searchfield=")[1]
+        .split("&searchvalue=")[0],
+      searchType: clickedDivAriaLabel
+        .split("&searchtype=")[1]
+        .split("&queryset=")[0],
+      searchValue: clickedDivAriaLabel
+        .split("&searchvalue=")[1]
+        .split("&searchtype=")[0],
+      orderField: clickedDivAriaLabel
+        .split("&orderfield=")[1]
+        .split("&ordertype=")[0],
+      orderType: clickedDivAriaLabel
+        .split("&ordertype=")[1]
+        .split("&controlinfo=")[0],
+      queryRecordsPerSet: Number(
+        clickedDivAriaLabel
+          .split("&queryrecordsperset=")[1]
+          .split("&orderfield=")[0]
+      ),
+      querySet: Number(
+        clickedDivAriaLabel
+          .split("&queryset=")[1]
+          .split("&queryrecordsperset=")[0]
+      ),
+      primaryKey: "",
+      primaryKeyValue: "",
+    };
+    updateQueryInput(
+      queryObject,
+      "componentFile_" + componentFile + "_line_149"
+    );
+    navigate(navigationURIToQueryPage(queryObject));
+  };
+
   const recordJSX = (i: number) => {
     let tempArray = [<div key="elementToBeShifted"></div>];
 
@@ -181,11 +245,31 @@ export default function CollectionsGallery() {
                     item.relatedCollectionField.split("_-_")[1] +
                     "&searchvalue=" +
                     item.data +
-                    "&searchtype=Exact match&queryset=1&queryrecordsperset=1&orderfield=id&ordertype=asc&controlnfo=detail"
+                    "&searchtype=Exact match&queryset=1&queryrecordsperset=1&orderfield=id&ordertype=asc&controlinfo="
                 )}
                 className="collectionGalleryCard__link"
               >
-                <div className="collectionGalleryCard__data">{item.data}</div>
+                <div
+                  className="collectionGalleryCard__data"
+                  onClick={handlerOnClickLinkedDiv}
+                  aria-label={
+                    "/collections/readrecords/&collection=" +
+                    item.relatedCollectionField.split("_-_")[0] +
+                    "&filterfield=" +
+                    item.relatedCollectionField.split("_-_")[1] +
+                    "&filtervalue=&searchfield=" +
+                    item.relatedCollectionField.split("_-_")[1] +
+                    "&searchvalue=" +
+                    item.data +
+                    "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                    recordsPerSet[0] +
+                    "&orderfield=" +
+                    item.relatedCollectionField.split("_-_")[1] +
+                    "&ordertype=asc&controlinfo="
+                  }
+                >
+                  {item.data}
+                </div>
               </Link>
             ) : (
               <div className="collectionGalleryCard__data">{item.data}</div>

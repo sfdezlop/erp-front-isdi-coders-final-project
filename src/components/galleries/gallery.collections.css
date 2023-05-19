@@ -14,7 +14,7 @@
 
 .collectionsGallery__container {
   background-color: white;
-  height: 64vh;
+  height: 69vh;
   width: 100%;
   overflow-y: scroll;
   padding-top: 1vh;
@@ -75,4 +75,19 @@
   max-height: 19vh;
   margin-bottom: 1rem;
   padding: 1vh;
+}
+
+.collectionsGallery__noDataContainer {
+  padding: 4vh;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  width: 30%;
+}
+
+.collectionsGallery__noDataImage {
+  width: 80%;
+}
+.collectionsGallery__noDataText {
+  font-size: medium;
 }
