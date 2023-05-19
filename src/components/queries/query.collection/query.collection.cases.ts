@@ -4,7 +4,7 @@ export function queryInputOnChangeCollection(collection: string) {
   let queryInputOnChangeCollectionObject;
   switch (collection) {
     case "appcollectionfields":
-      return (queryInputOnChangeCollectionObject = {
+      return {
         filterCollection: "appcollectionfields",
         filterField: "collectionName",
         filterValue: "",
@@ -17,9 +17,9 @@ export function queryInputOnChangeCollection(collection: string) {
         orderType: "asc",
         primaryKey: "",
         primaryKeyValue: "",
-      });
+      };
     case "productmovements":
-      return (queryInputOnChangeCollectionObject = {
+      return {
         filterCollection: "productmovements",
         filterField: "type",
         filterValue: "",
@@ -32,9 +32,9 @@ export function queryInputOnChangeCollection(collection: string) {
         orderType: "desc",
         primaryKey: "",
         primaryKeyValue: "",
-      });
+      };
     case "products":
-      return (queryInputOnChangeCollectionObject = {
+      return {
         filterCollection: "products",
         filterField: "brand",
         filterValue: "",
@@ -47,9 +47,9 @@ export function queryInputOnChangeCollection(collection: string) {
         orderType: "asc",
         primaryKey: "",
         primaryKeyValue: "",
-      });
+      };
     case "translations":
-      return (queryInputOnChangeCollectionObject = {
+      return {
         filterCollection: "translations",
         filterField: "inputText",
         filterValue: "",
@@ -62,9 +62,9 @@ export function queryInputOnChangeCollection(collection: string) {
         orderType: "asc",
         primaryKey: "",
         primaryKeyValue: "",
-      });
+      };
     case "users":
-      return (queryInputOnChangeCollectionObject = {
+      return {
         filterCollection: "users",
         filterField: "role",
         filterValue: "",
@@ -77,11 +77,11 @@ export function queryInputOnChangeCollection(collection: string) {
         orderType: "desc",
         primaryKey: "",
         primaryKeyValue: "",
-      });
+      };
 
     default:
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      return (queryInputOnChangeCollectionObject = {
+      return {
         filterCollection: "products",
         filterField: "brand",
         filterValue: "",
@@ -94,6 +94,6 @@ export function queryInputOnChangeCollection(collection: string) {
         orderType: "asc",
         primaryKey: "",
         primaryKeyValue: "",
-      });
+      };
   }
 }
