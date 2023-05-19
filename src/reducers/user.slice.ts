@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { menuOptions, MenuOption } from "../components/menu/menu";
 import { UserStructure } from "../models/collections.model";
+
 import { asyncLoadUsersGallery } from "./user.thunks";
 
 export type UserStateStructure = {
@@ -35,6 +36,7 @@ export const userSlice = createSlice({
     ) {
       state.usersGallery = action.payload;
     },
+
     logoutToken(state: UserStateStructure, action: PayloadAction<string>) {
       state.userLoggedToken = action.payload;
     },

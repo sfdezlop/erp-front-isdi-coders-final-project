@@ -29,5 +29,5 @@ article {
 }
 
 .homePage__token {
-  font-size: xx-small;
+  word-break: break-all;
 }

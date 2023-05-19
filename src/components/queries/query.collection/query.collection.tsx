@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import "./query.collection.css";
@@ -7,163 +7,59 @@ import { CollectionsRepo } from "../../../services/repositories/collection.repo"
 import { useCollections } from "../../../hooks/use.collections";
 import { stringSeparator } from "../../../config";
 import { recordsPerSet } from "../../../reducers/collection.slice";
+import { useLocation, useNavigate } from "react-router-dom";
+import { queryInputOnChangeCollection } from "./query.collection.cases";
 
 const componentFile = "query.collection.tsx";
 //To control the file and line of code where Hook functions are called
 
-export type QueryCollectionProps = {
-  collectionName: string;
+export type QueryCollectionPropsStructure = {
+  queryCollectionProps: string;
 };
-export function QueryCollection({ collectionName }: QueryCollectionProps) {
-  const formElements = useRef({
-    filterCollection: "products",
-    filterField: "brand",
-    filterValue: "",
-    searchField: "sku",
-    searchValue: "",
-    searchType: "Contains",
-    querySet: 1,
-    queryRecordsPerSet: recordsPerSet[0],
-    orderField: "ean",
-    orderType: "asc",
-    primaryKey: "",
-    primaryKeyValue: "",
-  });
-  const changeCollectionQueryInput = useRef({
-    filterCollection: "products",
-    filterField: "brand",
-    filterValue: "",
-    searchField: "sku",
-    searchValue: "",
-    searchType: "Contains",
-    querySet: 1,
-    queryRecordsPerSet: recordsPerSet[0],
-    orderField: "ean",
-    orderType: "asc",
-    primaryKey: "",
-    primaryKeyValue: "",
-  });
 
-  const changeFilterFieldQueryInput = useRef({
-    filterCollection: "products",
-    filterField: "brand",
-    filterValue: "",
-    searchField: "sku",
-    searchValue: "",
-    searchType: "Contains",
-    querySet: 1,
-    queryRecordsPerSet: recordsPerSet[0],
-    orderField: "ean",
-    orderType: "asc",
-    primaryKey: "",
-    primaryKeyValue: "",
-  });
-
-  const booleanChangeCollectionQueryInput = useRef(false);
-  const booleanChangeFilterFieldQueryInput = useRef(false);
-  const renderNumber = useRef(1);
+export const navigationURIToQueryPage = (
+  queryInput: QueryInputCollectionStructure
+) => {
+  const result = encodeURI(
+    "/collections/readrecords/&collection=" +
+      queryInput.filterCollection +
+      "&filterfield=" +
+      queryInput.filterField +
+      "&filtervalue=" +
+      queryInput.filterValue +
+      "&searchfield=" +
+      queryInput.searchField +
+      "&searchvalue=" +
+      queryInput.searchValue +
+      "&searchtype=" +
+      queryInput.searchType +
+      "&queryset=" +
+      queryInput.querySet +
+      "&queryrecordsperset=" +
+      queryInput.queryRecordsPerSet +
+      "&orderfield=" +
+      queryInput.orderField +
+      "&ordertype=" +
+      queryInput.orderType +
+      "&controlinfo="
+  );
+  return result;
+};
+export function QueryCollection({
+  queryCollectionProps,
+}: QueryCollectionPropsStructure) {
+  const navigate = useNavigate();
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
 
-  const [localFilterCollection, setLocalFilterCollection] = useState(
-    collectionState.queryInput.filterCollection
-  );
-  const [localFilterField, setLocalFilterField] = useState(
-    collectionState.queryInput.filterField
-  );
-  const [localFilterValue, setLocalFilterValue] = useState(
-    collectionState.queryInput.filterValue
-  );
-
-  const [localSearchField, setLocalSearchField] = useState(
-    collectionState.queryInput.searchField
-  );
-
-  const [localSearchType, setLocalSearchType] = useState(
-    collectionState.queryInput.searchType
-  );
-
-  const [localSearchValue, setLocalSearchValue] = useState(
-    collectionState.queryInput.searchValue
-  );
-
-  const [localOrderField, setLocalOrderField] = useState(
-    collectionState.queryInput.orderField
-  );
-
-  const [localOrderType, setLocalOrderType] = useState(
-    collectionState.queryInput.orderType
-  );
-
-  const [localRecordsPerSet, setLocalRecordsPerSet] = useState(
-    collectionState.queryInput.queryRecordsPerSet
-  );
-
-  const [localPageShown, setLocalPageShown] = useState(
-    collectionState.queryOutput.pageShown
-  );
-
-  function queryInputDefault(collection: string) {
-    let queryInputDefaultObject;
-    switch (collection) {
-      case "products":
-        return (queryInputDefaultObject = {
-          filterCollection: "products",
-          filterField: "brand",
-          filterValue: "",
-          searchField: "sku",
-          searchValue: "",
-          searchType: "Contains",
-          querySet: 1,
-          queryRecordsPerSet: recordsPerSet[0],
-          orderField: "ean",
-          orderType: "asc",
-          primaryKey: "",
-          primaryKeyValue: "",
-        });
-
-      case "productmovements":
-        return (queryInputDefaultObject = {
-          filterCollection: "productmovements",
-          filterField: "type",
-          filterValue: "",
-          searchField: "batch",
-          searchValue: "",
-          searchType: "Contains",
-          querySet: 1,
-          queryRecordsPerSet: recordsPerSet[1],
-          orderField: "date",
-          orderType: "desc",
-          primaryKey: "",
-          primaryKeyValue: "",
-        });
-
-      default:
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        return (queryInputDefaultObject = {
-          filterCollection: "products",
-          filterField: "brand",
-          filterValue: "",
-          searchField: "sku",
-          searchValue: "",
-          searchType: "Contains",
-          querySet: 1,
-          queryRecordsPerSet: recordsPerSet[0],
-          orderField: "ean",
-          orderType: "asc",
-          primaryKey: "",
-          primaryKeyValue: "",
-        });
-    }
-  }
-
-  const collections = collectionState.queryFields.collections;
   const collectionFilterableFields =
     collectionState.queryFields.filterableFields
       .filter(
-        (item) => item.split(stringSeparator)[0] === localFilterCollection
+        (item) =>
+          item.split(stringSeparator)[0] ===
+          collectionState.queryInput.filterCollection
       )
       .sort()
 
@@ -171,14 +67,20 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
   const collectionSearchableFields =
     collectionState.queryFields.searchableFields
       .filter(
-        (item) => item.split(stringSeparator)[0] === localFilterCollection
+        (item) =>
+          item.split(stringSeparator)[0] ===
+          collectionState.queryInput.filterCollection
       )
       .sort()
 
       .map((item) => item.split(stringSeparator)[1]);
 
   const collectionOrderableFields = collectionState.queryFields.orderableFields
-    .filter((item) => item.split(stringSeparator)[0] === localFilterCollection)
+    .filter(
+      (item) =>
+        item.split(stringSeparator)[0] ===
+        collectionState.queryInput.filterCollection
+    )
     .sort()
 
     .map((item) => item.split(stringSeparator)[1]);
@@ -200,537 +102,358 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
 
   const maximumPages =
     Math.floor(
-      collectionState.queryOutput.queriedCount / localRecordsPerSet
+      collectionState.queryOutput.queriedCount /
+        collectionState.queryInput.queryRecordsPerSet
     ) ===
-    collectionState.queryOutput.queriedCount / localRecordsPerSet
+    collectionState.queryOutput.queriedCount /
+      collectionState.queryInput.queryRecordsPerSet
       ? Math.floor(
-          collectionState.queryOutput.queriedCount / localRecordsPerSet
+          collectionState.queryOutput.queriedCount /
+            collectionState.queryInput.queryRecordsPerSet
         )
       : Math.floor(
-          collectionState.queryOutput.queriedCount / localRecordsPerSet
+          collectionState.queryOutput.queriedCount /
+            collectionState.queryInput.queryRecordsPerSet
         ) + 1;
 
+  const maximumPagesToShow = maximumPages > 100 ? 100 : maximumPages;
+  //To control the rendering speed of the component. Please note that a collection of 100k documents with the option of 4 documents per page would return 25k options of pages that need to be shown in the selector element. If the user want to access to all the documents in the collection, he/she needs to change the records per page selector
+
   const pagesArray: number[] = [1];
-  for (let i = 2; i <= maximumPages; i++) {
+  for (let i = 2; i <= maximumPagesToShow; i++) {
     pagesArray.push(i);
   }
 
   const repoCollection = new CollectionsRepo();
-  const { updateQueryFields, updateQueryInput } =
-    useCollections(repoCollection);
+  const { updateQueryInput } = useCollections(repoCollection);
 
-  const handlerOnEvent = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handlerOnChangeCollection = (
+    event: SyntheticEvent<HTMLSelectElement>
+  ) => {
+    const selector = event.currentTarget;
+    const filterCollection = (selector as HTMLSelectElement).value;
+
+    const queryDefault: QueryInputCollectionStructure =
+      queryInputOnChangeCollection(filterCollection);
+    updateQueryInput(
+      queryDefault,
+      "componentFile_" + componentFile + "_line_138"
+    );
+
+    navigate(navigationURIToQueryPage(queryDefault));
+  };
+
+  const handlerOnChangeFilterField = (
+    event: SyntheticEvent<HTMLSelectElement>
+  ) => {
+    const selector = event.currentTarget;
+    const filterField = (selector as HTMLSelectElement).value;
+
+    const queryDefault: QueryInputCollectionStructure =
+      queryInputOnChangeCollection(collectionState.queryInput.filterCollection);
+
+    const queryDefaultModified = Object.assign(queryDefault);
+    queryDefaultModified.filterField = filterField;
+    queryDefaultModified.filterValue = "";
+    queryDefaultModified.searchValue = "";
+    queryDefaultModified.querySet = 1;
+
+    updateQueryInput(
+      queryDefaultModified,
+      "componentFile_" + componentFile + "_line_165"
+    );
+    navigate(navigationURIToQueryPage(queryDefaultModified));
+  };
+
+  const handlerOnChangeFilterValue = (
+    event: SyntheticEvent<HTMLSelectElement>
+  ) => {
+    const selector = event.currentTarget;
+    const filterValue = (selector as HTMLSelectElement).value;
+
+    //The following code does not work, throwing an error of "Uncaught TypeError: Cannot assign to read only property 'filterValue' of object '#<Object>'" even if it works the same code logic at handlerOnChangeFilterField
+    // const queryDefault = Object.assign(collectionState.queryInput);
+    // const queryDefaultModified = Object.assign(queryDefault);
+    // queryDefaultModified.filterValue = filterValue.toString();
+    // queryDefaultModified.querySet = 1;
+
+    const queryDefaultModified = {
+      filterCollection: collectionState.queryInput.filterCollection,
+      filterField: collectionState.queryInput.filterField,
+      filterValue: filterValue.toString(),
+      searchField: collectionState.queryInput.searchField,
+      searchValue: "",
+      searchType: collectionState.queryInput.searchType,
+      querySet: 1,
+      queryRecordsPerSet: collectionState.queryInput.queryRecordsPerSet,
+      orderField: collectionState.queryInput.orderField,
+      orderType: collectionState.queryInput.orderType,
+      primaryKey: collectionState.queryInput.primaryKey,
+      primaryKeyValue: collectionState.queryInput.primaryKeyValue,
+    };
+
+    updateQueryInput(
+      queryDefaultModified,
+      "componentFile_" + componentFile + "_line_195"
+    );
+    navigate(navigationURIToQueryPage(queryDefaultModified));
+  };
+
+  const handlerOnChangeForm = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const queryForm = event.currentTarget;
 
-    const queryInputEventFormObject: QueryInputCollectionStructure = {
-      filterCollection: (queryForm.elements[0] as HTMLFormElement).value,
-      filterField: (queryForm.elements[1] as HTMLFormElement).value,
-      filterValue:
-        (queryForm.elements[2] as HTMLFormElement).value === "(select all)"
-          ? ""
-          : (queryForm.elements[2] as HTMLFormElement).value.toString(),
-
-      // As agreed with the backend, the '(select all)' values for filters should be requested as ''
-      searchField: (queryForm.elements[3] as HTMLFormElement).value,
-      searchType: (queryForm.elements[4] as HTMLFormElement).value,
-      searchValue: (queryForm.elements[5] as HTMLFormElement).value.toString(),
-
-      orderField: (queryForm.elements[6] as HTMLFormElement).value,
-      orderType: (queryForm.elements[7] as HTMLFormElement).value,
-      queryRecordsPerSet: (queryForm.elements[8] as HTMLFormElement).value,
-      querySet: (queryForm.elements[9] as HTMLFormElement).value,
+    const queryFormObject: QueryInputCollectionStructure = {
+      filterCollection: collectionState.queryInput.filterCollection,
+      filterField: collectionState.queryInput.filterField,
+      filterValue: collectionState.queryInput.filterValue,
+      searchField: (queryForm.elements[0] as HTMLFormElement).value,
+      searchType: (queryForm.elements[1] as HTMLFormElement).value,
+      searchValue: (queryForm.elements[2] as HTMLFormElement).value.toString(),
+      orderField: (queryForm.elements[3] as HTMLFormElement).value,
+      orderType: (queryForm.elements[4] as HTMLFormElement).value,
+      queryRecordsPerSet: (queryForm.elements[5] as HTMLFormElement).value,
+      querySet: 1,
       primaryKey: "",
       primaryKeyValue: "",
     };
-
-    formElements.current = queryInputEventFormObject;
     updateQueryInput(
-      formElements.current,
-      "componentFile_" + componentFile + "_line_306"
+      queryFormObject,
+      "componentFile_" + componentFile + "_line_210"
     );
+    navigate(navigationURIToQueryPage(queryFormObject));
   };
 
-  useEffect(() => {
-    if (renderNumber.current === 1) {
-      updateQueryFields("componentFile_" + componentFile + "_line_238");
-      console.log("useEffect at query.collection.tsx");
-      console.log("renderNumber=", renderNumber.current);
-      console.log("updateQueryFields aplicado");
-    } else {
-      console.log("useEffect at query.collection.tsx");
-      console.log("renderNumber=", renderNumber.current);
-      console.log("updateQueryFields no aplicado");
-    }
-    renderNumber.current = renderNumber.current + 1;
-    const presentForm = (document.querySelector("form") as HTMLFormElement) ?? (
-      <form>
-        <select>defensive</select>
-      </form>
-    );
+  const handlerOnChangePage = (event: SyntheticEvent<HTMLSelectElement>) => {
+    const selector = event.currentTarget;
 
-    const queryInputShown = {
-      filterCollection: (presentForm.elements[0] as HTMLFormElement).value,
-      filterField: (presentForm.elements[1] as HTMLFormElement).value,
-      filterValue:
-        (presentForm.elements[2] as HTMLFormElement).value === "(select all)"
-          ? ""
-          : (presentForm.elements[2] as HTMLFormElement).value.toString(),
-
-      // As agreed with the backend, the '(select all)' values for filters should be requested as ''
-      searchField: (presentForm.elements[3] as HTMLFormElement).value,
-      searchType: (presentForm.elements[4] as HTMLFormElement).value,
-      searchValue: (
-        presentForm.elements[5] as HTMLFormElement
-      ).value.toString(),
-
-      orderField: (presentForm.elements[6] as HTMLFormElement).value,
-      orderType: (presentForm.elements[7] as HTMLFormElement).value,
-      queryRecordsPerSet: (presentForm.elements[8] as HTMLFormElement).value,
-      querySet: (presentForm.elements[9] as HTMLFormElement).value,
+    const queryObject: QueryInputCollectionStructure = {
+      filterCollection: collectionState.queryInput.filterCollection,
+      filterField: collectionState.queryInput.filterField,
+      filterValue: collectionState.queryInput.filterValue,
+      searchField: collectionState.queryInput.searchField,
+      searchType: collectionState.queryInput.searchType,
+      searchValue: collectionState.queryInput.searchValue,
+      orderField: collectionState.queryInput.orderField,
+      orderType: collectionState.queryInput.orderType,
+      queryRecordsPerSet: collectionState.queryInput.queryRecordsPerSet,
+      querySet: Number(selector.value),
       primaryKey: "",
       primaryKeyValue: "",
     };
-    const copyOfChangeCollectionQueryInput = Object.assign(
-      changeCollectionQueryInput
+    updateQueryInput(
+      queryObject,
+      "componentFile_" + componentFile + "_line_235"
     );
-    console.log(
-      "booleanChangeCollectionQueryInput: ",
-      booleanChangeCollectionQueryInput.current
-    );
-    booleanChangeCollectionQueryInput.current
-      ? updateQueryInput(
-          copyOfChangeCollectionQueryInput.current,
-          "componentFile_" + componentFile + "_line_282"
-        )
-      : updateQueryInput(
-          queryInputShown,
-          "componentFile_" + componentFile + "_line_286"
-        );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    navigate(navigationURIToQueryPage(queryObject));
+  };
 
   return (
     <>
       <div className="queryCollection__container">
-        <div className="queryCollection__formContainer">
-          <label className="queryCollection__label queryCollection__titles">
-            {"Parameter "}
-            <select defaultValue={"Shown"}>
-              <option key={"Shown"}>{"Shown"}</option>
+        <div className="queryCollection__queryContainer">
+          <label className="queryCollection__label">
+            <div>{"Collection to query"}</div>
+            <select
+              name="collection"
+              id="formElement0"
+              onChange={handlerOnChangeCollection}
+            >
+              {collectionState.queryInput.filterCollection}
+              {collectionState.queryFields.collections.map((item) => (
+                <option
+                  key={item}
+                  selected={
+                    item === collectionState.queryInput.filterCollection
+                      ? true
+                      : false
+                  }
+                >
+                  {item}
+                </option>
+              ))}
             </select>
-            <div>{"OnClick Value"}</div>
-            <div>{"Local State"}</div>
-            <div>{"Global State"}</div>
+
+            <div>{collectionState.queryInput.filterCollection}</div>
+          </label>
+          <label className="queryCollection__label">
+            <div>{"Filter field"}</div>
+            <select name="filter_field" onChange={handlerOnChangeFilterField}>
+              {collectionState.queryInput.filterField}
+              {collectionFilterableFields.map((item) => (
+                <option
+                  key={"filter_" + item}
+                  selected={
+                    item === collectionState.queryInput.filterField
+                      ? true
+                      : false
+                  }
+                >
+                  {item}
+                </option>
+              ))}
+            </select>
+
+            <div>{collectionState.queryInput.filterField}</div>
+          </label>
+          <label className="queryCollection__label">
+            <div>{"Filter value"}</div>
+            <select name="filter_value" onChange={handlerOnChangeFilterValue}>
+              {collectionState.queryInput.filterValue}
+              {filterValueOptionsShownWithSelectAllAndOrdered.map(
+                (item: string) => (
+                  <option
+                    key={item}
+                    selected={
+                      item === collectionState.queryInput.filterValue
+                        ? true
+                        : false
+                    }
+                  >
+                    {item}
+                  </option>
+                )
+              )}
+            </select>
+
+            <div>{collectionState.queryInput.filterValue}</div>
           </label>
           <form
             className="queryCollection__formContainer"
-            onChange={handlerOnEvent}
-            onClick={handlerOnEvent}
-            onKeyUp={handlerOnEvent}
+            onChange={handlerOnChangeForm}
           >
-            {/* <form> */}
             <label className="queryCollection__label">
-              {"Collection to query "}
-              <select
-                name="collection"
-                id="formElement0"
-                onChange={() => {
-                  booleanChangeCollectionQueryInput.current = true;
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-
-                  console.log(booleanChangeCollectionQueryInput.current);
-                  changeCollectionQueryInput.current = queryInputDefault(
-                    (presentForm.elements[0] as HTMLFormElement).value
-                  );
-
-                  setLocalFilterCollection(
-                    (presentForm.elements[0] as HTMLFormElement).value
-                  );
-                  setLocalFilterField(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).filterField
-                  );
-                  setLocalFilterValue(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).filterValue
-                  );
-                  setLocalSearchField(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).searchField
-                  );
-                  setLocalSearchType(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).searchType
-                  );
-
-                  setLocalSearchValue(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).searchValue
-                  );
-                  setLocalOrderField(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).orderField
-                  );
-                  setLocalOrderType(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).orderType
-                  );
-                  setLocalRecordsPerSet(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).queryRecordsPerSet
-                  );
-                  setLocalPageShown(1);
-                  updateQueryFields(
-                    "componentFile_" + componentFile + "_line_376"
-                  );
-                }}
-              >
-                {localFilterCollection}
-                {collections.map((item) => (
-                  <option
-                    key={item}
-                    selected={item === localFilterCollection ? true : false}
-                  >
-                    {item}
-                  </option>
-                ))}
-              </select>
-              <div>{formElements.current.filterCollection}</div>
-              <div>{localFilterCollection}</div>
-              <div>{collectionState.queryInput.filterCollection}</div>
-            </label>
-            {/* </form> */}
-            <label className="queryCollection__label">
-              {"Filter field "}
-              <select
-                name="filter_field"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalFilterField(
-                    (presentForm.elements[1] as HTMLFormElement).value
-                  );
-                  setLocalFilterValue(
-                    queryInputDefault(
-                      (presentForm.elements[0] as HTMLFormElement).value
-                    ).filterValue
-                  );
-
-                  changeFilterFieldQueryInput.current = {
-                    filterCollection: (
-                      presentForm.elements[0] as HTMLFormElement
-                    ).value,
-                    filterField: (presentForm.elements[1] as HTMLFormElement)
-                      .value,
-                    filterValue: "",
-
-                    // As agreed with the backend, the '(select all)' values for filters should be requested as ''
-                    searchField: (presentForm.elements[3] as HTMLFormElement)
-                      .value,
-                    searchType: (presentForm.elements[4] as HTMLFormElement)
-                      .value,
-                    searchValue: (presentForm.elements[5] as HTMLFormElement)
-                      .value,
-
-                    orderField: (presentForm.elements[6] as HTMLFormElement)
-                      .value,
-                    orderType: (presentForm.elements[7] as HTMLFormElement)
-                      .value,
-                    queryRecordsPerSet: (
-                      presentForm.elements[8] as HTMLFormElement
-                    ).value,
-                    querySet: (presentForm.elements[9] as HTMLFormElement)
-                      .value,
-                    primaryKey: "",
-                    primaryKeyValue: "",
-                  };
-                  booleanChangeFilterFieldQueryInput.current = true;
-
-                  updateQueryFields(
-                    "componentFile_" + componentFile + "_line_415"
-                  );
-                }}
-              >
-                {localFilterField}
-                {collectionFilterableFields.map((item) => (
-                  <option
-                    key={"filter_" + item}
-                    selected={item === localFilterField ? true : false}
-                  >
-                    {item}
-                  </option>
-                ))}
-              </select>
-              <div>{formElements.current.filterField}</div>
-              <div>{localFilterField}</div>
-              <div>{collectionState.queryInput.filterField}</div>
-            </label>
-            <label className="queryCollection__label">
-              {"Filter value "}
-              <select
-                name="filter_value"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalFilterField(
-                    (presentForm.elements[1] as HTMLFormElement).value
-                  );
-                  setLocalFilterValue(
-                    (presentForm.elements[2] as HTMLFormElement).value
-                  );
-                }}
-              >
-                {localFilterValue}
-                {filterValueOptionsShownWithSelectAllAndOrdered.map(
-                  (item: string) => (
-                    <option
-                      key={item}
-                      selected={item === localFilterValue ? true : false}
-                    >
-                      {item}
-                    </option>
-                  )
-                )}
-              </select>
-              <div>{formElements.current.filterValue}</div>
-              <div>{localFilterValue}</div>
-              <div>{collectionState.queryInput.filterValue}</div>
-            </label>
-            <label className="queryCollection__label">
-              {"Search field "}
-              <select
-                name="search_field"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-
-                  setLocalSearchField(
-                    (presentForm.elements[3] as HTMLFormElement).value
-                  );
-                }}
-              >
-                {localSearchField}
+              <div>{"Search field"}</div>
+              <select name="search_field" onChange={() => {}}>
+                {collectionState.queryInput.searchField}
                 {collectionSearchableFields.map((item) => (
                   <option
                     key={"search_" + item}
-                    selected={item === localSearchField ? true : false}
+                    selected={
+                      item === collectionState.queryInput.searchField
+                        ? true
+                        : false
+                    }
                   >
                     {item}
                   </option>
                 ))}
               </select>
-              <div>{formElements.current.searchField}</div>
-              <div>{localSearchField}</div>
+
               <div>{collectionState.queryInput.searchField}</div>
             </label>
             <label className="queryCollection__label">
-              {"Search type "}
-              <select
-                name="search_type"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalSearchType(
-                    (presentForm.elements[4] as HTMLFormElement).value
-                  );
-                }}
-              >
-                {localSearchType}
+              <div>{"Search type"}</div>
+              <select name="search_type" onChange={() => {}}>
+                {collectionState.queryInput.searchType}
                 {searchTypeOptions.map((item) => (
                   <option
                     key={"searchType_" + item}
-                    selected={item === localSearchType ? true : false}
+                    selected={
+                      item === collectionState.queryInput.searchType
+                        ? true
+                        : false
+                    }
                   >
                     {item}
                   </option>
                 ))}
               </select>
-              <div>{formElements.current.searchType}</div>
-              <div>{localSearchType}</div>
+
               <div>{collectionState.queryInput.searchType}</div>
             </label>
             <label className="queryCollection__label">
-              {"Search value (case sensitive)"}
+              <div>{"Search value (case sens.)"}</div>
               <input
                 name="search_value"
-                value={localSearchValue}
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalSearchValue(
-                    (presentForm.elements[5] as HTMLFormElement).value
-                  );
-                }}
+                value={collectionState.queryInput.searchValue}
+                onChange={() => {}}
               ></input>
-              <div>{formElements.current.searchValue.toString()}</div>
-              <div>{localSearchValue.toString()}</div>
+
               <div>{collectionState.queryInput.searchValue.toString()}</div>
             </label>
 
             <label className="queryCollection__label">
-              {"Order by "}
-              <select
-                name="order_field"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalOrderField(
-                    (presentForm.elements[6] as HTMLFormElement).value
-                  );
-                }}
-              >
-                {localOrderField}
+              <div>{"Order by"}</div>
+              <select name="order_field" onChange={() => {}}>
+                {collectionState.queryInput.orderField}
                 {collectionOrderableFields.map((item) => (
                   <option
                     key={"order_" + item}
-                    selected={item === localOrderField ? true : false}
+                    selected={
+                      item === collectionState.queryInput.orderField
+                        ? true
+                        : false
+                    }
                   >
                     {item}
                   </option>
                 ))}
               </select>
-              <div>{formElements.current.orderField}</div>
-              <div>{localOrderField}</div>
+
               <div>{collectionState.queryInput.orderField}</div>
             </label>
             <label className="queryCollection__label">
-              {"Order type "}
-              <select
-                name="order_type"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalOrderType(
-                    (presentForm.elements[7] as HTMLFormElement).value
-                  );
-                }}
-              >
+              <div>{"Order type"}</div>
+              <select name="order_type" onChange={() => {}}>
                 {collectionState.queryInput.orderType}
 
-                <option key={"asc"} selected={localOrderType === "asc"}>
+                <option
+                  key={"asc"}
+                  selected={collectionState.queryInput.orderType === "asc"}
+                >
                   {"asc"}
                 </option>
-                <option key={"desc"} selected={localOrderType === "desc"}>
+                <option
+                  key={"desc"}
+                  selected={collectionState.queryInput.orderType === "desc"}
+                >
                   {"desc"}
                 </option>
               </select>
-              <div>{formElements.current.orderType}</div>
-              <div>{localOrderType}</div>
+
               <div>{collectionState.queryInput.orderType}</div>
             </label>
             <label className="queryCollection__label">
-              {"Docs/page "}
-              <select
-                name="queryrecordsperset"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalRecordsPerSet(
-                    (presentForm.elements[8] as HTMLFormElement).value
-                  );
-                }}
-              >
-                {localRecordsPerSet}
+              <div>{"Docs/page"}</div>
+              <select name="queryrecordsperset" onChange={() => {}}>
+                {collectionState.queryInput.queryRecordsPerSet}
                 {recordsPerSet.map((item) => (
                   <option
                     key={item}
-                    selected={item === localRecordsPerSet ? true : false}
+                    selected={
+                      item === collectionState.queryInput.queryRecordsPerSet
+                        ? true
+                        : false
+                    }
                   >
                     {item}
                   </option>
                 ))}
               </select>
-              <div>{formElements.current.queryRecordsPerSet}</div>
-              <div>{localRecordsPerSet}</div>
+
               <div>{collectionState.queryInput.queryRecordsPerSet}</div>
             </label>
-            <label className="queryCollection__label">
-              {"Go to Page# "}
-              <select
-                name="pageshown"
-                onChange={() => {
-                  const presentForm = (document.querySelector(
-                    "form"
-                  ) as HTMLFormElement) ?? (
-                    <form>
-                      <select>123</select>
-                    </form>
-                  );
-                  setLocalPageShown(
-                    (presentForm.elements[9] as HTMLFormElement).value
-                  );
-                }}
-              >
-                {pagesArray.map((item) => (
-                  <option
-                    key={item}
-                    selected={item === localPageShown ? true : false}
-                  >
-                    {item}
-                  </option>
-                ))}
-              </select>
-              <div>{formElements.current.querySet}</div>
-              <div>{localPageShown}</div>
-              <div>{collectionState.queryOutput.pageShown}</div>
-            </label>
           </form>
+          <label className="queryCollection__label">
+            <div>{"GoTo Page# "}</div>
+            <select onChange={handlerOnChangePage}>
+              {pagesArray.map((item) => (
+                <option
+                  key={item}
+                  selected={
+                    item === collectionState.queryOutput.pageShown
+                      ? true
+                      : false
+                  }
+                >
+                  {item}
+                </option>
+              ))}
+            </select>
+
+            <div>{collectionState.queryOutput.pageShown}</div>
+          </label>
         </div>
         <div>
           <div className="queryCollection__paginationContainer">
@@ -745,6 +468,13 @@ export function QueryCollection({ collectionName }: QueryCollectionProps) {
             <div>{"# available pages: " + maximumPages}</div>
             <div>
               {"# page shown: " + collectionState.queryOutput.pageShown}
+            </div>
+            <div>{"props===pathname:"}</div>
+            <div>
+              {decodeURI(useLocation().pathname.toString()) ===
+              "/" + queryCollectionProps
+                ? "true"
+                : "false"}
             </div>
           </div>
         </div>

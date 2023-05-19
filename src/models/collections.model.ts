@@ -1,6 +1,6 @@
 //Collection documents types and samples
 
-export type AppCollectionField = {
+export type AppCollectionFieldStructure = {
   id: string;
   collectionName: string;
   fieldName: string;
@@ -8,8 +8,26 @@ export type AppCollectionField = {
   filterable: boolean;
   searchable: boolean;
   orderable: boolean;
+  htmlTag: string;
+  mongoType: string;
+  createShow: string;
+  detailShow: string;
+  galleryShow: string;
+  updateShow: string;
+  relatedCollectionField: string;
 };
-
+export type ProductMovementStructure = {
+  id: string;
+  productSku: string;
+  batch: string;
+  date: string;
+  type: string;
+  typeId: string;
+  store: string;
+  units: number;
+  costPerUnit: number;
+  pricePerUnit: number;
+};
 export type ProductStructure = {
   id: string;
   sku: string;
@@ -23,43 +41,15 @@ export type ProductStructure = {
   pricePerUnit: number;
 };
 
-export const productStructureSample: ProductStructure = {
-  id: "id",
-  sku: "Sku",
-  shortDescription: "Short Description",
-  longDescription: "Long Description",
-  ean: "EAN",
-  brand: "Brand",
-  image: "Image",
-  userCreatorEmail: "User Creator Email",
-  costPerUnit: 0,
-  pricePerUnit: 0,
+export type TranslationOutputTextStructure = {
+  isoCode: string;
+  outputText: string;
 };
 
-export type ProductMovementStructure = {
+export type TranslationStructure = {
   id: string;
-  productSku: string;
-  batch: string;
-  date: string;
-  type: string;
-  typeId: string;
-  store: string;
-  units: number;
-  costPerUnit: number;
-  pricePerUnit: number;
-};
-
-export const productMovementStructureSample: ProductMovementStructure = {
-  id: "id",
-  productSku: "SKU",
-  batch: "Batch",
-  date: "Date of the product movement",
-  type: "Type of product movement",
-  typeId: "Id of type of product movement",
-  store: "Store",
-  units: 0,
-  costPerUnit: 0,
-  pricePerUnit: 0,
+  inputText: string;
+  outputTexts: TranslationOutputTextStructure[];
 };
 
 export type UserStructure = {
@@ -71,17 +61,7 @@ export type UserStructure = {
   role: string;
   image: string;
   lastLogging: string;
-};
-
-export const userStructureSample: UserStructure = {
-  id: "id",
-  email: "email",
-  passwd: "Password",
-  firstName: "First Name",
-  lastName: "Last Name",
-  role: "Role",
-  image: "Image url",
-  lastLogging: "Last logging",
+  language: string;
 };
 
 export type CollectionStructure = ProductStructure &

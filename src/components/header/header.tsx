@@ -14,13 +14,7 @@ export function Header() {
   const { userLogout } = useUsers(repoUser);
   const navigate = useNavigate();
 
-  const firstName = useSelector(
-    (state: RootState) => state.userState.userLogged.firstName
-  );
-
-  const userLoggedTokenData = useSelector(
-    (state: RootState) => state.userState.userLoggedToken
-  );
+  const userState = useSelector((state: RootState) => state.userState);
 
   const handlerClick = (event: SyntheticEvent) => {
     userLogout();
@@ -38,9 +32,14 @@ export function Header() {
         <Menu options={menuOptions}></Menu>
       </nav>
       <div className="header__initialAndLogout">
-        <div className="header__userLoggedInitials">{firstName}</div>
+        <div className="header__userLoggedInitials">
+          {userState.userLogged.firstName +
+            " (" +
+            userState.userLogged.language +
+            ")"}
+        </div>
 
-        {userLoggedTokenData !== initialUserState.userLoggedToken ||
+        {userState.userLoggedToken !== initialUserState.userLoggedToken ||
         localStorage.tokenERP !== initialUserState.userLoggedToken ? (
           <div className="header__logout" onClick={handlerClick}>
             logout

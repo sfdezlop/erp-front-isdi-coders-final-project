@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import "./menu.css";
+import { useCollections } from "../../hooks/use.collections";
+import { CollectionsRepo } from "../../services/repositories/collection.repo";
 
 export type MenuOption = {
   label: string;
@@ -10,7 +12,7 @@ export const menuOptions: MenuOption[] = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Products", path: "/products" },
   { label: "Movements", path: "/productmovements" },
-  { label: "Collections", path: "/collections/products" },
+  { label: "Collections", path: "/collections/readrecords/products" },
 ];
 
 export type MenuProps = {
@@ -18,6 +20,8 @@ export type MenuProps = {
 };
 
 export function Menu({ options }: MenuProps) {
+  const repoCollection = new CollectionsRepo();
+  const { translate } = useCollections(repoCollection);
   return (
     <div className="menu__container">
       <nav className="menu__nav">
@@ -34,7 +38,7 @@ export function Menu({ options }: MenuProps) {
                 //   color: isActive ? "white" : "white",
                 // })}
               >
-                {item.label}
+                {translate(item.label)}
               </Link>
             </li>
           ))}

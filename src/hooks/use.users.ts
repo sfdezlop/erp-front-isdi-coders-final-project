@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { UserStructure } from "../models/collections.model";
 import { UsersRepo } from "../services/repositories/user.repo";
+
 import { AppDispatch } from "../store/store";
 import {
   initialState as initialUserState,
@@ -9,6 +10,7 @@ import {
   loginUser,
   logoutToken,
 } from "../reducers/user.slice";
+
 import { useApp } from "./use.app";
 
 export function useUsers(repo: UsersRepo) {

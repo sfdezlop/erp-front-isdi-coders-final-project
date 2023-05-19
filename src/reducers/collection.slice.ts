@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  AppCollectionFieldStructure,
   QueryFieldsCollectionStructure,
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
+  TranslationStructure,
 } from "../models/collections.model";
 import { stringSeparator } from "../config";
 
@@ -10,6 +12,8 @@ export type CollectionStateStructure = {
   queryFields: QueryFieldsCollectionStructure;
   queryInput: QueryInputCollectionStructure;
   queryOutput: QueryOutputCollectionStructure;
+  translations: TranslationStructure[];
+  appCollectionFields: AppCollectionFieldStructure[];
 };
 
 const initialStateFormCongruency = {
@@ -59,20 +63,20 @@ export const initialState: CollectionStateStructure = {
     queriedCount: 1,
     unQueriedCount: 1,
     gallery: [
-      {
-        id: "123456",
-        sku: "Sku",
-        shortDescription: "Short Description",
-        longDescription: "Long Description",
-        ean: "EAN",
-        brand: "Brand",
-        image: "Image",
-        userCreatorEmail: "User Creator Email",
-        costPerUnit: 0,
-        pricePerUnit: 0,
-      },
+      // {
+      //   id: "123456",
+      //   sku: "Sku",
+      //   shortDescription: "Short Description",
+      //   longDescription: "Long Description",
+      //   ean: "EAN",
+      //   brand: "Brand",
+      //   image: "Image",
+      //   userCreatorEmail: "User Creator Email",
+      //   costPerUnit: 0,
+      //   pricePerUnit: 0,
+      // },
     ],
-    galleryInterface: "custom",
+    galleryInterface: "raw",
     detail: [
       {
         id: "id",
@@ -87,8 +91,10 @@ export const initialState: CollectionStateStructure = {
         pricePerUnit: 0,
       },
     ],
-    detailInterface: "custom",
+    detailInterface: "raw",
   },
+  translations: [],
+  appCollectionFields: [],
 };
 
 export const collectionSlice = createSlice({
@@ -113,9 +119,27 @@ export const collectionSlice = createSlice({
     ) {
       state.queryOutput = action.payload;
     },
+    translations(
+      state: CollectionStateStructure,
+      action: PayloadAction<TranslationStructure[]>
+    ) {
+      state.translations = action.payload;
+    },
+    appCollectionFields(
+      state: CollectionStateStructure,
+      action: PayloadAction<AppCollectionFieldStructure[]>
+    ) {
+      state.appCollectionFields = action.payload;
+    },
   },
 });
 
-export const { queryFields, queryInput, queryOutput } = collectionSlice.actions;
+export const {
+  queryFields,
+  queryInput,
+  queryOutput,
+  translations,
+  appCollectionFields,
+} = collectionSlice.actions;
 
 export const collectionReducer = collectionSlice.reducer;
