@@ -81,15 +81,15 @@ export function queryInputOnChangeCollection(collection: string) {
     default:
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       return {
-        filterCollection: "products",
-        filterField: "brand",
+        filterCollection: "toBeDefined",
+        filterField: "tbd",
         filterValue: "",
-        searchField: "sku",
+        searchField: "tbd",
         searchValue: "",
         searchType: "Contains",
         querySet: 1,
         queryRecordsPerSet: recordsPerSet[0],
-        orderField: "ean",
+        orderField: "tbd",
         orderType: "asc",
         primaryKey: "",
         primaryKeyValue: "",

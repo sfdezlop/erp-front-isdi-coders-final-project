@@ -41,32 +41,6 @@ export type ProductStructure = {
   pricePerUnit: number;
 };
 
-// export const productStructureSample: ProductStructure = {
-//   id: "id",
-//   sku: "Sku",
-//   shortDescription: "Short Description",
-//   longDescription: "Long Description",
-//   ean: "EAN",
-//   brand: "Brand",
-//   image: "Image",
-//   userCreatorEmail: "User Creator Email",
-//   costPerUnit: 0,
-//   pricePerUnit: 0,
-// };
-
-// export const productMovementStructureSample: ProductMovementStructure = {
-//   id: "id",
-//   productSku: "SKU",
-//   batch: "Batch",
-//   date: "Date of the product movement",
-//   type: "Type of product movement",
-//   typeId: "Id of type of product movement",
-//   store: "Store",
-//   units: 0,
-//   costPerUnit: 0,
-//   pricePerUnit: 0,
-// };
-
 export type TranslationOutputTextStructure = {
   isoCode: string;
   outputText: string;
@@ -89,18 +63,6 @@ export type UserStructure = {
   lastLogging: string;
   language: string;
 };
-
-// export const userStructureSample: UserStructure = {
-//   id: "id",
-//   email: "email",
-//   passwd: "Password",
-//   firstName: "First Name",
-//   lastName: "Last Name",
-//   role: "Role",
-//   image: "Image url",
-//   lastLogging: "Last logging",
-//   language: "es",
-// };
 
 export type CollectionStructure = ProductStructure &
   ProductMovementStructure &
