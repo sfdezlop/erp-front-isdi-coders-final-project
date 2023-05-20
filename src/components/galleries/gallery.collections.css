@@ -71,12 +71,15 @@
   align-content: flex-end;
 }
 
+.collectionGalleryCard__dataImageContainer {
+  align-content: center;
+}
+
 .collectionGalleryCard__dataImage {
   max-width: 15rem;
   max-height: 10rem;
   margin-bottom: 1rem;
   padding-top: 4vh;
-  padding-left: 4vh;
 }
 
 .collectionsGallery__noDataContainer {

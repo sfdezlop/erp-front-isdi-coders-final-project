@@ -158,7 +158,6 @@ export function CollectionsGallery() {
     );
 
   const handlerOnClickLinkedDiv = (event: SyntheticEvent<HTMLDivElement>) => {
-    console.log("handlerOnClickLinkedDiv");
     const clickedDiv = event.currentTarget;
     const clickedDivAriaLabel = clickedDiv.ariaLabel ?? "";
 
@@ -227,73 +226,97 @@ export function CollectionsGallery() {
             <div className="collectionGalleryCard__field">
               {translate(item.fieldName) + ": "}
             </div>
-            <div></div>
-            {item.htmlTag === "img" ? (
-              <div className="collectionGalleryCard__data">
-                <img
-                  src={item.data}
-                  alt={item.data + "" + item.data}
-                  className="collectionGalleryCard__dataImage"
-                ></img>
-              </div>
-            ) : item.relatedCollectionField.split("_-_").length === 2 ? (
-              <Link
-                to={encodeURI(
-                  "/collections/readrecords/&collection=" +
-                    item.relatedCollectionField.split("_-_")[0] +
-                    "&filterfield=" +
-                    item.relatedCollectionField.split("_-_")[1] +
-                    "&filtervalue=&searchfield=" +
-                    item.relatedCollectionField.split("_-_")[1] +
-                    "&searchvalue=" +
-                    item.data +
-                    "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                    recordsPerSet[0] +
-                    "&orderfield=" +
-                    item.relatedCollectionField.split("_-_")[1] +
-                    "&ordertype=asc&controlinfo="
-                )}
-                className="collectionGalleryCard__link"
-              >
-                <div
-                  className="collectionGalleryCard__data"
-                  onClick={handlerOnClickLinkedDiv}
-                  aria-label={
-                    "/collections/readrecords/&collection=" +
-                    item.relatedCollectionField.split("_-_")[0] +
-                    "&filterfield=" +
-                    item.relatedCollectionField.split("_-_")[1] +
-                    "&filtervalue=&searchfield=" +
-                    item.relatedCollectionField.split("_-_")[1] +
-                    "&searchvalue=" +
-                    item.data +
-                    "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                    recordsPerSet[0] +
-                    "&orderfield=" +
-                    item.relatedCollectionField.split("_-_")[1] +
-                    "&ordertype=asc&controlinfo="
-                  }
-                >
-                  {item.data}
-                </div>
-              </Link>
-            ) : (
-              <div className="collectionGalleryCard__data">{item.data}</div>
-            )}
+            {(() => {
+              switch (item.htmlTag) {
+                case "div":
+                  return item.relatedCollectionField.split("_-_").length ===
+                    2 ? (
+                    <Link
+                      to={encodeURI(
+                        "/collections/readrecords/&collection=" +
+                          item.relatedCollectionField.split("_-_")[0] +
+                          "&filterfield=" +
+                          item.relatedCollectionField.split("_-_")[1] +
+                          "&filtervalue=&searchfield=" +
+                          item.relatedCollectionField.split("_-_")[1] +
+                          "&searchvalue=" +
+                          item.data +
+                          "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                          recordsPerSet[0] +
+                          "&orderfield=" +
+                          item.relatedCollectionField.split("_-_")[1] +
+                          "&ordertype=asc&controlinfo="
+                      )}
+                      className="collectionGalleryCard__link"
+                    >
+                      <div
+                        className="collectionGalleryCard__data"
+                        onClick={handlerOnClickLinkedDiv}
+                        aria-label={
+                          "/collections/readrecords/&collection=" +
+                          item.relatedCollectionField.split("_-_")[0] +
+                          "&filterfield=" +
+                          item.relatedCollectionField.split("_-_")[1] +
+                          "&filtervalue=&searchfield=" +
+                          item.relatedCollectionField.split("_-_")[1] +
+                          "&searchvalue=" +
+                          item.data +
+                          "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                          recordsPerSet[0] +
+                          "&orderfield=" +
+                          item.relatedCollectionField.split("_-_")[1] +
+                          "&ordertype=asc&controlinfo="
+                        }
+                      >
+                        {item.data}
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className="collectionGalleryCard__data">
+                      {item.data}
+                    </div>
+                  );
+                case "img":
+                  return (
+                    <div className="collectionGalleryCard__dataImageContainer">
+                      <img
+                        src={item.data}
+                        alt={item.data + "" + item.data}
+                        className="collectionGalleryCard__dataImage"
+                      ></img>
+                    </div>
+                  );
+                case "a":
+                  return (
+                    <a
+                      className="collectionGalleryCard__data"
+                      href={item.data}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.data}
+                    </a>
+                  );
+                default:
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  return (
+                    <div>
+                      {"Error: the htmlTag=" +
+                        item.htmlTag +
+                        " assign to this field is not supported at the app. Please, add a new case in the switch statement at gallery.collections.tsx or change the htmlTag value for the field `" +
+                        item.fieldName +
+                        "` of collection `" +
+                        item.collection +
+                        "` at database collection `appcollectionfields`."}
+                    </div>
+                  );
+              }
+            })()}
           </div>
         </div>
       )
     );
-    // Refactored code of:
-    // for (let j = 0; j < recordsFieldsDataArrayFiltered.length; j++) {
-    //   tempArray.push(
-    //     <div key={"record-" + i + "_keyvalue" + j}>
-    //       {recordsFieldsDataArrayFiltered[j].field +
-    //         ": " +
-    //         recordsFieldsDataArrayFiltered[j].data}
-    //     </div>
-    //   );
-    // }
+
     tempArray.shift();
     return <li className="collectionGalleryCard">{tempArray}</li>;
   };
@@ -304,11 +327,6 @@ export function CollectionsGallery() {
     galleryCopy.forEach((element: any) => {
       tempArray = tempArray.concat(recordJSX(galleryCopy.indexOf(element)));
     });
-
-    // Refactored code of:
-    // for (let i = 0; i < galleryCopy.length; i++) {
-    //   tempArray = tempArray.concat(recordJSX(i));
-    // }
 
     tempArray.shift();
     return tempArray;
