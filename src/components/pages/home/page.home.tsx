@@ -26,13 +26,6 @@ export default function HomePage() {
             <div className="homePage__token">
               Token at localStorage: {localStorage.getItem("tokenERP")}
             </div>
-
-            <article className="homePage__userLoggedMenuOptions">
-              Menu Options:
-            </article>
-            <article className="homePage__userLoggedPermissions">
-              Permissions:
-            </article>
           </section>
         </div>
       </div>
