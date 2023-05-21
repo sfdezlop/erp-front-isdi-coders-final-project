@@ -98,3 +98,16 @@ export const orderByPropertyAnArrayOfObjects = (
   });
   return result;
 };
+
+export const maximumValueOfAPropertyInAnArrayOfObjects = (a: [], b: string) => {
+  // Parameter a is the array of object
+  // Parameter b is the name of property in which you want to calculate the maximum value between all de objects of the array
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (result < a[i][b]) {
+      // It doest work is you use the typical a[i].b syntax to refer to properties because the function need to evaluate b
+      result = a[i][b];
+    }
+  }
+  return result;
+};

@@ -4,6 +4,7 @@ export type AppCollectionFieldStructure = {
   id: string;
   collectionName: string;
   fieldName: string;
+  fieldType: string;
   fieldShortDescription: string;
   filterable: boolean;
   searchable: boolean;

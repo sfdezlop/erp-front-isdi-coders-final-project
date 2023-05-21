@@ -3,7 +3,10 @@ import { RootState } from "../../store/store";
 import "./gallery.collections.css";
 import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
-import { orderByPropertyAnArrayOfObjects } from "../../services/helpers/functions";
+import {
+  maximumValueOfAPropertyInAnArrayOfObjects,
+  orderByPropertyAnArrayOfObjects,
+} from "../../services/helpers/functions";
 import { Link, useNavigate } from "react-router-dom";
 import { SyntheticEvent } from "react";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
@@ -41,28 +44,29 @@ export function CollectionsGallery() {
     );
   const galleryCopy = Object.assign(collectionState.queryOutput.gallery);
 
-  const recordFieldsFunction = (i: number): string[] => {
+  const recordSchemaFieldsFunction = (i: number): string[] => {
     return Object.keys(galleryCopy[i]);
   };
 
-  const recordDataFunction = (i: number): string[] => {
+  const recordSchemaDataFunction = (i: number): string[] => {
     return Object.values(galleryCopy[i]).map((item) => JSON.stringify(item));
 
     //Defensive: JSON.stringify for cases when data is an object or contains objects
   };
 
   const recordsFieldsFunction = galleryCopy.map((item: number) => {
-    return recordFieldsFunction(galleryCopy.indexOf(item));
+    return recordSchemaFieldsFunction(galleryCopy.indexOf(item));
   });
 
   const recordsDataFunction = galleryCopy.map((item: number) => {
-    return recordDataFunction(galleryCopy.indexOf(item));
+    return recordSchemaDataFunction(galleryCopy.indexOf(item));
   });
 
   let recordsFieldsDataArray: {
     collection: string;
     record: number;
     fieldName: string;
+    fieldType: string;
     data: string;
     galleryShow: number;
     htmlTag: string;
@@ -118,6 +122,7 @@ export function CollectionsGallery() {
         collection: collectionState.queryInput.filterCollection,
         record: i,
         fieldName: recordsFieldsFunction[i][j],
+        fieldType: "schema",
         data:
           recordsDataFunction[i][j].startsWith('"') &&
           recordsDataFunction[i][j].endsWith('"')
@@ -147,6 +152,40 @@ export function CollectionsGallery() {
         ),
       });
   }
+  console.log("recordsFieldsDataArray");
+  console.table(recordsFieldsDataArray);
+
+  const records =
+    maximumValueOfAPropertyInAnArrayOfObjects(
+      recordsFieldsDataArray as [],
+      "record"
+    ) + 1;
+
+  console.log(records);
+
+  const viewFields = collectionState.appCollectionFields.filter(
+    (item) =>
+      item.collectionName === collectionState.queryInput.filterCollection &&
+      item.fieldType === "view"
+  );
+
+  console.table(viewFields);
+
+  for (let i = 0; i < records; i++) {
+    for (let j = 0; j < viewFields.length; j++) {
+      recordsFieldsDataArray.push({
+        collection: collectionState.queryInput.filterCollection,
+        record: i,
+        fieldName: viewFields[j].fieldName,
+        fieldType: viewFields[j].fieldType,
+        data: "",
+        galleryShow: 1000 + 1000 * i + Number(viewFields[j].galleryShow),
+
+        htmlTag: viewFields[j].htmlTag,
+        relatedCollectionField: viewFields[j].relatedCollectionField,
+      });
+    }
+  }
 
   const recordsFieldsDataArrayToShow: typeof recordsFieldsDataArray =
     orderByPropertyAnArrayOfObjects(
@@ -156,7 +195,8 @@ export function CollectionsGallery() {
       "galleryShow",
       "asc"
     );
-
+  console.log("recordsFieldsDataArrayToShow");
+  console.table(recordsFieldsDataArrayToShow);
   const handlerOnClickLinkedDiv = (event: SyntheticEvent<HTMLDivElement>) => {
     const clickedDiv = event.currentTarget;
     const clickedDivAriaLabel = clickedDiv.ariaLabel ?? "";
