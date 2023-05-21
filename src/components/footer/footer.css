@@ -6,7 +6,7 @@
   height: 8vh;
   padding-left: 1vh;
 }
-.footer__connection {
+.footer__connectionServer {
   display: flex;
   flex-direction: row;
   gap: 3vh;
@@ -23,8 +23,6 @@
   font-size: 1.5vh;
 }
 
-.connection__user,
-.connection__server,
-.connection__url {
+.footer__connectionServer {
   font-size: 1.5vh;
 }

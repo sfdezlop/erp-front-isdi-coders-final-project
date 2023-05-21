@@ -42,7 +42,7 @@ describe("Given the useUsers hook", () => {
 
       return (
         <>
-          <button onClick={() => userLogin(mockPayload.userLogged)}>
+          <button onClick={() => userLogin(mockPayload.userLogged, true)}>
             userLogin
           </button>
           <button

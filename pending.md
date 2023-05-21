@@ -74,6 +74,10 @@ The parametrization works thanks to a new database collection called `appcollect
 - `filterable`: boolean to include (`true`) or not (`false`) the field in the query component filter options. For `fieldName===id`, set this property to `false`, because even if the `readRecords` repo method (see definitions below) has defensive code to work with the `id` `ObjectId` field, the `groupBy` and `groupBySet` repo methods (based on pipelines) does not work with `ObjectId` fields. As UI gallery component need the 3 repo methods to work with simultaneously (for reading documents, offer grouped distinct values to filter and count documents), this property must be set as `false` for any `ObjectId` fields at the collection.
 - `searchable`: boolean to include (`true`) or not (`false`) the field in the query component search options. This property must be set as `false` for any `ObjectId` fields at the collection
 - `orderable`: boolean to include (`true`) or not (`false`) the field in the query component order by options. This property must be set as `false` for any `ObjectId` fields at the collection
+- `htmlTag`: string to indicate the type of html element you want to use to show the data at UI components. The supported types are <div>, <a> and <img>, but you can add new types adding new cases to the switch statement at `gallery.collection.tsx`.
+- mongoType: string to indicate the type of the field in mongo.
+- `createShow`, `detailShow`, `galleryShow` and `updateShow`: string of 3 numeric characters to indicate the order of showing the field in UI components. Choose value '000' for those fields that you want to be hidden in the UI components.
+- `relatedCollectionField`: string with info about the collection and field (separated by the `stringSeparator`) that contains the primary key of related data to the actual field, in order to be able to access to it with <Link> elements at UI components. E.g. choose the value `products_-_sku` to the field called `productSku` at `productmovements` collection because the related data to this field is stored in collection `products` at field `sku`. Choose value "" to the fields that has not related data in other collection.
 
 Once a new collection has been added to the backend (adding a new data model file at `src/entities` and a new schema at `src/repositories`), all the services of the backend are extended to the new collection following only 3 steps:
 
@@ -82,6 +86,8 @@ Once a new collection has been added to the backend (adding a new data model fil
 2.- At backend, file `collections.mongo.repo.ts`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement in function `queryInputDefault`.
 
 3.- At frontend, file `query.collection.cases.ts`: Add a new `case` for the new collection name (recommended by alphabetic order) to the `switch` statement of each class method to include this collection to the their functionalities. Please note that if in the properties of the mongo `Schema` at the backend one/any of the field/s is/are disabled in the `transform(document, returnedObject)` settings, this/these field/s will not be shown in the UI components, as there are not supplied by mongo db (e.g. `passwd` field at `userSchema`)
+
+This PASUIC strategy also allows to have only one UI component for a gallery of documents of all the collections and navigation across collections with related data.
 
 ### Standard methods for services
 
@@ -148,7 +154,26 @@ PENDING:
 - This migration to GET methods will facilitate the persistance of pages after forced updates by user, implementing a TBD process to login with token and redirect the url to the page with data.
 - To a better debugging, explore the possibility of identify automatically the file and code line of execution to add it as argument, instead of the actual strategy of hardcoding.
 
-## Log
+## Translation of static content
+
+Thanks to the db collection `translations` is possible to translate any static content to any language in order to customize the UX of the user. The Schema of this supports as many language as you need:
+
+`export type Translation = {id: string; inputText: string; outputTexts: TranslationOutputText[];};`
+`export type TranslationOutputText = {isoCode: string; outputText: string;};`
+
+{inputText: Dashboard
+outputTexts:
+[
+{"isoCode":"es","outputText":"Cuadro de Mandos"},
+{"isoCode":"en","outputText":"Dashboard"}
+]
+}
+
+The translation use the `translate` function of `use.collection` hook to be accessible from any UI components of the app and returns the inputText when there is no available translation for the language of the user (defensive code). Wherever you want to translate a content, just give the inputText as argument to the function to render the translation:
+
+To a more complex translation/localization, this schema should be changed in the future adding a contextualization field for any translation to choose different outputTexts for the same language when its necessary, e.g. when the meaning of word or sentence need more than one translation depending on the context where is going to be render.
+
+## Log data
 
 Thanks to a customized usage of `tokens` and `stream` options of `morgan` library, the stream of requests received by the backend is saved in a `dist/access.log` (which is deleted in each initialization of the server) with info about:
 

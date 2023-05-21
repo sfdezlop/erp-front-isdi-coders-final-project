@@ -32,7 +32,10 @@ export function Login() {
       passwd: (formUSer.elements[1] as HTMLFormElement).value,
     };
 
-    userLogin(loginForm);
+    const saveTokenAtLocalStorage = (formUSer.elements[2] as HTMLFormElement)
+      .checked;
+
+    userLogin(loginForm, saveTokenAtLocalStorage);
 
     navigate("/home");
   };
@@ -66,8 +69,8 @@ export function Login() {
         </label>
         <div className="login__keepCheckbox">
           <label>
-            <input type="checkbox" />
-            Remind me for 1 day
+            <input type="checkbox" defaultChecked />
+            Remind me for 24 hours
           </label>
         </div>
 
