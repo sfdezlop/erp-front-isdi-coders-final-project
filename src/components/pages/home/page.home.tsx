@@ -8,13 +8,8 @@ export default function HomePage() {
   const userState = useSelector((state: RootState) => state.userState);
   const [tokenERP, setTokenERP] = useState("No Token");
 
-  console.log("render");
-
   useEffect(() => {
     setTokenERP(localStorage.tokenERP);
-    console.log("render effect");
-    console.log("tokenERP_local: ", tokenERP);
-    console.log("tokenERP_localStorage: ", localStorage.tokenERP);
   }, []);
 
   //Pending. Check the way to remove tokenERP  when checkbox is false at login component

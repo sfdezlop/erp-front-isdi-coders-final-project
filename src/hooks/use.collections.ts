@@ -313,7 +313,8 @@ export function useCollections(repo: CollectionsRepo) {
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, appState.urlPage);
-      return "not found";
+      return "Info not found";
+      //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
     }
   };
 

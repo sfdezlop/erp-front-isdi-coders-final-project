@@ -8,11 +8,12 @@ import {
   orderByPropertyAnArrayOfObjects,
 } from "../../services/helpers/functions";
 import { Link, useNavigate } from "react-router-dom";
-import { SyntheticEvent, useEffect } from "react";
+import { SyntheticEvent } from "react";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
 import { navigationURIToQueryPage } from "../queries/query.collection/query.collection";
 import { recordsPerSet } from "../../reducers/collection.slice";
 import { stringSeparator } from "../../config";
+import { MicroServiceViewCollection } from "../microservices/microservices.collection/microservice.view.collection";
 
 const componentFile = "gallery.collections.tsx";
 //To control the file and line of code where Hook functions are called
@@ -26,7 +27,7 @@ export function CollectionsGallery() {
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
-  // useEffect(() => {}, []);
+
   if (collectionState.queryOutput.gallery.length === 0)
     return (
       <>
@@ -68,7 +69,7 @@ export function CollectionsGallery() {
     record: number;
     fieldName: string;
     fieldType: string;
-    data: any;
+    data: string;
     galleryShow: number;
     htmlTag: string;
     relatedCollectionField: string;
@@ -213,6 +214,29 @@ export function CollectionsGallery() {
     }
   }
 
+  const measureFields = collectionState.appCollectionFields.filter(
+    (item) =>
+      item.collectionName === collectionState.queryInput.filterCollection &&
+      item.fieldType === "measure"
+  );
+
+  for (let i = 0; i < records; i++) {
+    for (let j = 0; j < measureFields.length; j++) {
+      recordsFieldsDataArray.push({
+        collection:
+          measureFields[j].relatedCollectionField.split(stringSeparator)[3],
+        record: i,
+        fieldName: measureFields[j].fieldName,
+        fieldType: measureFields[j].fieldType,
+        data: "measure",
+
+        galleryShow: 1000 + 1000 * i + Number(measureFields[j].galleryShow),
+
+        htmlTag: measureFields[j].htmlTag,
+        relatedCollectionField: measureFields[j].relatedCollectionField,
+      });
+    }
+  }
   const recordsFieldsDataArrayToShow: typeof recordsFieldsDataArray =
     orderByPropertyAnArrayOfObjects(
       recordsFieldsDataArray.filter(
@@ -221,8 +245,7 @@ export function CollectionsGallery() {
       "galleryShow",
       "asc"
     );
-  console.log("recordsFieldsDataArrayToShow");
-  console.table(recordsFieldsDataArrayToShow);
+
   const handlerOnClickLinkedDiv = (event: SyntheticEvent<HTMLDivElement>) => {
     const clickedDiv = event.currentTarget;
     const clickedDivAriaLabel = clickedDiv.ariaLabel ?? "";
@@ -296,53 +319,96 @@ export function CollectionsGallery() {
             {(() => {
               switch (item.htmlTag) {
                 case "div":
-                  return item.relatedCollectionField.split("_-_").length ===
-                    2 ? (
-                    <Link
-                      to={encodeURI(
-                        "/collections/readrecords/&collection=" +
-                          item.relatedCollectionField.split("_-_")[0] +
-                          "&filterfield=" +
-                          item.relatedCollectionField.split("_-_")[1] +
-                          "&filtervalue=&searchfield=" +
-                          item.relatedCollectionField.split("_-_")[1] +
-                          "&searchvalue=" +
-                          item.data +
-                          "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                          recordsPerSet[0] +
-                          "&orderfield=" +
-                          item.relatedCollectionField.split("_-_")[1] +
-                          "&ordertype=asc&controlinfo="
-                      )}
-                      className="collectionGalleryCard__link"
-                    >
-                      <div
-                        className="collectionGalleryCard__data"
-                        onClick={handlerOnClickLinkedDiv}
-                        aria-label={
-                          "/collections/readrecords/&collection=" +
-                          item.relatedCollectionField.split("_-_")[0] +
-                          "&filterfield=" +
-                          item.relatedCollectionField.split("_-_")[1] +
-                          "&filtervalue=&searchfield=" +
-                          item.relatedCollectionField.split("_-_")[1] +
-                          "&searchvalue=" +
-                          item.data +
-                          "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                          recordsPerSet[0] +
-                          "&orderfield=" +
-                          item.relatedCollectionField.split("_-_")[1] +
-                          "&ordertype=asc&controlinfo="
-                        }
-                      >
-                        {item.data}
-                      </div>
-                    </Link>
-                  ) : (
-                    <div className="collectionGalleryCard__data">
-                      {item.data}
-                    </div>
-                  );
+                  switch (item.relatedCollectionField.split("_-_").length) {
+                    case 1:
+                      //Case of fieldType=schema with non related info. When the string is empty, split() returns an array containing an empty string, instead of an empty array.
+
+                      return (
+                        <div className="collectionGalleryCard__data">
+                          {item.data}
+                        </div>
+                      );
+                    case 2:
+                      //Case of fieldType=schema with related info
+                      return (
+                        <Link
+                          to={encodeURI(
+                            "/collections/readrecords/&collection=" +
+                              item.relatedCollectionField.split("_-_")[0] +
+                              "&filterfield=" +
+                              item.relatedCollectionField.split("_-_")[1] +
+                              "&filtervalue=&searchfield=" +
+                              item.relatedCollectionField.split("_-_")[1] +
+                              "&searchvalue=" +
+                              item.data +
+                              "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                              recordsPerSet[0] +
+                              "&orderfield=" +
+                              item.relatedCollectionField.split("_-_")[1] +
+                              "&ordertype=asc&controlinfo="
+                          )}
+                          className="collectionGalleryCard__link"
+                        >
+                          <div
+                            className="collectionGalleryCard__data"
+                            onClick={handlerOnClickLinkedDiv}
+                            aria-label={
+                              "/collections/readrecords/&collection=" +
+                              item.relatedCollectionField.split("_-_")[0] +
+                              "&filterfield=" +
+                              item.relatedCollectionField.split("_-_")[1] +
+                              "&filtervalue=&searchfield=" +
+                              item.relatedCollectionField.split("_-_")[1] +
+                              "&searchvalue=" +
+                              item.data +
+                              "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                              recordsPerSet[0] +
+                              "&orderfield=" +
+                              item.relatedCollectionField.split("_-_")[1] +
+                              "&ordertype=asc&controlinfo="
+                            }
+                          >
+                            {item.data}
+                          </div>
+                        </Link>
+                      );
+
+                    case 6:
+                      //Case of fieldType=view with related info
+                      return (
+                        <>
+                          <div className="collectionGalleryCard__data">
+                            {/* {item.data} */}
+                            {/* To show the content of item.dat which explains the
+                            following structure of props passed to
+                            MicroServiceViewCollection */}
+                          </div>
+                          <MicroServiceViewCollection
+                            queryInputData={{
+                              collection: item.data.split("_-_")[4],
+                              searchField: item.data.split("_-_")[5],
+                              searchValue: item.data.split("_-_")[6],
+                              outputFieldName: item.data.split("_-_")[8],
+                            }}
+                            controlInfo=""
+                          ></MicroServiceViewCollection>
+                        </>
+                      );
+
+                    default:
+                      return (
+                        <div>
+                          {"UI component error: the relatedCollectionField=" +
+                            item.relatedCollectionField +
+                            " assign to this field is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the relatedCollectionField value for the field `" +
+                            item.fieldName +
+                            "` of collection `" +
+                            item.collection +
+                            "` at database collection `appcollectionfields`."}
+                        </div>
+                      );
+                  }
+
                 case "img":
                   return (
                     <div className="collectionGalleryCard__dataImageContainer">
@@ -368,9 +434,9 @@ export function CollectionsGallery() {
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   return (
                     <div>
-                      {"Error: the htmlTag=" +
+                      {"UI component error: the htmlTag=" +
                         item.htmlTag +
-                        " assign to this field is not supported at the app. Please, add a new case in the switch statement at gallery.collections.tsx or change the htmlTag value for the field `" +
+                        " assign to this field is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the htmlTag value for the field `" +
                         item.fieldName +
                         "` of collection `" +
                         item.collection +
