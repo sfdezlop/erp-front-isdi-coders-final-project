@@ -124,6 +124,13 @@ export type ReadQueryCollectionStructure = {
   primaryKeyValue: string | number;
 };
 
+export type ReadRecordFieldValueStructure = {
+  collection: string;
+  searchField: string;
+  searchValue: string;
+  outputFieldName: string;
+};
+
 export type GroupByQueryCollectionStructure = {
   filterCollection: string;
   firstGroupByField: string;

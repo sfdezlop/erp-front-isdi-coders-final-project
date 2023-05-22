@@ -3,6 +3,7 @@ import {
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
+  ReadRecordFieldValueStructure,
 } from "../../models/collections.model";
 
 export class CollectionsRepo {
@@ -55,6 +56,52 @@ export class CollectionsRepo {
     if (!resp.ok)
       throw new Error(
         `Error http reading records at collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async readRecordFieldValue(
+    query: ReadRecordFieldValueStructure,
+    token: string,
+    controlInfo: string
+  ): Promise<{
+    results: {
+      inputCollection: string;
+      inputFieldName: string;
+      inputFieldValue: string;
+      outputFieldName: string;
+      outputFieldValue: string;
+      outputStatus: string;
+    }[];
+  }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/readrecordfieldvalue/&collection=" +
+        query.collection +
+        "&searchfield=" +
+        query.searchField +
+        "&searchvalue=" +
+        query.searchValue +
+        "&outputfieldname=" +
+        query.outputFieldName +
+        "&controlinfo=" +
+        controlInfo
+    );
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading record field value at collection ${query.collection} for field ${query.outputFieldName} corresponding to record where ${query.searchField} is equal to ${query.searchValue}: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();

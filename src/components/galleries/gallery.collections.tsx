@@ -8,10 +8,11 @@ import {
   orderByPropertyAnArrayOfObjects,
 } from "../../services/helpers/functions";
 import { Link, useNavigate } from "react-router-dom";
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
 import { navigationURIToQueryPage } from "../queries/query.collection/query.collection";
 import { recordsPerSet } from "../../reducers/collection.slice";
+import { stringSeparator } from "../../config";
 
 const componentFile = "gallery.collections.tsx";
 //To control the file and line of code where Hook functions are called
@@ -19,12 +20,13 @@ const componentFile = "gallery.collections.tsx";
 export function CollectionsGallery() {
   const navigate = useNavigate();
   const repoCollection = new CollectionsRepo();
-  const { translate, updateQueryInput } = useCollections(repoCollection);
+  const { translate, updateQueryInput, readRecordFieldValue } =
+    useCollections(repoCollection);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
-
+  // useEffect(() => {}, []);
   if (collectionState.queryOutput.gallery.length === 0)
     return (
       <>
@@ -50,7 +52,6 @@ export function CollectionsGallery() {
 
   const recordSchemaDataFunction = (i: number): string[] => {
     return Object.values(galleryCopy[i]).map((item) => JSON.stringify(item));
-
     //Defensive: JSON.stringify for cases when data is an object or contains objects
   };
 
@@ -67,7 +68,7 @@ export function CollectionsGallery() {
     record: number;
     fieldName: string;
     fieldType: string;
-    data: string;
+    data: any;
     galleryShow: number;
     htmlTag: string;
     relatedCollectionField: string;
@@ -152,8 +153,6 @@ export function CollectionsGallery() {
         ),
       });
   }
-  console.log("recordsFieldsDataArray");
-  console.table(recordsFieldsDataArray);
 
   const records =
     maximumValueOfAPropertyInAnArrayOfObjects(
@@ -161,24 +160,51 @@ export function CollectionsGallery() {
       "record"
     ) + 1;
 
-  console.log(records);
-
   const viewFields = collectionState.appCollectionFields.filter(
     (item) =>
       item.collectionName === collectionState.queryInput.filterCollection &&
       item.fieldType === "view"
   );
-
-  console.table(viewFields);
-
+  const recordsFieldsDataSchemaArray = recordsFieldsDataArray.map(
+    (item) => item
+  );
   for (let i = 0; i < records; i++) {
     for (let j = 0; j < viewFields.length; j++) {
       recordsFieldsDataArray.push({
-        collection: collectionState.queryInput.filterCollection,
+        collection:
+          viewFields[j].relatedCollectionField.split(stringSeparator)[0],
         record: i,
         fieldName: viewFields[j].fieldName,
         fieldType: viewFields[j].fieldType,
-        data: "",
+        data:
+          "view" +
+          stringSeparator +
+          viewFields[j].relatedCollectionField.split(stringSeparator)[0] +
+          stringSeparator +
+          viewFields[j].relatedCollectionField.split(stringSeparator)[1] +
+          stringSeparator +
+          recordsFieldsDataSchemaArray.filter(
+            (item) =>
+              item.record === i &&
+              item.fieldName ===
+                viewFields[j].relatedCollectionField.split(stringSeparator)[1]
+          )[0].data +
+          stringSeparator +
+          viewFields[j].relatedCollectionField.split(stringSeparator)[2] +
+          stringSeparator +
+          viewFields[j].relatedCollectionField.split(stringSeparator)[3] +
+          stringSeparator +
+          recordsFieldsDataSchemaArray.filter(
+            (item) =>
+              item.record === i &&
+              item.fieldName ===
+                viewFields[j].relatedCollectionField.split(stringSeparator)[1]
+          )[0].data +
+          stringSeparator +
+          viewFields[j].relatedCollectionField.split(stringSeparator)[4] +
+          stringSeparator +
+          viewFields[j].relatedCollectionField.split(stringSeparator)[5],
+
         galleryShow: 1000 + 1000 * i + Number(viewFields[j].galleryShow),
 
         htmlTag: viewFields[j].htmlTag,
@@ -259,7 +285,8 @@ export function CollectionsGallery() {
             "record-" +
             i +
             "_keyvalue" +
-            recordsFieldsDataArrayFilteredByRecord.indexOf(item)
+            recordsFieldsDataArrayFilteredByRecord.indexOf(item) +
+            item.record
           }
         >
           <div className="collectionGalleryCard__fieldData">

@@ -15,6 +15,7 @@ import {
   GroupBySetQueryCollectionStructure,
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
+  ReadRecordFieldValueStructure,
 } from "../models/collections.model";
 import { stringSeparator } from "../config";
 
@@ -293,12 +294,36 @@ export function useCollections(repo: CollectionsRepo) {
     )[0].outputText;
   };
 
+  const readRecordFieldValue = async (
+    queryInputData: ReadRecordFieldValueStructure,
+    controlInfo: string
+  ) => {
+    try {
+      const data = await repo.readRecordFieldValue(
+        queryInputData,
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataResults = data.results;
+
+      const dataResultsOutputValue = dataResults[0].outputFieldValue;
+
+      return dataResultsOutputValue;
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+      return "not found";
+    }
+  };
+
   return {
     updateQueryFields,
     updateQueryInput,
     updateQueryOutput,
     updateTranslations,
     translate,
+    readRecordFieldValue,
     updateAppCollectionFields,
 
     queryInput,
