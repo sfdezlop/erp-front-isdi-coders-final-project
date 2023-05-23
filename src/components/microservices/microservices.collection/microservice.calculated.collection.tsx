@@ -1,33 +1,39 @@
-import "./microservice.view.collection.css";
+import "./microservice.calculated.collection.css";
 import { useCollections } from "../../../hooks/use.collections";
 import { useEffect, useState } from "react";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
-import { ReadRecordFieldValueStructure } from "../../../models/collections.model";
+import {
+  CalculatedQueryCollectionStructure,
+  MeasureQueryCollectionStructure,
+} from "../../../models/collections.model";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { roundToDecimals } from "../../../services/helpers/functions";
+import { roundedDecimals } from "../../../config";
 
-export type MicroServiceViewCollectionProps = {
-  viewInputData: ReadRecordFieldValueStructure;
+export type MicroServiceCalculatedCollectionProps = {
+  calculatedInputData: CalculatedQueryCollectionStructure;
   controlInfo: string;
 };
 
-export function MicroServiceViewCollection({
-  viewInputData,
+export function MicroServiceCalculatedCollection({
+  calculatedInputData,
   controlInfo,
-}: MicroServiceViewCollectionProps) {
+}: MicroServiceCalculatedCollectionProps) {
+  console.log(calculatedInputData);
   const repoCollection = new CollectionsRepo();
-  const { readRecordFieldValue } = useCollections(repoCollection);
+  const { calculate } = useCollections(repoCollection);
   const [valueToShow, setValueToShow] = useState("Initializing...");
   const [renderNumber, setRenderNumber] = useState(1);
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
   useEffect(() => {
-    const promiseToEvaluate = readRecordFieldValue(viewInputData, controlInfo);
+    const promiseToEvaluate = calculate(calculatedInputData, controlInfo);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined
-        ? setValueToShow("Info not found")
-        : //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
+        ? setValueToShow("Info not found (frontend)")
+        : //Defensive hardcode because the measure method always return a value at the backend
           setValueToShow(promiseValue);
       setRenderNumber(2);
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,12 +43,14 @@ export function MicroServiceViewCollection({
 
   if (renderNumber === 1) {
     return (
-      <div className="microserviceViewCollection__viewing">{"Viewing..."}</div>
+      <div className="microserviceCalculatedCollection__measuring">
+        {"Calculating..."}
+      </div>
     );
   } else {
     return (
-      <div className="microserviceViewCollection__valueToShow">
-        {valueToShow}
+      <div className="microserviceCalculatedCollection__valueToShow">
+        {roundToDecimals(Number(valueToShow), roundedDecimals)}
       </div>
     );
   }

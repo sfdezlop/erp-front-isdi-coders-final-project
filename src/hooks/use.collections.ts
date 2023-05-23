@@ -11,8 +11,10 @@ import { useApp } from "./use.app";
 import { CollectionsRepo } from "../services/repositories/collection.repo";
 import {
   AppCollectionFieldStructure,
+  CalculatedQueryCollectionStructure,
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
+  MeasureQueryCollectionStructure,
   QueryInputCollectionStructure,
   QueryOutputCollectionStructure,
   ReadRecordFieldValueStructure,
@@ -32,6 +34,132 @@ export function useCollections(repo: CollectionsRepo) {
 
   const { addError } = useApp();
 
+  const calculate = async (
+    calculatedInputData: CalculatedQueryCollectionStructure,
+    controlInfo: string
+  ) => {
+    try {
+      const data = await repo.calculate(
+        calculatedInputData,
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataResults = data.results;
+
+      return dataResults[0].result;
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+
+      return "calculation not available";
+    }
+    //Defensive hardcode because the calculate method always return a value at the backend
+  };
+
+  const measure = async (
+    measureInputData: MeasureQueryCollectionStructure,
+    controlInfo: string
+  ) => {
+    try {
+      const data = await repo.measure(
+        measureInputData,
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataResults = data.results;
+
+      switch (measureInputData.measure) {
+        case "productstockunitsbysku":
+          return dataResults[0].setData;
+
+        default:
+          return "case not available";
+      }
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+      switch (measureInputData.measure) {
+        case "productstockunitsbysku":
+          return "0 (frontend)";
+
+        default:
+          return "case not available";
+      }
+      //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
+    }
+  };
+
+  const readRecordFieldValue = async (
+    queryInputData: ReadRecordFieldValueStructure,
+    controlInfo: string
+  ) => {
+    try {
+      const data = await repo.readRecordFieldValue(
+        queryInputData,
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataResults = data.results;
+
+      const dataResultsOutputValue = dataResults[0].outputFieldValue;
+
+      return dataResultsOutputValue;
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+      return "Info not found";
+      //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
+    }
+  };
+
+  const translate = (originalText: string): string => {
+    const translations = collectionState.translations;
+
+    const userLanguage = userState.userLogged.language ?? "es";
+
+    const translationsFilteredByInputText = translations.filter(
+      (element) => element.inputText === originalText
+    );
+
+    if (translationsFilteredByInputText.length === 0) return originalText;
+
+    return translationsFilteredByInputText[0].outputTexts.filter(
+      (element) => element.isoCode === userLanguage
+    )[0].outputText;
+  };
+
+  const updateAppCollectionFields = async (controlInfo: string) => {
+    try {
+      const dataCollections = await repo.readRecords(
+        {
+          filterCollection: "appcollectionfields",
+          filterField: "collectionName",
+          filterValue: "",
+          searchField: "collectionName",
+          searchValue: "",
+          searchType: "Contains",
+          querySet: 1,
+          queryRecordsPerSet: 1000,
+          orderField: "collectionName",
+          orderType: "asc",
+          primaryKey: "",
+          primaryKeyValue: "",
+        },
+        tokenToUse,
+        controlInfo
+      );
+
+      const dataCollectionsResults = dataCollections.results;
+
+      dispatch(appCollectionFields(dataCollectionsResults));
+    } catch (error) {
+      console.error((error as Error).message);
+      addError(error as Error, appState.urlPage);
+    }
+  };
   const updateQueryFields = async (controlInfo: string) => {
     try {
       const dataCollections = await repo.groupBySet(
@@ -212,12 +340,6 @@ export function useCollections(repo: CollectionsRepo) {
     }
   };
 
-  const updateQueryOutput = (
-    queryOutputData: QueryOutputCollectionStructure
-  ) => {
-    dispatch(queryOutput(queryOutputData));
-  };
-
   const updateTranslations = async (controlInfo: string) => {
     try {
       const dataCollections = await repo.readRecords(
@@ -248,88 +370,19 @@ export function useCollections(repo: CollectionsRepo) {
     }
   };
 
-  const updateAppCollectionFields = async (controlInfo: string) => {
-    try {
-      const dataCollections = await repo.readRecords(
-        {
-          filterCollection: "appcollectionfields",
-          filterField: "collectionName",
-          filterValue: "",
-          searchField: "collectionName",
-          searchValue: "",
-          searchType: "Contains",
-          querySet: 1,
-          queryRecordsPerSet: 1000,
-          orderField: "collectionName",
-          orderType: "asc",
-          primaryKey: "",
-          primaryKeyValue: "",
-        },
-        tokenToUse,
-        controlInfo
-      );
-
-      const dataCollectionsResults = dataCollections.results;
-
-      dispatch(appCollectionFields(dataCollectionsResults));
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, appState.urlPage);
-    }
-  };
-
-  const translate = (originalText: string): string => {
-    const translations = collectionState.translations;
-
-    const userLanguage = userState.userLogged.language ?? "es";
-
-    const translationsFilteredByInputText = translations.filter(
-      (element) => element.inputText === originalText
-    );
-
-    if (translationsFilteredByInputText.length === 0) return originalText;
-
-    return translationsFilteredByInputText[0].outputTexts.filter(
-      (element) => element.isoCode === userLanguage
-    )[0].outputText;
-  };
-
-  const readRecordFieldValue = async (
-    queryInputData: ReadRecordFieldValueStructure,
-    controlInfo: string
-  ) => {
-    try {
-      const data = await repo.readRecordFieldValue(
-        queryInputData,
-        tokenToUse,
-        controlInfo
-      );
-
-      const dataResults = data.results;
-
-      const dataResultsOutputValue = dataResults[0].outputFieldValue;
-
-      return dataResultsOutputValue;
-    } catch (error) {
-      console.error((error as Error).message);
-      addError(error as Error, appState.urlPage);
-      return "Info not found";
-      //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
-    }
-  };
-
   return {
+    calculate,
+    measure,
+    readRecordFieldValue,
+    translate,
+    updateAppCollectionFields,
     updateQueryFields,
     updateQueryInput,
-    updateQueryOutput,
     updateTranslations,
-    translate,
-    readRecordFieldValue,
-    updateAppCollectionFields,
 
+    appCollectionFields,
     queryInput,
     queryOutput,
     translations,
-    appCollectionFields,
   };
 }

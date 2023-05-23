@@ -14,6 +14,8 @@ import { navigationURIToQueryPage } from "../queries/query.collection/query.coll
 import { recordsPerSet } from "../../reducers/collection.slice";
 import { stringSeparator } from "../../config";
 import { MicroServiceViewCollection } from "../microservices/microservices.collection/microservice.view.collection";
+import { MicroServiceMeasureCollection } from "../microservices/microservices.collection/microservice.measure.collection";
+import { MicroServiceCalculatedCollection } from "../microservices/microservices.collection/microservice.calculated.collection";
 
 const componentFile = "gallery.collections.tsx";
 //To control the file and line of code where Hook functions are called
@@ -21,8 +23,7 @@ const componentFile = "gallery.collections.tsx";
 export function CollectionsGallery() {
   const navigate = useNavigate();
   const repoCollection = new CollectionsRepo();
-  const { translate, updateQueryInput, readRecordFieldValue } =
-    useCollections(repoCollection);
+  const { translate, updateQueryInput } = useCollections(repoCollection);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
@@ -56,15 +57,15 @@ export function CollectionsGallery() {
     //Defensive: JSON.stringify for cases when data is an object or contains objects
   };
 
-  const recordsFieldsFunction = galleryCopy.map((item: number) => {
+  const recordsSchemaFieldsFunction = galleryCopy.map((item: number) => {
     return recordSchemaFieldsFunction(galleryCopy.indexOf(item));
   });
 
-  const recordsDataFunction = galleryCopy.map((item: number) => {
+  const recordsSchemaDataFunction = galleryCopy.map((item: number) => {
     return recordSchemaDataFunction(galleryCopy.indexOf(item));
   });
 
-  let recordsFieldsDataArray: {
+  let recordsFieldsDataSchemaFieldsArray: {
     collection: string;
     record: number;
     fieldName: string;
@@ -72,9 +73,9 @@ export function CollectionsGallery() {
     data: string;
     galleryShow: number;
     htmlTag: string;
-    relatedCollectionField: string;
+    relatedInfo: string;
   }[] = [];
-  const recordsGalleryShowFunction = (
+  const recordsGallerySchemaFieldsShowFunction = (
     collection: string,
     fieldName: string
   ): string => {
@@ -89,7 +90,7 @@ export function CollectionsGallery() {
         )[0].galleryShow;
   };
 
-  const recordsHtmlTagFunction = (
+  const recordsHtmlTagSchemaFieldsFunction = (
     collection: string,
     fieldName: string
   ): string => {
@@ -104,7 +105,7 @@ export function CollectionsGallery() {
         )[0].htmlTag;
   };
 
-  const recordsRelatedCollectionFieldFunction = (
+  const recordsRelatedInfoSchemaFieldsFunction = (
     collection: string,
     fieldName: string
   ): string => {
@@ -116,104 +117,105 @@ export function CollectionsGallery() {
       : collectionState.appCollectionFields.filter(
           (item) =>
             item.collectionName === collection && item.fieldName === fieldName
-        )[0].relatedCollectionField;
+        )[0].relatedInfo;
   };
-  for (let i = 0; i < recordsFieldsFunction.length; i++) {
-    for (let j = 0; j < recordsDataFunction[i].length; j++)
-      recordsFieldsDataArray.push({
+  for (let i = 0; i < recordsSchemaFieldsFunction.length; i++) {
+    for (let j = 0; j < recordsSchemaDataFunction[i].length; j++)
+      recordsFieldsDataSchemaFieldsArray.push({
         collection: collectionState.queryInput.filterCollection,
         record: i,
-        fieldName: recordsFieldsFunction[i][j],
+        fieldName: recordsSchemaFieldsFunction[i][j],
         fieldType: "schema",
         data:
-          recordsDataFunction[i][j].startsWith('"') &&
-          recordsDataFunction[i][j].endsWith('"')
+          recordsSchemaDataFunction[i][j].startsWith('"') &&
+          recordsSchemaDataFunction[i][j].endsWith('"')
             ? //Defensive hardcode: JSON.stringify always return a " character when it starts with ", but we maintain this additional condition to take care about OS where the JSON.stringify does not work with ")
-              recordsDataFunction[i][j].slice(
+              recordsSchemaDataFunction[i][j].slice(
                 1,
-                recordsDataFunction[i][j].length - 1
+                recordsSchemaDataFunction[i][j].length - 1
               )
-            : recordsDataFunction[i][j],
+            : recordsSchemaDataFunction[i][j],
         galleryShow:
           1000 +
           1000 * i +
           Number(
-            recordsGalleryShowFunction(
+            recordsGallerySchemaFieldsShowFunction(
               collectionState.queryInput.filterCollection,
-              recordsFieldsFunction[i][j]
+              recordsSchemaFieldsFunction[i][j]
             )
           ),
 
-        htmlTag: recordsHtmlTagFunction(
+        htmlTag: recordsHtmlTagSchemaFieldsFunction(
           collectionState.queryInput.filterCollection,
-          recordsFieldsFunction[i][j]
+          recordsSchemaFieldsFunction[i][j]
         ),
-        relatedCollectionField: recordsRelatedCollectionFieldFunction(
+        relatedInfo: recordsRelatedInfoSchemaFieldsFunction(
           collectionState.queryInput.filterCollection,
-          recordsFieldsFunction[i][j]
+          recordsSchemaFieldsFunction[i][j]
         ),
       });
   }
 
   const records =
     maximumValueOfAPropertyInAnArrayOfObjects(
-      recordsFieldsDataArray as [],
+      recordsFieldsDataSchemaFieldsArray as [],
       "record"
     ) + 1;
+  const recordsFieldsDataSchemaFieldsArraySnapshot =
+    recordsFieldsDataSchemaFieldsArray.map((item) => item);
 
+  //Adding view fields
   const viewFields = collectionState.appCollectionFields.filter(
     (item) =>
       item.collectionName === collectionState.queryInput.filterCollection &&
       item.fieldType === "view"
   );
-  const recordsFieldsDataSchemaArray = recordsFieldsDataArray.map(
-    (item) => item
-  );
+
   for (let i = 0; i < records; i++) {
     for (let j = 0; j < viewFields.length; j++) {
-      recordsFieldsDataArray.push({
-        collection:
-          viewFields[j].relatedCollectionField.split(stringSeparator)[0],
+      recordsFieldsDataSchemaFieldsArray.push({
+        collection: viewFields[j].collectionName,
         record: i,
         fieldName: viewFields[j].fieldName,
         fieldType: viewFields[j].fieldType,
         data:
-          "view" +
+          viewFields[j].relatedInfo.split(stringSeparator)[0] +
           stringSeparator +
-          viewFields[j].relatedCollectionField.split(stringSeparator)[0] +
+          viewFields[j].relatedInfo.split(stringSeparator)[1] +
           stringSeparator +
-          viewFields[j].relatedCollectionField.split(stringSeparator)[1] +
+          viewFields[j].relatedInfo.split(stringSeparator)[2] +
           stringSeparator +
-          recordsFieldsDataSchemaArray.filter(
+          recordsFieldsDataSchemaFieldsArraySnapshot.filter(
             (item) =>
               item.record === i &&
               item.fieldName ===
-                viewFields[j].relatedCollectionField.split(stringSeparator)[1]
+                viewFields[j].relatedInfo.split(stringSeparator)[2]
           )[0].data +
           stringSeparator +
-          viewFields[j].relatedCollectionField.split(stringSeparator)[2] +
+          viewFields[j].relatedInfo.split(stringSeparator)[3] +
           stringSeparator +
-          viewFields[j].relatedCollectionField.split(stringSeparator)[3] +
+          viewFields[j].relatedInfo.split(stringSeparator)[4] +
           stringSeparator +
-          recordsFieldsDataSchemaArray.filter(
+          recordsFieldsDataSchemaFieldsArraySnapshot.filter(
             (item) =>
               item.record === i &&
               item.fieldName ===
-                viewFields[j].relatedCollectionField.split(stringSeparator)[1]
+                viewFields[j].relatedInfo.split(stringSeparator)[2]
           )[0].data +
           stringSeparator +
-          viewFields[j].relatedCollectionField.split(stringSeparator)[4] +
+          viewFields[j].relatedInfo.split(stringSeparator)[5] +
           stringSeparator +
-          viewFields[j].relatedCollectionField.split(stringSeparator)[5],
+          viewFields[j].relatedInfo.split(stringSeparator)[6],
 
         galleryShow: 1000 + 1000 * i + Number(viewFields[j].galleryShow),
 
         htmlTag: viewFields[j].htmlTag,
-        relatedCollectionField: viewFields[j].relatedCollectionField,
+        relatedInfo: viewFields[j].relatedInfo,
       });
     }
   }
 
+  //Adding measure fields
   const measureFields = collectionState.appCollectionFields.filter(
     (item) =>
       item.collectionName === collectionState.queryInput.filterCollection &&
@@ -222,24 +224,84 @@ export function CollectionsGallery() {
 
   for (let i = 0; i < records; i++) {
     for (let j = 0; j < measureFields.length; j++) {
-      recordsFieldsDataArray.push({
-        collection:
-          measureFields[j].relatedCollectionField.split(stringSeparator)[3],
+      recordsFieldsDataSchemaFieldsArray.push({
+        collection: measureFields[j].collectionName,
         record: i,
         fieldName: measureFields[j].fieldName,
         fieldType: measureFields[j].fieldType,
-        data: "measure",
-
+        data:
+          measureFields[j].relatedInfo.split(stringSeparator)[0] +
+          stringSeparator +
+          measureFields[j].relatedInfo.split(stringSeparator)[1] +
+          stringSeparator +
+          measureFields[j].relatedInfo.split(stringSeparator)[2] +
+          stringSeparator +
+          measureFields[j].relatedInfo.split(stringSeparator)[3] +
+          stringSeparator +
+          recordsFieldsDataSchemaFieldsArraySnapshot.filter(
+            (item) =>
+              item.record === i &&
+              item.fieldName ===
+                measureFields[j].relatedInfo.split(stringSeparator)[3]
+          )[0].data +
+          stringSeparator +
+          measureFields[j].relatedInfo.split(stringSeparator)[4] +
+          stringSeparator +
+          measureFields[j].relatedInfo.split(stringSeparator)[5] +
+          stringSeparator +
+          recordsFieldsDataSchemaFieldsArraySnapshot.filter(
+            (item) =>
+              item.record === i &&
+              item.fieldName ===
+                measureFields[j].relatedInfo.split(stringSeparator)[3]
+          )[0].data,
         galleryShow: 1000 + 1000 * i + Number(measureFields[j].galleryShow),
 
         htmlTag: measureFields[j].htmlTag,
-        relatedCollectionField: measureFields[j].relatedCollectionField,
+        relatedInfo: measureFields[j].relatedInfo,
       });
     }
   }
-  const recordsFieldsDataArrayToShow: typeof recordsFieldsDataArray =
+
+  //Adding calculated fields
+  const calculatedFields = collectionState.appCollectionFields.filter(
+    (item) =>
+      item.collectionName === collectionState.queryInput.filterCollection &&
+      item.fieldType === "calculated"
+  );
+
+  for (let i = 0; i < records; i++) {
+    for (let j = 0; j < calculatedFields.length; j++) {
+      recordsFieldsDataSchemaFieldsArray.push({
+        collection: calculatedFields[j].collectionName,
+        record: i,
+        fieldName: calculatedFields[j].fieldName,
+        fieldType: calculatedFields[j].fieldType,
+        data:
+          calculatedFields[j].relatedInfo.split(stringSeparator)[0] +
+          stringSeparator +
+          calculatedFields[j].relatedInfo.split(stringSeparator)[1] +
+          stringSeparator +
+          calculatedFields[j].relatedInfo.split(stringSeparator)[2] +
+          stringSeparator +
+          calculatedFields[j].relatedInfo.split(stringSeparator)[3] +
+          stringSeparator +
+          calculatedFields[j].relatedInfo.split(stringSeparator)[4] +
+          stringSeparator +
+          recordsFieldsDataSchemaFieldsArraySnapshot.filter(
+            (item) => item.record === i && item.fieldName === "id"
+          )[0].data,
+        galleryShow: 1000 + 1000 * i + Number(measureFields[j].galleryShow),
+
+        htmlTag: calculatedFields[j].htmlTag,
+        relatedInfo: calculatedFields[j].relatedInfo,
+      });
+    }
+  }
+
+  const recordsFieldsDataArrayToShow: typeof recordsFieldsDataSchemaFieldsArray =
     orderByPropertyAnArrayOfObjects(
-      recordsFieldsDataArray.filter(
+      recordsFieldsDataSchemaFieldsArray.filter(
         (item) => item.galleryShow % 1000 > 0
       ) as [],
       "galleryShow",
@@ -319,32 +381,36 @@ export function CollectionsGallery() {
             {(() => {
               switch (item.htmlTag) {
                 case "div":
-                  switch (item.relatedCollectionField.split("_-_").length) {
-                    case 1:
-                      //Case of fieldType=schema with non related info. When the string is empty, split() returns an array containing an empty string, instead of an empty array.
+                  switch (
+                    item.fieldType +
+                    stringSeparator +
+                    item.relatedInfo.split(stringSeparator)[0]
+                  ) {
+                    case "schema" + stringSeparator:
+                      //Case of div fieldType=schema with non related info. When the string is empty, split() returns an array containing an empty string, instead of an empty array.
 
                       return (
                         <div className="collectionGalleryCard__data">
                           {item.data}
                         </div>
                       );
-                    case 2:
-                      //Case of fieldType=schema with related info
+                    case "schema" + stringSeparator + "relation":
+                      //Case of div fieldType=schema with related info
                       return (
                         <Link
                           to={encodeURI(
                             "/collections/readrecords/&collection=" +
-                              item.relatedCollectionField.split("_-_")[0] +
+                              item.relatedInfo.split("_-_")[3] +
                               "&filterfield=" +
-                              item.relatedCollectionField.split("_-_")[1] +
+                              item.relatedInfo.split("_-_")[4] +
                               "&filtervalue=&searchfield=" +
-                              item.relatedCollectionField.split("_-_")[1] +
+                              item.relatedInfo.split("_-_")[4] +
                               "&searchvalue=" +
                               item.data +
                               "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
                               recordsPerSet[0] +
                               "&orderfield=" +
-                              item.relatedCollectionField.split("_-_")[1] +
+                              item.relatedInfo.split("_-_")[4] +
                               "&ordertype=asc&controlinfo="
                           )}
                           className="collectionGalleryCard__link"
@@ -354,53 +420,108 @@ export function CollectionsGallery() {
                             onClick={handlerOnClickLinkedDiv}
                             aria-label={
                               "/collections/readrecords/&collection=" +
-                              item.relatedCollectionField.split("_-_")[0] +
+                              item.relatedInfo.split("_-_")[3] +
                               "&filterfield=" +
-                              item.relatedCollectionField.split("_-_")[1] +
+                              item.relatedInfo.split("_-_")[4] +
                               "&filtervalue=&searchfield=" +
-                              item.relatedCollectionField.split("_-_")[1] +
+                              item.relatedInfo.split("_-_")[4] +
                               "&searchvalue=" +
                               item.data +
                               "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
                               recordsPerSet[0] +
                               "&orderfield=" +
-                              item.relatedCollectionField.split("_-_")[1] +
+                              item.relatedInfo.split("_-_")[4] +
                               "&ordertype=asc&controlinfo="
                             }
+                            title={item.relatedInfo}
+                            // To better see the content of item.data which is responsible of passing info to Link and to the handlerOnClickLinkedDiv
                           >
                             {item.data}
                           </div>
                         </Link>
                       );
-
-                    case 6:
-                      //Case of fieldType=view with related info
+                    case "calculated" + stringSeparator + "calculated":
+                      //Case of div fieldType=calculated
                       return (
                         <>
-                          <div className="collectionGalleryCard__data">
-                            {/* {item.data} */}
-                            {/* To show the content of item.dat which explains the
-                            following structure of props passed to
-                            MicroServiceViewCollection */}
+                          <div
+                            className="collectionGalleryCard__data"
+                            title={item.data}
+                            // To better see the content of item.data which is responsible of passing props to the MicroServiceCalculatedCollection UI component
+                          >
+                            <MicroServiceCalculatedCollection
+                              calculatedInputData={{
+                                collection: item.data.split(stringSeparator)[2],
+                                documentId: item.data.split(stringSeparator)[5],
+                                operation: item.data.split(stringSeparator)[1],
+                                firstOperandField:
+                                  item.data.split(stringSeparator)[3],
+                                secondOperandField:
+                                  item.data.split(stringSeparator)[4],
+                              }}
+                              controlInfo=""
+                            ></MicroServiceCalculatedCollection>
                           </div>
-                          <MicroServiceViewCollection
-                            queryInputData={{
-                              collection: item.data.split("_-_")[4],
-                              searchField: item.data.split("_-_")[5],
-                              searchValue: item.data.split("_-_")[6],
-                              outputFieldName: item.data.split("_-_")[8],
-                            }}
-                            controlInfo=""
-                          ></MicroServiceViewCollection>
                         </>
                       );
 
+                    case "measure" + stringSeparator + "measure":
+                      //Case of div fieldType=measure
+                      return (
+                        <>
+                          <div
+                            className="collectionGalleryCard__data"
+                            title={item.data}
+                            // To better see the content of item.data which is responsible of passing props to the MicroServiceViewCollection UI component
+                          >
+                            <MicroServiceMeasureCollection
+                              measureInputData={{
+                                measure: item.data.split(stringSeparator)[1],
+                                filterName: item.data.split(stringSeparator)[6],
+                                filterValue:
+                                  item.data.split(stringSeparator)[7],
+                              }}
+                              controlInfo=""
+                            ></MicroServiceMeasureCollection>
+                          </div>
+                        </>
+                      );
+                    case "view" + stringSeparator + "view":
+                      //Case of div fieldType=view with related info
+                      return (
+                        <>
+                          <div
+                            className="collectionGalleryCard__data"
+                            title={item.data}
+                            // To better see the content of item.data which is responsible of passing props to the MicroServiceViewCollection UI component
+                          >
+                            <MicroServiceViewCollection
+                              viewInputData={{
+                                collection: item.data.split(stringSeparator)[4],
+                                searchField:
+                                  item.data.split(stringSeparator)[5],
+                                searchValue:
+                                  item.data.split(stringSeparator)[6],
+                                outputFieldName:
+                                  item.data.split(stringSeparator)[8],
+                              }}
+                              controlInfo=""
+                            ></MicroServiceViewCollection>
+                          </div>
+                        </>
+                      );
                     default:
                       return (
                         <div>
-                          {"UI component error: the relatedCollectionField=" +
-                            item.relatedCollectionField +
-                            " assign to this field is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the relatedCollectionField value for the field `" +
+                          {"UI component error: the case " +
+                            item.htmlTag +
+                            "&&" +
+                            item.fieldType +
+                            stringSeparator +
+                            item.relatedInfo.split(stringSeparator)[0] +
+                            " is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the relatedInfo value `" +
+                            item.relatedInfo +
+                            "` for field `" +
                             item.fieldName +
                             "` of collection `" +
                             item.collection +

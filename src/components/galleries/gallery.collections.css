@@ -28,7 +28,6 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-
   column-gap: 1%;
   row-gap: 2vh;
   margin: 0 auto;
@@ -39,7 +38,7 @@
   border-width: 0.2px;
   border-color: #4472c4;
   border-radius: 2%;
-  max-width: 22%;
+  max-width: 24%;
   min-width: 22%;
   min-height: 25%;
   padding: 0.5rem;
@@ -77,7 +76,7 @@
 
 .collectionGalleryCard__dataImage {
   max-width: 15rem;
-  max-height: 10rem;
+  max-height: 11rem;
   margin-bottom: 1rem;
   padding-top: 4vh;
 }

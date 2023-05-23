@@ -1,33 +1,34 @@
-import "./microservice.view.collection.css";
+import "./microservice.measure.collection.css";
 import { useCollections } from "../../../hooks/use.collections";
 import { useEffect, useState } from "react";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
-import { ReadRecordFieldValueStructure } from "../../../models/collections.model";
+import { MeasureQueryCollectionStructure } from "../../../models/collections.model";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 
-export type MicroServiceViewCollectionProps = {
-  viewInputData: ReadRecordFieldValueStructure;
+export type MicroServiceMeasureCollectionProps = {
+  measureInputData: MeasureQueryCollectionStructure;
   controlInfo: string;
 };
 
-export function MicroServiceViewCollection({
-  viewInputData,
+export function MicroServiceMeasureCollection({
+  measureInputData,
   controlInfo,
-}: MicroServiceViewCollectionProps) {
+}: MicroServiceMeasureCollectionProps) {
+  console.log(measureInputData);
   const repoCollection = new CollectionsRepo();
-  const { readRecordFieldValue } = useCollections(repoCollection);
+  const { measure } = useCollections(repoCollection);
   const [valueToShow, setValueToShow] = useState("Initializing...");
   const [renderNumber, setRenderNumber] = useState(1);
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
   useEffect(() => {
-    const promiseToEvaluate = readRecordFieldValue(viewInputData, controlInfo);
+    const promiseToEvaluate = measure(measureInputData, controlInfo);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined
-        ? setValueToShow("Info not found")
-        : //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
+        ? setValueToShow("Info not found (frontend)")
+        : //Defensive hardcode because the measure method always return a value at the backend
           setValueToShow(promiseValue);
       setRenderNumber(2);
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,11 +38,13 @@ export function MicroServiceViewCollection({
 
   if (renderNumber === 1) {
     return (
-      <div className="microserviceViewCollection__viewing">{"Viewing..."}</div>
+      <div className="microserviceMeasureCollection__measuring">
+        {"Measuring..."}
+      </div>
     );
   } else {
     return (
-      <div className="microserviceViewCollection__valueToShow">
+      <div className="microserviceMeasureCollection__valueToShow">
         {valueToShow}
       </div>
     );
