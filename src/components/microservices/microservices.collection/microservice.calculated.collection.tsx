@@ -2,10 +2,7 @@ import "./microservice.calculated.collection.css";
 import { useCollections } from "../../../hooks/use.collections";
 import { useEffect, useState } from "react";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
-import {
-  CalculatedQueryCollectionStructure,
-  MeasureQueryCollectionStructure,
-} from "../../../models/collections.model";
+import { CalculatedQueryCollectionStructure } from "../../../models/collections.model";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { roundToDecimals } from "../../../services/helpers/functions";
@@ -20,7 +17,6 @@ export function MicroServiceCalculatedCollection({
   calculatedInputData,
   controlInfo,
 }: MicroServiceCalculatedCollectionProps) {
-  console.log(calculatedInputData);
   const repoCollection = new CollectionsRepo();
   const { calculate } = useCollections(repoCollection);
   const [valueToShow, setValueToShow] = useState("Initializing...");
@@ -50,7 +46,10 @@ export function MicroServiceCalculatedCollection({
   } else {
     return (
       <div className="microserviceCalculatedCollection__valueToShow">
-        {roundToDecimals(Number(valueToShow), roundedDecimals)}
+        {isNaN(Number(valueToShow))
+          ? "not possible to calculate"
+          : roundToDecimals(Number(valueToShow), roundedDecimals)}
+        {/* Defensive code for cases of divide by zero where the result at backend is an string impossible to cast to a number */}
       </div>
     );
   }

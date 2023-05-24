@@ -291,7 +291,7 @@ export function CollectionsGallery() {
           recordsFieldsDataSchemaFieldsArraySnapshot.filter(
             (item) => item.record === i && item.fieldName === "id"
           )[0].data,
-        galleryShow: 1000 + 1000 * i + Number(measureFields[j].galleryShow),
+        galleryShow: 1000 + 1000 * i + Number(calculatedFields[j].galleryShow),
 
         htmlTag: calculatedFields[j].htmlTag,
         relatedInfo: calculatedFields[j].relatedInfo,
@@ -369,13 +369,15 @@ export function CollectionsGallery() {
           key={
             "record-" +
             i +
-            "_keyvalue" +
-            recordsFieldsDataArrayFilteredByRecord.indexOf(item) +
-            item.record
+            "_keyvalue_" +
+            recordsFieldsDataArrayFilteredByRecord.indexOf(item)
           }
         >
           <div className="collectionGalleryCard__fieldData">
-            <div className="collectionGalleryCard__field">
+            <div
+              className="collectionGalleryCard__field"
+              title={item.galleryShow.toString()}
+            >
               {translate(item.fieldName) + ": "}
             </div>
             {(() => {

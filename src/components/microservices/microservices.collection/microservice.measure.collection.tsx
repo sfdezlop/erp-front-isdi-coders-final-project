@@ -15,7 +15,6 @@ export function MicroServiceMeasureCollection({
   measureInputData,
   controlInfo,
 }: MicroServiceMeasureCollectionProps) {
-  console.log(measureInputData);
   const repoCollection = new CollectionsRepo();
   const { measure } = useCollections(repoCollection);
   const [valueToShow, setValueToShow] = useState("Initializing...");
