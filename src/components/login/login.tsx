@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-redundant-roles */
 import { SyntheticEvent, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../../hooks/use.users";
@@ -65,6 +66,7 @@ export function Login() {
             className="login__input"
             autoComplete=""
             required
+            role="textbox"
           />
         </label>
         <div className="login__keepCheckbox">
