@@ -145,8 +145,8 @@ export function useCollections(repo: CollectionsRepo) {
           queryRecordsPerSet: 1000,
           orderField: "collectionName",
           orderType: "asc",
-          primaryKey: "",
-          primaryKeyValue: "",
+          // primaryKey: "",
+          // primaryKeyValue: "",
         },
         tokenToUse,
         controlInfo
@@ -185,8 +185,8 @@ export function useCollections(repo: CollectionsRepo) {
           queryRecordsPerSet: 1000,
           orderField: "collectionName",
           orderType: "asc",
-          primaryKey: "",
-          primaryKeyValue: "",
+          // primaryKey: "",
+          // primaryKeyValue: "",
         },
         tokenToUse,
         controlInfo
@@ -327,9 +327,10 @@ export function useCollections(repo: CollectionsRepo) {
         queriedCount: queriedCount(),
         unQueriedCount: unQueriedCount(),
         gallery: gallery.results,
-        galleryInterface: "raw",
-        detail: [],
-        detailInterface: "raw",
+        // galleryInterface: "raw",
+        // galleryShow: "gallery",
+        // detail: [],
+        // detailInterface: "raw",
       };
 
       dispatch(queryInput(queryInputData));
@@ -354,8 +355,6 @@ export function useCollections(repo: CollectionsRepo) {
           queryRecordsPerSet: 1000,
           orderField: "inputText",
           orderType: "asc",
-          primaryKey: "",
-          primaryKeyValue: "",
         },
         tokenToUse,
         controlInfo

@@ -233,7 +233,9 @@ export class CollectionsRepo {
     return data;
   }
   async readRecords(
-    query: QueryInputCollectionStructure,
+    query: Partial<QueryInputCollectionStructure>,
+
+    //Pending: review to a Total QueryInputCollectionStructure instead of Partial
 
     token: string,
     controlInfo: string

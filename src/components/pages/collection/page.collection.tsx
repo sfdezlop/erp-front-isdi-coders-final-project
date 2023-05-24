@@ -67,7 +67,7 @@ export default function CollectionPage() {
 
   if (
     collectionState.queryInput.filterCollection === "products" &&
-    collectionState.queryOutput.galleryInterface === "custom"
+    collectionState.queryInput.showFormat === "custom"
   )
     return (
       <>
@@ -82,7 +82,7 @@ export default function CollectionPage() {
     );
   if (
     collectionState.queryInput.filterCollection === "productmovements" &&
-    collectionState.queryOutput.galleryInterface === "custom"
+    collectionState.queryInput.showFormat === "custom"
   )
     return (
       <>

@@ -90,8 +90,8 @@ export type QueryInputCollectionStructure = {
   orderField: string;
   orderType: string;
   //Options to use in the app: "asc" | "desc"
-  primaryKey: string;
-  primaryKeyValue: string;
+  showType: string;
+  showFormat: string;
 };
 
 export type QueryOutputCollectionStructure = {
@@ -100,9 +100,10 @@ export type QueryOutputCollectionStructure = {
   queriedCount: number;
   unQueriedCount: number;
   gallery: Partial<CollectionStructure>[];
-  galleryInterface: string;
-  detail: Partial<CollectionStructure>[];
-  detailInterface: string;
+  // galleryInterface: string;
+  // galleryShow: string;
+  // detail: Partial<CollectionStructure>[];
+  // detailInterface: string;
 };
 
 //UseCollection hook parameter types:
@@ -154,6 +155,6 @@ export type ReadQueryCollectionStructure = {
   orderField: string;
   orderType: string;
   //Options to use in the app: "asc" | "desc"
-  primaryKey: string;
-  primaryKeyValue: string | number;
+  showType: string;
+  showFormat: string;
 };
