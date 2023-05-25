@@ -27,7 +27,7 @@ export function MicroServiceCalculatedCollection({
   useEffect(() => {
     const promiseToEvaluate = calculate(calculatedInputData, controlInfo);
     promiseToEvaluate.then(async (promiseValue) => {
-      (await promiseValue) === undefined
+      promiseValue === undefined
         ? setValueToShow("Info not found (frontend)")
         : //Defensive hardcode because the measure method always return a value at the backend
           setValueToShow(promiseValue);
