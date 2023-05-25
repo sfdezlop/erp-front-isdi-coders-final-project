@@ -98,11 +98,19 @@ export default function CollectionPage() {
 
   return (
     <>
-      <div className="collectionPage">
+      <div
+        className="collectionPage"
+        key={"div" + collectionState.queryInput.filterCollection}
+      >
         <QueryCollection
           queryCollectionProps={queryCollectionPropsInput}
+          key={"QueryCollection" + collectionState.queryInput.filterCollection}
         ></QueryCollection>
-        <CollectionsGallery></CollectionsGallery>
+        <CollectionsGallery
+          key={
+            "CollectionsGallery" + collectionState.queryInput.filterCollection
+          }
+        ></CollectionsGallery>
       </div>
     </>
   );

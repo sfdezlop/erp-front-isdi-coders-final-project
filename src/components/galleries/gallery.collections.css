@@ -17,13 +17,11 @@
   height: 69vh;
   width: 100%;
   overflow-y: scroll;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
+  padding: 1rem;
   font-size: 2vh;
 }
-
-.collectionsGallery__list {
-  border-color: black;
+/* Simulation of toggle depending on collectionState.queryInput.showType for dynamic css*/
+.collectionsGallery__list__gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -33,13 +31,24 @@
   margin: 0 auto;
 }
 
-.collectionGalleryCard {
+.collectionsGallery__list__detail {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  column-gap: 1%;
+  row-gap: 2vh;
+  margin: 0 auto;
+}
+
+/* Simulation of toggle depending on collectionState.queryInput.showType for dynamic css*/
+.collectionGalleryCard__gallery {
   border-style: solid;
   border-width: 0.2px;
   border-color: #4472c4;
   border-radius: 2%;
-  max-width: 23%;
-  min-width: 23%;
+  max-width: 24%;
+  min-width: 24%;
   min-height: 25%;
   padding: 0.5rem;
   text-align: left;
@@ -49,16 +58,35 @@
   justify-content: flex-start;
 }
 
-/* .collectionGalleryCard div {
-  word-wrap: break-word;
-} */
-
-.collectionGalleryCard__fieldData {
+.collectionGalleryCard__detail {
+  border-style: solid;
+  border-width: 0.2px;
+  border-color: #4472c4;
+  border-radius: 0%;
+  max-width: 23%;
+  min-width: 100%;
+  min-height: 25%;
+  padding: 0.5rem;
+  text-align: left;
+  text-decoration: none;
+  list-style: none;
+  object-fit: fill;
+  justify-content: flex-start;
+}
+/* Simulation of toggle depending on collectionState.queryInput.showType for dynamic css*/
+.collectionGalleryCard__fieldData__gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.1rem;
+  word-break: break-all;
+}
 
+.collectionGalleryCard__fieldData__detail {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.1rem;
   word-break: break-all;
 }
 
@@ -68,7 +96,6 @@
 
 .collectionGalleryCard__data {
   align-content: flex-end;
-  /* margin-left: 0.2vh; */
 }
 
 .collectionGalleryCard__dataImageContainer {
