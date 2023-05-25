@@ -607,8 +607,6 @@ appcollectionfields=
       item.fieldType === "view"
   );
 
-  // console.log("viewFields", viewFields);
-
   for (let i = 0; i < records; i++) {
     for (let j = 0; j < viewFields.length; j++) {
       recordsFieldsDataSchemaFieldsArray.push({

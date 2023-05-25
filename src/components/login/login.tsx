@@ -38,7 +38,7 @@ export function Login() {
 
     await userLogin(loginForm, saveTokenAtLocalStorage);
 
-    await navigate("/home");
+    navigate("/home");
 
     //Making handler async, the performance of the app is better, solving the problem of render the token al localStorage in /home. I have change it to async following recommendation of sonar to solve bug
   };
