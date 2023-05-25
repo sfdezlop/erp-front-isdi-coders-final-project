@@ -29,7 +29,7 @@ export function CollectionsGallery() {
     (state: RootState) => state.collectionState
   );
 
-  let showOrderToUse = "";
+  let showOrderToUse = "galleryShow";
   switch (collectionState.queryInput.showType) {
     case "create":
       showOrderToUse = "createShow";
@@ -607,6 +607,8 @@ appcollectionfields=
       item.fieldType === "view"
   );
 
+  // console.log("viewFields", viewFields);
+
   for (let i = 0; i < records; i++) {
     for (let j = 0; j < viewFields.length; j++) {
       recordsFieldsDataSchemaFieldsArray.push({
@@ -642,7 +644,43 @@ appcollectionfields=
           stringSeparator +
           viewFields[j].relatedInfo.split(stringSeparator)[6],
         fieldType: viewFields[j].fieldType,
-        showOrder: 1000 + 1000 * i + Number(viewFields[j].galleryShow),
+        showOrder:
+          1000 +
+          1000 * i +
+          Number(
+            (() => {
+              switch (showOrderToUse) {
+                case "createShow":
+                  console.log(showOrderToUse);
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === viewFields[j].collectionName &&
+                      item.fieldName === viewFields[j].fieldName
+                  )[0].createShow;
+                case "detailShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === viewFields[j].collectionName &&
+                      item.fieldName === viewFields[j].fieldName
+                  )[0].detailShow;
+                case "galleryShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === viewFields[j].collectionName &&
+                      item.fieldName === viewFields[j].fieldName
+                  )[0].galleryShow;
+                case "updateShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === viewFields[j].collectionName &&
+                      item.fieldName === viewFields[j].fieldName
+                  )[0].updateShow;
+                default:
+                  return "000";
+              }
+            })()
+            //  IIFE (immediately invoked function expressions)
+          ),
         htmlTag: viewFields[j].htmlTag,
         relatedInfo: viewFields[j].relatedInfo,
       });
@@ -689,7 +727,43 @@ appcollectionfields=
                 measureFields[j].relatedInfo.split(stringSeparator)[3]
           )[0].data,
         fieldType: measureFields[j].fieldType,
-        showOrder: 1000 + 1000 * i + Number(measureFields[j].galleryShow),
+        showOrder:
+          1000 +
+          1000 * i +
+          Number(
+            (() => {
+              switch (showOrderToUse) {
+                case "createShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === measureFields[j].collectionName &&
+                      item.fieldName === measureFields[j].fieldName
+                  )[0].createShow;
+                case "detailShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === measureFields[j].collectionName &&
+                      item.fieldName === measureFields[j].fieldName
+                  )[0].detailShow;
+                case "galleryShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === measureFields[j].collectionName &&
+                      item.fieldName === measureFields[j].fieldName
+                  )[0].galleryShow;
+                case "updateShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName === measureFields[j].collectionName &&
+                      item.fieldName === measureFields[j].fieldName
+                  )[0].updateShow;
+                default:
+                  return "000";
+              }
+            })()
+            //  IIFE (immediately invoked function expressions)
+          ),
+
         htmlTag: measureFields[j].htmlTag,
         relatedInfo: measureFields[j].relatedInfo,
       });
@@ -724,7 +798,46 @@ appcollectionfields=
             (item) => item.record === i && item.fieldName === "id"
           )[0].data,
         fieldType: calculatedFields[j].fieldType,
-        showOrder: 1000 + 1000 * i + Number(calculatedFields[j].galleryShow),
+        showOrder:
+          1000 +
+          1000 * i +
+          Number(
+            (() => {
+              switch (showOrderToUse) {
+                case "createShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName ===
+                        calculatedFields[j].collectionName &&
+                      item.fieldName === calculatedFields[j].fieldName
+                  )[0].createShow;
+                case "detailShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName ===
+                        calculatedFields[j].collectionName &&
+                      item.fieldName === calculatedFields[j].fieldName
+                  )[0].detailShow;
+                case "galleryShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName ===
+                        calculatedFields[j].collectionName &&
+                      item.fieldName === calculatedFields[j].fieldName
+                  )[0].galleryShow;
+                case "updateShow":
+                  return collectionState.appCollectionFields.filter(
+                    (item) =>
+                      item.collectionName ===
+                        calculatedFields[j].collectionName &&
+                      item.fieldName === calculatedFields[j].fieldName
+                  )[0].updateShow;
+                default:
+                  return "000";
+              }
+            })()
+            //  IIFE (immediately invoked function expressions)
+          ),
         htmlTag: calculatedFields[j].htmlTag,
         relatedInfo: calculatedFields[j].relatedInfo,
       });
@@ -791,234 +904,241 @@ appcollectionfields=
   };
 
   const recordJSX = (i: number) => {
-    let tempArray = [<div key="elementToBeShifted"></div>];
+    let cardJSX = [<div key="elementToBeShiftedInCardJSX"></div>];
 
     const recordsFieldsDataArrayFilteredByRecord =
       recordsFieldsDataArrayToShow.filter((item) => item.record === i);
 
     recordsFieldsDataArrayFilteredByRecord.forEach((item) =>
-      tempArray.push(
+      cardJSX.push(
         <div
-          key={
-            "record-" +
-            i +
-            "_keyvalue_" +
-            recordsFieldsDataArrayFilteredByRecord.indexOf(item)
+          className={
+            "collectionGalleryCard__fieldData__" +
+            collectionState.queryInput.showType
           }
         >
-          <div className="collectionGalleryCard__fieldData">
-            <div
-              className="collectionGalleryCard__field"
-              title={item.showOrder.toString()}
-            >
-              {translate(item.fieldName) + ": "}
-            </div>
-            {(() => {
-              switch (item.htmlTag) {
-                case "div":
-                  switch (
-                    item.fieldType +
-                    stringSeparator +
-                    item.relatedInfo.split(stringSeparator)[0]
-                  ) {
-                    case "schema" + stringSeparator:
-                      //Case of div fieldType=schema with non related info. When the string is empty, split() returns an array containing an empty string, instead of an empty array.
+          <div
+            className="collectionGalleryCard__field"
+            title={item.showOrder.toString()}
+          >
+            {translate(item.fieldName) + ": "}
+          </div>
+          {(() => {
+            switch (item.htmlTag) {
+              case "div":
+                switch (
+                  item.fieldType +
+                  stringSeparator +
+                  item.relatedInfo.split(stringSeparator)[0]
+                ) {
+                  case "schema" + stringSeparator:
+                    //Case of div fieldType=schema with non related info. When the string is empty, split() returns an array containing an empty string, instead of an empty array.
 
-                      return (
-                        <div className="collectionGalleryCard__data">
+                    return (
+                      <div className="collectionGalleryCard__data">
+                        {item.data}
+                      </div>
+                    );
+                  case "schema" + stringSeparator + "relation":
+                    //Case of div fieldType=schema with related info
+                    return (
+                      <Link
+                        to={encodeURI(
+                          "/collections/readrecords/&collection=" +
+                            item.relatedInfo.split("_-_")[3] +
+                            "&filterfield=" +
+                            item.relatedInfo.split("_-_")[4] +
+                            "&filtervalue=&searchfield=" +
+                            item.relatedInfo.split("_-_")[4] +
+                            "&searchvalue=" +
+                            item.data +
+                            "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                            recordsPerSet[0] +
+                            "&orderfield=" +
+                            item.relatedInfo.split("_-_")[4] +
+                            "&ordertype=asc&controlinfo="
+                        )}
+                        className="collectionGalleryCard__link"
+                      >
+                        <div
+                          className="collectionGalleryCard__data"
+                          onClick={handlerOnClickLinkedDiv}
+                          aria-label={
+                            "/collections/readrecords/&collection=" +
+                            item.relatedInfo.split("_-_")[3] +
+                            "&filterfield=" +
+                            item.relatedInfo.split("_-_")[4] +
+                            "&filtervalue=&searchfield=" +
+                            item.relatedInfo.split("_-_")[4] +
+                            "&searchvalue=" +
+                            item.data +
+                            "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                            recordsPerSet[0] +
+                            "&orderfield=" +
+                            item.relatedInfo.split("_-_")[4] +
+                            "&ordertype=asc&controlinfo="
+                          }
+                          title={item.relatedInfo}
+                          // To better see the content of item.data which is responsible of passing info to Link and to the handlerOnClickLinkedDiv
+                        >
                           {item.data}
                         </div>
-                      );
-                    case "schema" + stringSeparator + "relation":
-                      //Case of div fieldType=schema with related info
-                      return (
-                        <Link
-                          to={encodeURI(
-                            "/collections/readrecords/&collection=" +
-                              item.relatedInfo.split("_-_")[3] +
-                              "&filterfield=" +
-                              item.relatedInfo.split("_-_")[4] +
-                              "&filtervalue=&searchfield=" +
-                              item.relatedInfo.split("_-_")[4] +
-                              "&searchvalue=" +
-                              item.data +
-                              "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                              recordsPerSet[0] +
-                              "&orderfield=" +
-                              item.relatedInfo.split("_-_")[4] +
-                              "&ordertype=asc&controlinfo="
-                          )}
-                          className="collectionGalleryCard__link"
+                      </Link>
+                    );
+                  case "calculated" + stringSeparator + "calculated":
+                    //Case of div fieldType=calculated
+                    return (
+                      <>
+                        <div
+                          className="collectionGalleryCard__data"
+                          title={item.data}
+                          // To better see the content of item.data which is responsible of passing props to the MicroServiceCalculatedCollection UI component
                         >
-                          <div
-                            className="collectionGalleryCard__data"
-                            onClick={handlerOnClickLinkedDiv}
-                            aria-label={
-                              "/collections/readrecords/&collection=" +
-                              item.relatedInfo.split("_-_")[3] +
-                              "&filterfield=" +
-                              item.relatedInfo.split("_-_")[4] +
-                              "&filtervalue=&searchfield=" +
-                              item.relatedInfo.split("_-_")[4] +
-                              "&searchvalue=" +
-                              item.data +
-                              "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                              recordsPerSet[0] +
-                              "&orderfield=" +
-                              item.relatedInfo.split("_-_")[4] +
-                              "&ordertype=asc&controlinfo="
-                            }
-                            title={item.relatedInfo}
-                            // To better see the content of item.data which is responsible of passing info to Link and to the handlerOnClickLinkedDiv
-                          >
-                            {item.data}
-                          </div>
-                        </Link>
-                      );
-                    case "calculated" + stringSeparator + "calculated":
-                      //Case of div fieldType=calculated
-                      return (
-                        <>
-                          <div
-                            className="collectionGalleryCard__data"
-                            title={item.data}
-                            // To better see the content of item.data which is responsible of passing props to the MicroServiceCalculatedCollection UI component
-                          >
-                            <MicroServiceCalculatedCollection
-                              calculatedInputData={{
-                                collection: item.data.split(stringSeparator)[2],
-                                documentId: item.data.split(stringSeparator)[5],
-                                operation: item.data.split(stringSeparator)[1],
-                                firstOperandField:
-                                  item.data.split(stringSeparator)[3],
-                                secondOperandField:
-                                  item.data.split(stringSeparator)[4],
-                              }}
-                              controlInfo=""
-                            ></MicroServiceCalculatedCollection>
-                          </div>
-                        </>
-                      );
-
-                    case "measure" + stringSeparator + "measure":
-                      //Case of div fieldType=measure
-                      return (
-                        <>
-                          <div
-                            className="collectionGalleryCard__data"
-                            title={item.data}
-                            // To better see the content of item.data which is responsible of passing props to the MicroServiceViewCollection UI component
-                          >
-                            <MicroServiceMeasureCollection
-                              measureInputData={{
-                                measure: item.data.split(stringSeparator)[1],
-                                filterName: item.data.split(stringSeparator)[6],
-                                filterValue:
-                                  item.data.split(stringSeparator)[7],
-                              }}
-                              controlInfo=""
-                            ></MicroServiceMeasureCollection>
-                          </div>
-                        </>
-                      );
-                    case "view" + stringSeparator + "view":
-                      //Case of div fieldType=view with related info
-                      return (
-                        <>
-                          <div
-                            className="collectionGalleryCard__data"
-                            title={item.data}
-                            // To better see the content of item.data which is responsible of passing props to the MicroServiceViewCollection UI component
-                          >
-                            <MicroServiceViewCollection
-                              viewInputData={{
-                                collection: item.data.split(stringSeparator)[4],
-                                searchField:
-                                  item.data.split(stringSeparator)[5],
-                                searchValue:
-                                  item.data.split(stringSeparator)[6],
-                                outputFieldName:
-                                  item.data.split(stringSeparator)[8],
-                              }}
-                              controlInfo=""
-                            ></MicroServiceViewCollection>
-                          </div>
-                        </>
-                      );
-                    default:
-                      return (
-                        <div>
-                          {"UI component error: the case " +
-                            item.htmlTag +
-                            "&&" +
-                            item.fieldType +
-                            stringSeparator +
-                            item.relatedInfo.split(stringSeparator)[0] +
-                            " is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the relatedInfo value `" +
-                            item.relatedInfo +
-                            "` for field `" +
-                            item.fieldName +
-                            "` of collection `" +
-                            item.collection +
-                            "` at database collection `appcollectionfields`."}
+                          <MicroServiceCalculatedCollection
+                            calculatedInputData={{
+                              collection: item.data.split(stringSeparator)[2],
+                              documentId: item.data.split(stringSeparator)[5],
+                              operation: item.data.split(stringSeparator)[1],
+                              firstOperandField:
+                                item.data.split(stringSeparator)[3],
+                              secondOperandField:
+                                item.data.split(stringSeparator)[4],
+                            }}
+                            controlInfo=""
+                          ></MicroServiceCalculatedCollection>
                         </div>
-                      );
-                  }
+                      </>
+                    );
 
-                case "img":
-                  return (
-                    <div className="collectionGalleryCard__dataImageContainer">
-                      <img
-                        src={item.data}
-                        alt={item.data + "" + item.data}
-                        className="collectionGalleryCard__dataImage"
-                      ></img>
-                    </div>
-                  );
-                case "a":
-                  return (
-                    <a
-                      className="collectionGalleryCard__data"
-                      href={item.data}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item.data}
-                    </a>
-                  );
-                default:
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                  return (
-                    <div>
-                      {"UI component error: the htmlTag=" +
-                        item.htmlTag +
-                        " assign to this field is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the htmlTag value for the field `" +
-                        item.fieldName +
-                        "` of collection `" +
-                        item.collection +
-                        "` at database collection `appcollectionfields`."}
-                    </div>
-                  );
-              }
-            })()}
-          </div>
+                  case "measure" + stringSeparator + "measure":
+                    //Case of div fieldType=measure
+                    return (
+                      <>
+                        <div
+                          className="collectionGalleryCard__data"
+                          title={item.data}
+                          // To better see the content of item.data which is responsible of passing props to the MicroServiceViewCollection UI component
+                        >
+                          <MicroServiceMeasureCollection
+                            measureInputData={{
+                              measure: item.data.split(stringSeparator)[1],
+                              filterName: item.data.split(stringSeparator)[6],
+                              filterValue: item.data.split(stringSeparator)[7],
+                            }}
+                            controlInfo=""
+                          ></MicroServiceMeasureCollection>
+                        </div>
+                      </>
+                    );
+                  case "view" + stringSeparator + "view":
+                    //Case of div fieldType=view with related info
+                    return (
+                      <>
+                        <div
+                          className="collectionGalleryCard__data"
+                          title={item.data}
+                          // To better see the content of item.data which is responsible of passing props to the MicroServiceViewCollection UI component
+                        >
+                          <MicroServiceViewCollection
+                            viewInputData={{
+                              collection: item.data.split(stringSeparator)[4],
+                              searchField: item.data.split(stringSeparator)[5],
+                              searchValue: item.data.split(stringSeparator)[6],
+                              outputFieldName:
+                                item.data.split(stringSeparator)[8],
+                            }}
+                            controlInfo=""
+                          ></MicroServiceViewCollection>
+                        </div>
+                      </>
+                    );
+                  default:
+                    return (
+                      <div>
+                        {"UI component error: the case " +
+                          item.htmlTag +
+                          "&&" +
+                          item.fieldType +
+                          stringSeparator +
+                          item.relatedInfo.split(stringSeparator)[0] +
+                          " is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the relatedInfo value `" +
+                          item.relatedInfo +
+                          "` for field `" +
+                          item.fieldName +
+                          "` of collection `" +
+                          item.collection +
+                          "` at database collection `appcollectionfields`."}
+                      </div>
+                    );
+                }
+
+              case "img":
+                return (
+                  <div className="collectionGalleryCard__dataImageContainer">
+                    <img
+                      src={item.data}
+                      alt={item.data + "" + item.data}
+                      className="collectionGalleryCard__dataImage"
+                    ></img>
+                  </div>
+                );
+              case "a":
+                return (
+                  <a
+                    className="collectionGalleryCard__data"
+                    href={item.data}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.data}
+                  </a>
+                );
+              default:
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                return (
+                  <div>
+                    {"UI component error: the htmlTag=" +
+                      item.htmlTag +
+                      " assign to this field is not supported at the app. Please, add a new case in the switch statement at file `gallery.collections.tsx` or change the htmlTag value for the field `" +
+                      item.fieldName +
+                      "` of collection `" +
+                      item.collection +
+                      "` at database collection `appcollectionfields`."}
+                  </div>
+                );
+            }
+          })()}
         </div>
       )
     );
 
-    tempArray.shift();
-    return <li className="collectionGalleryCard">{tempArray}</li>;
+    cardJSX.shift();
+    return (
+      <li
+        className={
+          "collectionGalleryCard__" + collectionState.queryInput.showType
+        }
+        key={i}
+      >
+        {i +
+          1 +
+          (collectionState.queryOutput.pageShown - 1) *
+            collectionState.queryInput.queryRecordsPerSet}
+        {/* If you want to show the # of the record shown*/}
+        {cardJSX}
+      </li>
+    );
   };
 
   const recordsJSX = () => {
-    let tempArray = [<div key="elementToBeShifted"></div>];
+    let galleryJSX = [<div key="elementToBeShiftedInRecordsJSX"></div>];
 
     galleryCopy.forEach((element: any) => {
-      tempArray = tempArray.concat(recordJSX(galleryCopy.indexOf(element)));
+      galleryJSX = galleryJSX.concat(recordJSX(galleryCopy.indexOf(element)));
     });
 
-    tempArray.shift();
-    return tempArray;
+    galleryJSX.shift();
+    return galleryJSX;
   };
 
   return (
@@ -1029,7 +1149,13 @@ appcollectionfields=
         </h2>
 
         <div className="collectionsGallery__container">
-          <ul className="collectionsGallery__list">{recordsJSX()}</ul>
+          <ul
+            className={
+              "collectionsGallery__list__" + collectionState.queryInput.showType
+            }
+          >
+            {recordsJSX()}
+          </ul>
         </div>
       </div>
     </>
