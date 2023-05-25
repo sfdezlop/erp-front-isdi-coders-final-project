@@ -50,7 +50,7 @@ export function useCollections(repo: CollectionsRepo) {
       return dataResults[0].result;
     } catch (error) {
       console.error((error as Error).message);
-      addError(error as Error, appState.urlPage);
+      await addError(error as Error, appState.urlPage);
 
       return "calculation not available";
     }
@@ -145,8 +145,6 @@ export function useCollections(repo: CollectionsRepo) {
           queryRecordsPerSet: 1000,
           orderField: "collectionName",
           orderType: "asc",
-          // primaryKey: "",
-          // primaryKeyValue: "",
         },
         tokenToUse,
         controlInfo
@@ -185,8 +183,6 @@ export function useCollections(repo: CollectionsRepo) {
           queryRecordsPerSet: 1000,
           orderField: "collectionName",
           orderType: "asc",
-          // primaryKey: "",
-          // primaryKeyValue: "",
         },
         tokenToUse,
         controlInfo
@@ -327,10 +323,6 @@ export function useCollections(repo: CollectionsRepo) {
         queriedCount: queriedCount(),
         unQueriedCount: unQueriedCount(),
         gallery: gallery.results,
-        // galleryInterface: "raw",
-        // galleryShow: "gallery",
-        // detail: [],
-        // detailInterface: "raw",
       };
 
       dispatch(queryInput(queryInputData));
