@@ -23,7 +23,7 @@ export function Login() {
 
   //The test loops when the deps array is removed, even if it is void
 
-  const handlerSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handlerSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formUSer = event.currentTarget;
@@ -36,9 +36,11 @@ export function Login() {
     const saveTokenAtLocalStorage = (formUSer.elements[2] as HTMLFormElement)
       .checked;
 
-    userLogin(loginForm, saveTokenAtLocalStorage);
+    await userLogin(loginForm, saveTokenAtLocalStorage);
 
-    navigate("/home");
+    await navigate("/home");
+
+    //Making handler async, the performance of the app is better, solving the problem of render the token al localStorage in /home. I have change it to async following recommendation of sonar to solve bug
   };
   return (
     <div className="login">
