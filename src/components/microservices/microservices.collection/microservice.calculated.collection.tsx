@@ -28,10 +28,10 @@ export function MicroServiceCalculatedCollection({
     const promiseToEvaluate = calculate(calculatedInputData, controlInfo);
     promiseToEvaluate.then(async (promiseValue) => {
       promiseValue === undefined
-        ? setValueToShow("Info not found (frontend)")
+        ? await setValueToShow("Info not found (frontend)")
         : //Defensive hardcode because the measure method always return a value at the backend
-          setValueToShow(promiseValue);
-      setRenderNumber(2);
+          await setValueToShow(promiseValue);
+      await setRenderNumber(2);
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectionState.queryOutput.gallery]);
 
