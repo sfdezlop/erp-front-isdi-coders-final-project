@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-redundant-roles */
 import { SyntheticEvent, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../../hooks/use.users";
@@ -22,7 +23,7 @@ export function Login() {
 
   //The test loops when the deps array is removed, even if it is void
 
-  const handlerSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handlerSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formUSer = event.currentTarget;
@@ -32,9 +33,14 @@ export function Login() {
       passwd: (formUSer.elements[1] as HTMLFormElement).value,
     };
 
-    userLogin(loginForm);
+    const saveTokenAtLocalStorage = (formUSer.elements[2] as HTMLFormElement)
+      .checked;
+
+    await userLogin(loginForm, saveTokenAtLocalStorage);
 
     navigate("/home");
+
+    //Making handler async, the performance of the app is better, solving the problem of render the token al localStorage in /home. I have change it to async following recommendation of sonar to solve bug
   };
   return (
     <div className="login">
@@ -62,12 +68,13 @@ export function Login() {
             className="login__input"
             autoComplete=""
             required
+            role="textbox"
           />
         </label>
         <div className="login__keepCheckbox">
           <label>
-            <input type="checkbox" />
-            Remind me for 1 day
+            <input type="checkbox" defaultChecked />
+            Remind me for 24 hours
           </label>
         </div>
 

@@ -16,7 +16,11 @@ export function Header() {
 
   const userState = useSelector((state: RootState) => state.userState);
 
-  const handlerClick = (event: SyntheticEvent) => {
+  const handlerUserLoggedInitialsClick = (event: SyntheticEvent) => {
+    navigate("/home");
+  };
+
+  const handlerLogClick = (event: SyntheticEvent) => {
     userLogout();
     navigate("/");
   };
@@ -31,21 +35,25 @@ export function Header() {
       <nav className="header__menu">
         <Menu options={menuOptions}></Menu>
       </nav>
-      <div className="header__initialAndLogout">
-        <div className="header__userLoggedInitials">
-          {userState.userLogged.firstName +
-            " (" +
-            userState.userLogged.language +
-            ")"}
+      <div className="header__initialsAndLogStatus">
+        <div
+          className="header__userLoggedInitials"
+          onClick={handlerUserLoggedInitialsClick}
+        >
+          {userState.userLogged.firstName
+            ? userState.userLogged.firstName.charAt(0) +
+              userState.userLogged.lastName.charAt(0)
+            : " (" + userState.userLogged.language
+            ? userState.userLogged.language
+            : ")"}
         </div>
 
-        {userState.userLoggedToken !== initialUserState.userLoggedToken ||
-        localStorage.tokenERP !== initialUserState.userLoggedToken ? (
-          <div className="header__logout" onClick={handlerClick}>
+        {userState.userLoggedToken !== initialUserState.userLoggedToken ? (
+          <div className="header__logStatus" onClick={handlerLogClick}>
             logout
           </div>
         ) : (
-          <div className="header__login" onClick={handlerClick}>
+          <div className="header__logStatus" onClick={handlerLogClick}>
             login
           </div>
         )}

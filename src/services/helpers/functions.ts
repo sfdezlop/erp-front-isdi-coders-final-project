@@ -1,3 +1,10 @@
+export const accumulateValueOfAnArrayOfNumbers = (a: number[]) => {
+  //Parameter a is the array
+  let result = a.reduce((c: any, d: any) => c + d, 0);
+  //Initial value of the callback to avoid 'Reduce of empty array with no initial value errors
+  return result;
+};
+
 export const americanLargeFormatOfADate = (a: Date): string => {
   const year = a.getFullYear();
   let month,
@@ -69,6 +76,18 @@ export const americanShortFormatOfADate = (a: Date): string => {
   return result;
 };
 
+export const maximumValueOfAPropertyInAnArrayOfObjects = (a: [], b: string) => {
+  // Parameter a is the array of object
+  // Parameter b is the name of property in which you want to calculate the maximum value between all de objects of the array
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (result < a[i][b]) {
+      // It doest work is you use the typical a[i].b syntax to refer to properties because the function need to evaluate b
+      result = a[i][b];
+    }
+  }
+  return result;
+};
 export const orderByPropertyAnArrayOfObjects = (
   a: [],
   b: string,
@@ -97,4 +116,14 @@ export const orderByPropertyAnArrayOfObjects = (
     }
   });
   return result;
+};
+
+export const roundToDecimals = (a: number, b: number) => {
+  // This function has the same behavior as round(a,b) in MS Excel
+  // Parameter a is the number to round
+  // Parameter b is the quantity of decimals you want to round
+
+  const ax10PowerOfB = a * Math.pow(10, b);
+
+  return Math.round(ax10PowerOfB) / Math.pow(10, b);
 };

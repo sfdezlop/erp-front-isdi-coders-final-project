@@ -1,8 +1,11 @@
 import { url_def } from "../../config";
 import {
+  CalculatedQueryCollectionStructure,
   GroupByQueryCollectionStructure,
   GroupBySetQueryCollectionStructure,
+  MeasureQueryCollectionStructure,
   QueryInputCollectionStructure,
+  ReadRecordFieldValueStructure,
 } from "../../models/collections.model";
 
 export class CollectionsRepo {
@@ -12,34 +15,33 @@ export class CollectionsRepo {
     this.url = url_def;
   }
 
-  async readRecords(
-    query: QueryInputCollectionStructure,
-
+  async calculate(
+    query: CalculatedQueryCollectionStructure,
     token: string,
     controlInfo: string
-  ): Promise<{ results: [] }> {
+  ): Promise<{
+    results: {
+      collection: string;
+      documentId: string;
+      operation: string;
+      firstOperandField: string;
+      secondOperandField: string;
+      result: string;
+      resultStatus: string;
+    }[];
+  }> {
     const url = encodeURI(
       this.url +
-        "/collections/readrecords/&collection=" +
-        query.filterCollection +
-        "&filterfield=" +
-        query.filterField +
-        "&filtervalue=" +
-        query.filterValue +
-        "&searchfield=" +
-        query.searchField +
-        "&searchvalue=" +
-        query.searchValue +
-        "&searchtype=" +
-        query.searchType +
-        "&queryset=" +
-        query.querySet +
-        "&queryrecordsperset=" +
-        query.queryRecordsPerSet +
-        "&orderfield=" +
-        query.orderField +
-        "&ordertype=" +
-        query.orderType +
+        "/collections/calculations/&collection=" +
+        query.collection +
+        "&documentid=" +
+        query.documentId +
+        "&operation=" +
+        query.operation +
+        "&firstoperandfield=" +
+        query.firstOperandField +
+        "&secondtoperandfield=" +
+        query.secondOperandField +
         "&controlinfo=" +
         controlInfo
     );
@@ -54,14 +56,13 @@ export class CollectionsRepo {
 
     if (!resp.ok)
       throw new Error(
-        `Error http reading records at collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+        `Error http obtaining calculated field of ${query.operation} at collection ${query.collection}: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();
 
     return data;
   }
-
   async groupBy(
     query: GroupByQueryCollectionStructure,
     token: string,
@@ -133,6 +134,149 @@ export class CollectionsRepo {
     if (!resp.ok)
       throw new Error(
         `Error http obtaining grouped set of values of collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async measure(
+    query: MeasureQueryCollectionStructure,
+    token: string,
+    controlInfo: string
+  ): Promise<{
+    results: {
+      measure: string;
+      measureDescription: string;
+      filterName: string;
+      filterValue: string;
+      setName: string;
+      setLabel: string;
+      setData: string;
+      setStatus: string;
+    }[];
+  }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/measures/&measure=" +
+        query.measure +
+        "&filtername=" +
+        query.filterName +
+        "&filtervalue=" +
+        query.filterValue +
+        "&controlinfo=" +
+        controlInfo
+    );
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http obtaining the set of values of measure ${query.measure}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+
+  async readRecordFieldValue(
+    query: ReadRecordFieldValueStructure,
+    token: string,
+    controlInfo: string
+  ): Promise<{
+    results: {
+      inputCollection: string;
+      inputFieldName: string;
+      inputFieldValue: string;
+      outputFieldName: string;
+      outputFieldValue: string;
+      outputStatus: string;
+    }[];
+  }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/readrecordfieldvalue/&collection=" +
+        query.collection +
+        "&searchfield=" +
+        query.searchField +
+        "&searchvalue=" +
+        query.searchValue +
+        "&outputfieldname=" +
+        query.outputFieldName +
+        "&controlinfo=" +
+        controlInfo
+    );
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading record field value at collection ${query.collection} for field ${query.outputFieldName} corresponding to record where ${query.searchField} is equal to ${query.searchValue}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+  async readRecords(
+    query: Partial<QueryInputCollectionStructure>,
+
+    //Pending: review to a Total QueryInputCollectionStructure instead of Partial
+
+    token: string,
+    controlInfo: string
+  ): Promise<{ results: [] }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/readrecords/&collection=" +
+        query.filterCollection +
+        "&filterfield=" +
+        query.filterField +
+        "&filtervalue=" +
+        query.filterValue +
+        "&searchfield=" +
+        query.searchField +
+        "&searchvalue=" +
+        query.searchValue +
+        "&searchtype=" +
+        query.searchType +
+        "&queryset=" +
+        query.querySet +
+        "&queryrecordsperset=" +
+        query.queryRecordsPerSet +
+        "&orderfield=" +
+        query.orderField +
+        "&ordertype=" +
+        query.orderType +
+        "&controlinfo=" +
+        controlInfo
+    );
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http reading records at collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();

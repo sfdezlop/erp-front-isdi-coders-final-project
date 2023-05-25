@@ -6,7 +6,7 @@
   height: 8vh;
   padding-left: 1vh;
 }
-.footer__connection {
+.footer__connectionServer {
   display: flex;
   flex-direction: row;
   gap: 3vh;
@@ -20,11 +20,5 @@
   flex-direction: column;
   background-color: #4472c4;
   color: white;
-  font-size: 1.5vh;
-}
-
-.connection__user,
-.connection__server,
-.connection__url {
   font-size: 1.5vh;
 }

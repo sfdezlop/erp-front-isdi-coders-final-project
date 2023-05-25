@@ -1,6 +1,9 @@
+import { QueryInputCollectionStructure } from "../../../models/collections.model";
 import { recordsPerSet } from "../../../reducers/collection.slice";
 
-export function queryInputOnChangeCollection(collection: string) {
+export function queryInputOnChangeCollection(
+  collection: string
+): QueryInputCollectionStructure {
   switch (collection) {
     case "appcollectionfields":
       return {
@@ -14,8 +17,23 @@ export function queryInputOnChangeCollection(collection: string) {
         queryRecordsPerSet: recordsPerSet[1],
         orderField: "galleryShow",
         orderType: "asc",
-        primaryKey: "",
-        primaryKeyValue: "",
+        showType: "gallery",
+        showFormat: "raw",
+      };
+    case "brands":
+      return {
+        filterCollection: "brands",
+        filterField: "brandName",
+        filterValue: "",
+        searchField: "brandName",
+        searchValue: "",
+        searchType: "Contains",
+        querySet: 1,
+        queryRecordsPerSet: recordsPerSet[0],
+        orderField: "brandName",
+        orderType: "asc",
+        showType: "gallery",
+        showFormat: "raw",
       };
     case "productmovements":
       return {
@@ -29,8 +47,8 @@ export function queryInputOnChangeCollection(collection: string) {
         queryRecordsPerSet: recordsPerSet[1],
         orderField: "date",
         orderType: "desc",
-        primaryKey: "",
-        primaryKeyValue: "",
+        showType: "gallery",
+        showFormat: "raw",
       };
     case "products":
       return {
@@ -44,8 +62,8 @@ export function queryInputOnChangeCollection(collection: string) {
         queryRecordsPerSet: recordsPerSet[0],
         orderField: "ean",
         orderType: "asc",
-        primaryKey: "",
-        primaryKeyValue: "",
+        showType: "gallery",
+        showFormat: "raw",
       };
     case "translations":
       return {
@@ -59,8 +77,8 @@ export function queryInputOnChangeCollection(collection: string) {
         queryRecordsPerSet: recordsPerSet[0],
         orderField: "inputText",
         orderType: "asc",
-        primaryKey: "",
-        primaryKeyValue: "",
+        showType: "gallery",
+        showFormat: "raw",
       };
     case "users":
       return {
@@ -74,8 +92,8 @@ export function queryInputOnChangeCollection(collection: string) {
         queryRecordsPerSet: recordsPerSet[1],
         orderField: "lastLogging",
         orderType: "desc",
-        primaryKey: "",
-        primaryKeyValue: "",
+        showType: "gallery",
+        showFormat: "raw",
       };
 
     default:
@@ -91,8 +109,8 @@ export function queryInputOnChangeCollection(collection: string) {
         queryRecordsPerSet: recordsPerSet[0],
         orderField: "tbd",
         orderType: "asc",
-        primaryKey: "",
-        primaryKeyValue: "",
+        showType: "gallery",
+        showFormat: "raw",
       };
   }
 }

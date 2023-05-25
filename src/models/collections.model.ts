@@ -4,6 +4,7 @@ export type AppCollectionFieldStructure = {
   id: string;
   collectionName: string;
   fieldName: string;
+  fieldType: string;
   fieldShortDescription: string;
   filterable: boolean;
   searchable: boolean;
@@ -14,7 +15,7 @@ export type AppCollectionFieldStructure = {
   detailShow: string;
   galleryShow: string;
   updateShow: string;
-  relatedCollectionField: string;
+  relatedInfo: string;
 };
 export type ProductMovementStructure = {
   id: string;
@@ -89,8 +90,8 @@ export type QueryInputCollectionStructure = {
   orderField: string;
   orderType: string;
   //Options to use in the app: "asc" | "desc"
-  primaryKey: string;
-  primaryKeyValue: string;
+  showType: string;
+  showFormat: string;
 };
 
 export type QueryOutputCollectionStructure = {
@@ -99,30 +100,9 @@ export type QueryOutputCollectionStructure = {
   queriedCount: number;
   unQueriedCount: number;
   gallery: Partial<CollectionStructure>[];
-  galleryInterface: string;
-  detail: Partial<CollectionStructure>[];
-  detailInterface: string;
 };
 
 //UseCollection hook parameter types:
-
-export type ReadQueryCollectionStructure = {
-  filterCollection: string;
-  filterField: string;
-  filterValue: string;
-  searchField: string;
-  searchValue: string;
-  searchType: string;
-  //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
-  querySet: number;
-  queryRecordsPerSet: number;
-  orderField: string;
-  orderType: string;
-  //Options to use in the app: "asc" | "desc"
-  primaryKey: string;
-  primaryKeyValue: string | number;
-};
-
 export type GroupByQueryCollectionStructure = {
   filterCollection: string;
   firstGroupByField: string;
@@ -137,4 +117,40 @@ export type GroupByQueryCollectionStructure = {
 export type GroupBySetQueryCollectionStructure = {
   filterCollection: string;
   groupByField: string;
+};
+
+export type MeasureQueryCollectionStructure = {
+  measure: string;
+  filterName: string;
+  filterValue: string;
+};
+
+export type CalculatedQueryCollectionStructure = {
+  collection: string;
+  documentId: string;
+  operation: string;
+  firstOperandField: string;
+  secondOperandField: string;
+};
+export type ReadRecordFieldValueStructure = {
+  collection: string;
+  searchField: string;
+  searchValue: string;
+  outputFieldName: string;
+};
+export type ReadQueryCollectionStructure = {
+  filterCollection: string;
+  filterField: string;
+  filterValue: string;
+  searchField: string;
+  searchValue: string;
+  searchType: string;
+  //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
+  querySet: number;
+  queryRecordsPerSet: number;
+  orderField: string;
+  orderType: string;
+  //Options to use in the app: "asc" | "desc"
+  showType: string;
+  showFormat: string;
 };

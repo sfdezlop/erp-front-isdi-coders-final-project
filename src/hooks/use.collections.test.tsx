@@ -31,8 +31,7 @@ describe("Given the useCollection hook", () => {
     mockResponse = [{ id: "mock" }];
 
     const TestComponent = function () {
-      const { updateQueryFields, updateQueryInput, updateQueryOutput } =
-        useCollections(mockRepo);
+      const { updateQueryFields, updateQueryInput } = useCollections(mockRepo);
 
       return (
         <>
@@ -45,9 +44,6 @@ describe("Given the useCollection hook", () => {
             }
           >
             updateQueryInput
-          </button>
-          <button onClick={() => updateQueryOutput(mockPayload.queryOutput)}>
-            updateQueryOutput
           </button>
         </>
       );
@@ -65,9 +61,9 @@ describe("Given the useCollection hook", () => {
   });
 
   describe("When the TestComponent is rendered", () => {
-    test("Then the 3 buttons should be in the document", async () => {
+    test("Then the 2 buttons should be in the document", async () => {
       const elements = await screen.findAllByRole("button");
-      expect(elements.length).toEqual(3);
+      expect(elements.length).toEqual(2);
     });
   });
 
@@ -87,16 +83,6 @@ describe("Given the useCollection hook", () => {
       (mockRepo.readRecords as jest.Mock).mockResolvedValueOnce(mockResponse);
       await act(async () => userEvent.click(elements[1]));
       expect(mockRepo.readRecords).toHaveBeenCalled();
-    });
-  });
-
-  describe("When the updateQueryOutput button of TestComponent is clicked", () => {
-    test("Then the value of queryOutput property of collectionState should be the mockPayload", async () => {
-      const elements = await screen.findAllByRole("button");
-      await act(async () => userEvent.click(elements[2]));
-      const queryOutput = store.getState().collectionState.queryOutput;
-
-      expect(queryOutput).toEqual(mockPayload.queryOutput);
     });
   });
 });

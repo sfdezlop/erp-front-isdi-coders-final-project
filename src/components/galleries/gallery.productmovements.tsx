@@ -22,7 +22,6 @@ export function ProductMovementsGallery() {
     useState(0);
 
   useEffect(() => {
-    console.log("useEffect at gallery.productmovements.tsx");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -14,6 +14,7 @@ import {
   Filler,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { accumulateValueOfAnArrayOfNumbers } from "../../services/helpers/functions";
 
 ChartJS.register(
   CategoryScale,
@@ -62,14 +63,12 @@ export function BarChart() {
       );
 
       const scoresSliced = (a: number) => scoresData.slice(0, a);
-      const accumulateValueOfAnArray = (a: number[]) => {
-        //a is the array
-        let result = a.reduce((c: any, d: any) => c + d, 0); ////initial value of the callback to avoid 'Reduce of empty array with no initial value' errors
-        return result;
-      };
+
       const accumulateScores: any = [];
       for (let i = 1; i < scoresData.length + 1; i++) {
-        accumulateScores.push(accumulateValueOfAnArray(scoresSliced(i)));
+        accumulateScores.push(
+          accumulateValueOfAnArrayOfNumbers(scoresSliced(i))
+        );
       }
       return {
         datasets: [

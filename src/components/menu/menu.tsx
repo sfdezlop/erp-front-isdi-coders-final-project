@@ -12,7 +12,7 @@ export const menuOptions: MenuOption[] = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Products", path: "/products" },
   { label: "Movements", path: "/productmovements" },
-  { label: "Collections", path: "/collections/readrecords/products" },
+  { label: "All Collections", path: "/collections/readrecords/products" },
 ];
 
 export type MenuProps = {

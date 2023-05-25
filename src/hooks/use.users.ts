@@ -18,7 +18,10 @@ export function useUsers(repo: UsersRepo) {
 
   const { addError } = useApp();
 
-  const userLogin = async (loginForm: Partial<UserStructure>) => {
+  const userLogin = async (
+    loginForm: Partial<UserStructure>,
+    saveTokenAtLocalStorage: boolean
+  ) => {
     try {
       const serverLoginResponse: any = await repo.readTokenAndUser(
         loginForm,
@@ -28,11 +31,20 @@ export function useUsers(repo: UsersRepo) {
       await dispatch(loginToken(serverLoginResponse.results[0]));
       await dispatch(loginUser(serverLoginResponse.results[1]));
       await localStorage.setItem("tokenERP", serverLoginResponse.results[0]);
+
       const serverGalleryResponse: any = await repo.readGallery(
-        localStorage.token,
+        localStorage.tokenERP,
         "users"
       );
       await dispatch(loginGallery(serverGalleryResponse.results));
+      (await saveTokenAtLocalStorage)
+        ? (() => {
+            console.log("tokenERP saved at localStorage");
+          })()
+        : (() => {
+            localStorage.setItem("tokenERP", initialUserState.userLoggedToken);
+            console.log("tokenERP removed at localStorage");
+          })();
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, "/home");
@@ -64,6 +76,7 @@ export function useUsers(repo: UsersRepo) {
   const userLogout = () => {
     dispatch(logoutToken(initialUserState.userLoggedToken));
     dispatch(loginUser(initialUserState.userLogged));
+    localStorage.setItem("tokenERP", initialUserState.userLoggedToken);
   };
 
   return {

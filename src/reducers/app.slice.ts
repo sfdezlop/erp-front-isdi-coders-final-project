@@ -49,7 +49,7 @@ export const initialState: AppStateStructure = {
 
   errorLog: [
     {
-      date: new Date().toString(),
+      date: "No error since " + new Date().toUTCString(),
       user: "No error",
       origin: "No error",
       errorName: "No error",

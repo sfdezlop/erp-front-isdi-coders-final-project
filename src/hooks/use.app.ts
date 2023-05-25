@@ -15,7 +15,7 @@ export function useApp() {
   const addError = (error: Error, origin: string) => {
     dispatch(
       addErrorLog({
-        date: new Date().toString(),
+        date: new Date().toUTCString(),
         user: userLoggedData.email,
         origin: origin,
         errorName: error.name,

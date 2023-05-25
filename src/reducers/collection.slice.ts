@@ -25,7 +25,7 @@ const initialStateFormCongruency = {
   },
 };
 
-export const recordsPerSet = [4, 8, 16, 32, 64, 128, 256];
+export const recordsPerSet = [4, 8, 16, 32, 64, 128];
 
 export const initialState: CollectionStateStructure = {
   queryFields: {
@@ -54,44 +54,32 @@ export const initialState: CollectionStateStructure = {
         stringSeparator
       )[1],
     orderType: "asc",
-    primaryKey: "",
-    primaryKeyValue: "",
+    showType: "gallery",
+    showFormat: "raw",
   },
   queryOutput: {
     filterValueOptionsShown: [],
     pageShown: 1,
     queriedCount: 1,
     unQueriedCount: 1,
-    gallery: [
-      // {
-      //   id: "123456",
-      //   sku: "Sku",
-      //   shortDescription: "Short Description",
-      //   longDescription: "Long Description",
-      //   ean: "EAN",
-      //   brand: "Brand",
-      //   image: "Image",
-      //   userCreatorEmail: "User Creator Email",
-      //   costPerUnit: 0,
-      //   pricePerUnit: 0,
-      // },
-    ],
-    galleryInterface: "raw",
-    detail: [
-      {
-        id: "id",
-        sku: "Sku",
-        shortDescription: "Short Description",
-        longDescription: "Long Description",
-        ean: "EAN",
-        brand: "Brand",
-        image: "Image",
-        userCreatorEmail: "User Creator Email",
-        costPerUnit: 0,
-        pricePerUnit: 0,
-      },
-    ],
-    detailInterface: "raw",
+    gallery: [],
+    // galleryInterface: "raw",
+    // galleryShow: "gallery",
+    // detail: [
+    //   {
+    //     id: "id",
+    //     sku: "Sku",
+    //     shortDescription: "Short Description",
+    //     longDescription: "Long Description",
+    //     ean: "EAN",
+    //     brand: "Brand",
+    //     image: "Image",
+    //     userCreatorEmail: "User Creator Email",
+    //     costPerUnit: 0,
+    //     pricePerUnit: 0,
+    //   },
+    // ],
+    // detailInterface: "raw",
   },
   translations: [],
   appCollectionFields: [],

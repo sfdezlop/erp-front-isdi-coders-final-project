@@ -180,16 +180,20 @@ export function QueryCollection({
     const queryDefaultModified = {
       filterCollection: collectionState.queryInput.filterCollection,
       filterField: collectionState.queryInput.filterField,
-      filterValue: filterValue.toString(),
+      filterValue:
+        filterValue.toString() === "(select all)" ? "" : filterValue.toString(),
       searchField: collectionState.queryInput.searchField,
       searchValue: "",
-      searchType: collectionState.queryInput.searchType,
+      searchType:
+        collectionState.queryInput.searchType === "Exact match"
+          ? "Contains"
+          : collectionState.queryInput.searchType,
       querySet: 1,
       queryRecordsPerSet: collectionState.queryInput.queryRecordsPerSet,
       orderField: collectionState.queryInput.orderField,
       orderType: collectionState.queryInput.orderType,
-      primaryKey: collectionState.queryInput.primaryKey,
-      primaryKeyValue: collectionState.queryInput.primaryKeyValue,
+      showType: collectionState.queryInput.showType,
+      showFormat: collectionState.queryInput.showFormat,
     };
 
     updateQueryInput(
@@ -214,8 +218,8 @@ export function QueryCollection({
       orderType: (queryForm.elements[4] as HTMLFormElement).value,
       queryRecordsPerSet: (queryForm.elements[5] as HTMLFormElement).value,
       querySet: 1,
-      primaryKey: "",
-      primaryKeyValue: "",
+      showType: collectionState.queryInput.showType,
+      showFormat: collectionState.queryInput.showFormat,
     };
     updateQueryInput(
       queryFormObject,
@@ -238,8 +242,34 @@ export function QueryCollection({
       orderType: collectionState.queryInput.orderType,
       queryRecordsPerSet: collectionState.queryInput.queryRecordsPerSet,
       querySet: Number(selector.value),
-      primaryKey: "",
-      primaryKeyValue: "",
+      showType: collectionState.queryInput.showType,
+      showFormat: collectionState.queryInput.showFormat,
+    };
+    updateQueryInput(
+      queryObject,
+      "componentFile_" + componentFile + "_line_235"
+    );
+    navigate(navigationURIToQueryPage(queryObject));
+  };
+
+  const handlerOnChangeShowType = (
+    event: SyntheticEvent<HTMLSelectElement>
+  ) => {
+    const selector = event.currentTarget;
+
+    const queryObject: QueryInputCollectionStructure = {
+      filterCollection: collectionState.queryInput.filterCollection,
+      filterField: collectionState.queryInput.filterField,
+      filterValue: collectionState.queryInput.filterValue,
+      searchField: collectionState.queryInput.searchField,
+      searchType: collectionState.queryInput.searchType,
+      searchValue: collectionState.queryInput.searchValue,
+      orderField: collectionState.queryInput.orderField,
+      orderType: collectionState.queryInput.orderType,
+      queryRecordsPerSet: collectionState.queryInput.queryRecordsPerSet,
+      querySet: collectionState.queryInput.querySet,
+      showType: selector.value,
+      showFormat: collectionState.queryInput.showFormat,
     };
     updateQueryInput(
       queryObject,
@@ -436,7 +466,7 @@ export function QueryCollection({
             </label>
           </form>
           <label className="queryCollection__label">
-            <div>{"GoTo Page# "}</div>
+            <div>{"Goto Page"}</div>
             <select onChange={handlerOnChangePage}>
               {pagesArray.map((item) => (
                 <option
@@ -453,6 +483,27 @@ export function QueryCollection({
             </select>
 
             <div>{collectionState.queryOutput.pageShown}</div>
+          </label>
+          <label className="queryCollection__label">
+            <div>{"Show type"}</div>
+            <select name="show_type" onChange={handlerOnChangeShowType}>
+              {collectionState.queryInput.showType}
+
+              <option
+                key={"gallery"}
+                selected={collectionState.queryInput.showType === "gallery"}
+              >
+                {"gallery"}
+              </option>
+              <option
+                key={"detail"}
+                selected={collectionState.queryInput.showType === "detail"}
+              >
+                {"detail"}
+              </option>
+            </select>
+
+            <div>{collectionState.queryInput.showType}</div>
           </label>
         </div>
         <div>

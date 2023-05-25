@@ -16,18 +16,29 @@
 }
 
 .homePage__userLoggedProfile {
-  font-size: 1vh;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  font-size: 2.5vh;
+  font-weight: bold;
 }
 
 .homePage__userLoggedProfile div,
 h2,
 article {
+  font-weight: normal;
   font-size: 2vh;
 }
 
 .homePage__token {
   word-break: break-all;
+}
+
+.homePage__button {
+  background-color: #4472c4;
+  border: none;
+  color: white;
+  padding: 1%;
+
+  /* margin-left: 2rem; */
 }

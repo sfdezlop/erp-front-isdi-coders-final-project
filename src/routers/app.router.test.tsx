@@ -36,7 +36,6 @@ describe("Given the app router component", () => {
       await waitFor(async () => mockRouterFunctions(0));
       const element = await screen.findByRole("heading");
       expect(element).toBeInTheDocument();
-      console.log(element.innerHTML);
       expect(element.innerHTML).toContain("ERP");
     });
   });
@@ -46,7 +45,6 @@ describe("Given the app router component", () => {
       await waitFor(async () => mockRouterFunctions(1));
       const element = await screen.findByRole("heading");
       expect(element).toBeInTheDocument();
-      console.log(element.innerHTML);
       expect(element.innerHTML).toContain("Dashboard");
     });
   });
