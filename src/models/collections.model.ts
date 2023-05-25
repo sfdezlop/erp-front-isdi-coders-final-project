@@ -100,10 +100,6 @@ export type QueryOutputCollectionStructure = {
   queriedCount: number;
   unQueriedCount: number;
   gallery: Partial<CollectionStructure>[];
-  // galleryInterface: string;
-  // galleryShow: string;
-  // detail: Partial<CollectionStructure>[];
-  // detailInterface: string;
 };
 
 //UseCollection hook parameter types:
