@@ -17,7 +17,15 @@ export function MicroServiceMeasureCollection({
 }: MicroServiceMeasureCollectionProps) {
   const repoCollection = new CollectionsRepo();
   const { measure } = useCollections(repoCollection);
-  const [valueToShow, setValueToShow] = useState("Initializing...");
+  const [valueToShow, setValueToShow] = useState({
+    measure: measureInputData.measure,
+    measureDescription: "measureDescription",
+    measureLabel: "measureLabel",
+    measureInput: measureInputData.measureInput,
+    measureOutput: 0,
+    measureUnits: "measureUnits",
+    measureStatus: "Initializing",
+  });
   const [renderNumber, setRenderNumber] = useState(1);
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
@@ -26,7 +34,15 @@ export function MicroServiceMeasureCollection({
     const promiseToEvaluate = measure(measureInputData, controlInfo);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined
-        ? setValueToShow("Info not found (frontend)")
+        ? setValueToShow({
+            measure: measureInputData.measure,
+            measureDescription: "measureDescription",
+            measureLabel: "measureLabel",
+            measureInput: measureInputData.measureInput,
+            measureOutput: 0,
+            measureUnits: "measureUnits",
+            measureStatus: "case not implemented",
+          })
         : //Defensive hardcode because the measure method always return a value at the backend
           setValueToShow(promiseValue);
       setRenderNumber(2);
@@ -37,14 +53,20 @@ export function MicroServiceMeasureCollection({
 
   if (renderNumber === 1) {
     return (
-      <div className="microserviceMeasureCollection__measuring">
+      <div
+        className="microserviceMeasureCollection__measuring"
+        title={valueToShow.measureUnits}
+      >
         {"Measuring..."}
       </div>
     );
   } else {
     return (
-      <div className="microserviceMeasureCollection__valueToShow">
-        {valueToShow}
+      <div
+        className="microserviceMeasureCollection__valueToShow"
+        title={valueToShow.measureUnits}
+      >
+        {valueToShow.measureOutput}
       </div>
     );
   }

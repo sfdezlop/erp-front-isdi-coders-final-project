@@ -121,8 +121,7 @@ export type GroupBySetQueryCollectionStructure = {
 
 export type MeasureQueryCollectionStructure = {
   measure: string;
-  filterName: string;
-  filterValue: string;
+  measureInput: string;
 };
 
 export type CalculatedQueryCollectionStructure = {

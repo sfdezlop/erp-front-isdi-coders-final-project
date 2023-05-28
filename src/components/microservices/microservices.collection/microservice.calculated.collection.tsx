@@ -47,7 +47,7 @@ export function MicroServiceCalculatedCollection({
     return (
       <div className="microserviceCalculatedCollection__valueToShow">
         {isNaN(Number(valueToShow))
-          ? "not possible to calculate"
+          ? "Error: not possible to calculate " + calculatedInputData.operation
           : roundToDecimals(Number(valueToShow), roundedDecimals)}
         {/* Defensive code for cases of divide by zero where the result at backend is an string impossible to cast to a number */}
       </div>

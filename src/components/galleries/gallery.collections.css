@@ -9,7 +9,9 @@
   background-color: white;
   color: #4472c4;
   text-align: left;
-  padding: 0.5vh;
+  padding-left: 0.5vh;
+  padding-top: 0.2vh;
+  padding-bottom: 0.2vh;
 }
 
 .collectionsGallery__container {
@@ -17,7 +19,7 @@
   height: 69vh;
   width: 100%;
   overflow-y: scroll;
-  padding: 1rem;
+  padding-left: 0.5vh;
   font-size: 2vh;
 }
 /* Simulation of toggle depending on collectionState.queryInput.showType for dynamic css*/
@@ -33,7 +35,7 @@
 
 .collectionsGallery__list__detail {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
   column-gap: 1%;
@@ -62,10 +64,11 @@
   border-style: solid;
   border-width: 0.2px;
   border-color: #4472c4;
-  border-radius: 0%;
-  max-width: 23%;
-  min-width: 100%;
-  min-height: 25%;
+  border-radius: 1%;
+  max-width: 48%;
+  min-width: 48%;
+  min-height: 20%;
+  max-height: 20%;
   padding: 0.5rem;
   text-align: left;
   text-decoration: none;
@@ -104,7 +107,7 @@
 
 .collectionGalleryCard__dataImage {
   max-width: 15rem;
-  max-height: 11rem;
+  max-height: 10rem;
   margin-bottom: 1rem;
   padding-top: 4vh;
 }

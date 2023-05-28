@@ -13,44 +13,24 @@
   flex: row;
   gap: 2vh;
   height: 75vh;
-  /* border-style: solid;
-  border-color: black; */
   padding: 2vh;
 }
 
-.dashboardPage__graph {
-  display: flex;
-  flex: column;
-  border-style: solid;
-  border-color: black;
-  width: 250vh;
-  height: 75vh;
-  padding: 0vh;
-}
-.dashboardPage__metrics {
-  display: flex;
-  flex-direction: column;
-
-  gap: 2vh;
-}
-
-.dashboardPage__metricProduct,
-.dashboardPage__metricUnits,
-.dashboardPage__metricValue {
-  border-style: solid;
-  border-color: black;
-  width: 50vh;
-  height: 32rem;
-}
-
-.dashboardPage__graph,
-.dashboardPage__metricValue {
+.dashboardPage__graphContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-style: solid;
+  border-color: #4472c4;
+  border-radius: 0%;
+  width: 250vh;
+  height: 75vh;
+  padding-left: 0.5rem;
 }
-
-.dashboardPage__actualInventoryCost {
+.dashboardPage__graphTitle {
+  font-size: 5vh;
+}
+.dashboardPage__graphFooter {
   font-size: 8vh;
   justify-content: flex-end;
   align-content: baseline;
@@ -58,17 +38,35 @@
   padding: 1rem;
   text-align: right;
 }
-
-.dashboardPage__actualMovementsCount {
-  font-size: 4vh;
+.dashboardPage__metricsContainer {
   display: flex;
-  justify-content: right;
-
-  align-content: baseline;
-  color: #4472c4;
-  padding: 0.6rem;
+  flex-direction: column;
+  gap: 2vh;
 }
 
-.dashboardPage__actualInventoryCostLabel {
-  font-size: 5vh;
+.dashboardPage__metricContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  border-style: solid;
+  border-color: #4472c4;
+  padding-left: 0.5rem;
+  width: 50vh;
+  height: 32rem;
+}
+
+.dashboardPage__metricLabel {
+  font-weight: bolder;
+}
+
+.dashboardPage__metricData {
+  font-size: 8vh;
+  justify-content: flex-end;
+  align-content: baseline;
+  color: #4472c4;
+  padding: 1rem;
+  text-align: right;
 }

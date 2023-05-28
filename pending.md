@@ -71,13 +71,26 @@ The parametrization works thanks to a new database collection called `appcollect
 - `collectionName`: name of the collection, as it is defined on the db.
 - `fieldName`: name of the field at the collection, as it is defined on it. For mongodb field `_id` use `id` as `fieldName`.
 - `fieldShortDescription`: prepared to customize parametric UI components with a non technical naming instead of '`fieldName`'.
+- `fieldType`: The app is designed to be opened not only to render info saved in a collection, but also related info in the rest of collections of de database. For this purpose, each field can be of those customize types:
+  - `schema`: fields that belongs to the `Schema` defined for the `collectionName`. E.g. field `brand` at `products` collection.
+  - `view`: fields than belongs to the `Schema` of other collections. E.g. field `firstName` at `users` collection, if we want to render this info when we show data of the products, thanks to the relationship between field `userCreatorEmail` of `products` collection with the field `email` of `users` collection.
+  - `calculated`: calculated fields using other one/s from the `collectionName`. E.g. if we want to render info about the gross margin of a product as the subtract of fields `pricePerUnit` and `costPerUnit`.
+  - `measure`: calculated fields using other one/s from the `collectionName` or other collections of the database. E.g. if we want to render info about the stock of a product as the aggregated sum of all the documents at `productmovements` collection which has the same value at field `productSku` as the value of field `sku` at `products` collection.
 - `filterable`: boolean to include (`true`) or not (`false`) the field in the query component filter options. For `fieldName===id`, set this property to `false`, because even if the `readRecords` repo method (see definitions below) has defensive code to work with the `id` `ObjectId` field, the `groupBy` and `groupBySet` repo methods (based on pipelines) does not work with `ObjectId` fields. As UI gallery component need the 3 repo methods to work with simultaneously (for reading documents, offer grouped distinct values to filter and count documents), this property must be set as `false` for any `ObjectId` fields at the collection.
 - `searchable`: boolean to include (`true`) or not (`false`) the field in the query component search options. This property must be set as `false` for any `ObjectId` fields at the collection
 - `orderable`: boolean to include (`true`) or not (`false`) the field in the query component order by options. This property must be set as `false` for any `ObjectId` fields at the collection
 - `htmlTag`: string to indicate the type of html element you want to use to show the data at UI components. The supported types are <div>, <a> and <img>, but you can add new types adding new cases to the switch statement at `gallery.collection.tsx`.
 - mongoType: string to indicate the type of the field in mongo.
-- `createShow`, `detailShow`, `galleryShow` and `updateShow`: string of 3 numeric characters to indicate the order of showing the field in UI components. Choose value '000' for those fields that you want to be hidden in the UI components.
-- `relatedCollectionField`: string with info about the collection and field (separated by the `stringSeparator`) that contains the primary key of related data to the actual field, in order to be able to access to it with <Link> elements at UI components. E.g. choose the value `products_-_sku` to the field called `productSku` at `productmovements` collection because the related data to this field is stored in collection `products` at field `sku`. Choose value "" to the fields that has not related data in other collection.
+- `createShow`, `detailShow`, `galleryShow` and `updateShow`: string of 3 numeric characters to indicate the order of showing the field in UI components. Choose value '000' for those fields that you want to be hidden in the UI components for each type of show (create form, detail, gallery or update form).
+- `relatedInfo`: string with 'structured' info about the related info thats is going to be shown in the fieldName. The string structure is as follows:
+  - For fields `fieldType==='schema'`: If the content of the field is related with a primary key of other collection, complete this key with a string (joined by the `stringSeparator`) that explains the relationship, as it was a left inner join query, like (for `stringSeparator` '_-_') "relation*-\_leftCollectionName*-_leftFieldName_-_rigthCollectionName_-_rigthFieldName". E.g. "relation_-_products_-_userCreatorEmail_-_users_-\_email", that gives the property to this field, when it is render, to include a <Link> to the document at users collection where the email is equal to the value of field userCreatorEmail of the document that has the <Link> feature.
+  - For fields `fieldType==='view'`: Complete this key with a string like "view*-\_products*-_userCreatorEmail_-_users_-_email_-_users_-\_firstName", if we want to show the firstName of `users` collection for the document where field `email` has the same value of the field `userCreatorEmail` of `products` collection.
+  - For fields `fieldType==='calculated'`: Complete this key with a string like "calculated*-\_subtraction*-_products_-_pricePerUnit_-\_costPerUnit", if we want to show the calculated field for the document which results of the subtraction of field `pricePerUnit` minus the field `costPerUnit`.
+  - For fields `fieldType==='measure'`: Complete this key with a string like "measure*-\_productstockunitsbysku*-_products_-_sku_-_productmovements_-\_productSku", if we want to show the `productstockunitsbysku` measure defined in the app that calculate the aggregate sum of all the documents at `productmovements` collection that has the same `productSku` value as the field `sku` of `products` collection where we want to show the measure.
+
+collection and field that contains the primary key of related data to the actual field, in order to be able to access to it with <Link> elements at UI components and to show info of views, calculated fields and measures defined in the app. E.g. choose the value `products_-_sku` to the field called `productSku` at `productmovements` collection because the related data to this field is stored in collection `products` at field `sku`. Choose value "" to the fields that has not related info across the app.
+
+Please note that all the `filterable`, `searchable` and `orderable` fields must be required at the collection Schema to avoid malfunction of the UI components, because the query to the database include conditions for these fields so documents without them are going to be hidden in the response of the server if they have a lack of one of them.
 
 Once a new collection has been added to the backend (adding a new data model file at `src/entities` and a new schema at `src/repositories`), all the services of the backend are extended to the new collection following only 3 steps:
 
@@ -106,7 +119,7 @@ In order to simplify code in the backend, the repo and controller methods have t
   - `orderField`
   - `orderType`
 
-- `readRecordFieldValue`: supply the reading customized service of the value for a field of a record using the `mongoose` method `aggregate` with `$match`, `$addFields` and `$project` pipeline stages. This microservice allows to obtain info from any record at a collection with related data in the collection, as an SQL left join query works giving the possibility of showing this data in a UI component. The input parameters of the request are:
+- `view`: supply the reading customized service of the value for a field of a record using the `mongoose` method `aggregate` with `$match`, `$addFields` and `$project` pipeline stages. This microservice allows to obtain info from any record at a collection with related data in the collection, as an SQL left join query works giving the possibility of showing this data in a UI component. The input parameters of the request are:
 
   - `collection`
   - `searchField`: With possibility of searching by id, managing the special behavior of this ObjectId field to match an string
@@ -126,24 +139,28 @@ In order to simplify code in the backend, the repo and controller methods have t
     The method responds always with data, even if it's not supplied by the mongoose method without error. The defensive result has always the same structure (`{results: [{ _id: stringSeparator, documents: 0, aggregateSumValue: 0 }]}`), which is a partial of the result structure when there are results, to properly manage the response at the frontend.
 
 - `groupBySet`: supply the grouping customized service to respond with the resultant set of values using the `mongoose` method `aggregate` with `$group` (with `$min`), `$project` and `$sort` pipeline stages. This microservice allows to obtain info used in the query UI component to show the available data set of values when a field is selected to filter. The input parameters of the request are:
+
   - `collection`
   - `groupByField`
     The method responds always with data, even if it's not supplied by the mongoose method without error. The defensive result has always the same structure (`{results: [{ set: '' }]}`), which is a partial of the result structure when there are results, to properly manage the response at the frontend.
+
+- `calculate`: PENDING
+- `measure`: PENDING
 
 This strategy allows to work with a nearly 'global' endpoint ('/collections') to manage almost all the needed services (other specific services as users management and obtaining analytics should maintain their endpoints).
 The `router` for endpoint '/collections' distribute traffic for each method using as `path` the same naming used for the repo methods:
 
 - `collectionsRouter.get('/readrecords/:id', logged, controller.readRecords.bind(controller))`
-- `collectionsRouter.get('/readrecordfieldvalue/:id', logged, controller.readRecordFieldValue.bind(controller))`
 - `collectionsRouter.get('/groupby/:id', logged, controller.groupBy.bind(controller))`
 - `collectionsRouter.get('/groupbyset/:id', logged, controller.groupBySet.bind(controller))`
+- `collectionsRouter.get('/views/:id', logged, controller.view.bind(controller))`
 
 ### Migration to GET methods
 
 All requests to the backend in the new parametric architecture has been refactored from the former POST http methods approach (like those used by older filter UI components) to a new GET methods, standardizing the query send and using the decodeURI and decodeURI options or urls to avoid conflicts. A sample of uri requests for each service are:
 
 - `readRecords`: /collections/readrecords/&collection=productmovements&filterfield=type&filtervalue=Compra&searchfield=productSku&searchvalue=2640&searchtype=Begins%20with&queryset=1&queryrecordsperset=4&orderfield=id&ordertype=asc&controlnfo=
-- `readRecordFieldValue`: /collections/readrecordfieldvalue/&collection=products&searchfield=\_id&searchvalue=641900273cdabdb1c8fd1861&outputfieldname=sku&controlinfo=
+- `view`: /collections/views/&collection=products&searchfield=\_id&searchvalue=641900273cdabdb1c8fd1861&outputfieldname=sku&controlinfo=
 - `groupBy`: /collections/groupby/&collection=products&firstgroupbyfield=brand&secondgroupbyfield=brand&searchfield=brand&searchvalue=&searchtype=Contains&aggregatesumfield=addedFieldForCountingDocuments&controlnfo=
 - `groupBySet`: /collections/groupbyset/&collection=appcollectionfields&groupbyfield=collectionName
 
@@ -186,7 +203,7 @@ Thanks to a customized usage of `tokens` and `stream` options of `morgan` librar
 - Length of responds
 - Time between request and respond (in ms)
 
-Each request is saved in the log file separating the `morgan tokens` with the defined const `stringSeparator` '_-_' to facilitate its future export to a database. E.g.: '2023-05-12T20:24:12.081Z*-\_Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTYzMDk3M2QzM2QyNzk1N2VkZDdiMSIsImVtYWlsIjoic2ZkZXpsb3BAZ21haWwuY29tIiwiaWF0IjoxNjgzOTIyOTU0LCJleHAiOjE2ODQwMDkzNTR9.rG9thAI8DVJgITDvLIRjr9-ahXR3uEMwLE2Pn6BGm3U*-_localhost:4500_-_GET_-_/collections/readrecords/&collection=users&filterfield=role&filtervalue=user&searchfield=firstName&searchvalue=&searchtype=Contains&queryset=1&queryrecordsperset=4&orderfield=lastLogging&ordertype=desc&controlinfo=componentFile_query.collection.tsx_line_306_-_200_-_144_-\_25.417'
+PENDING: Redefine with the new object log file. Each request is saved in the log file separating the `morgan tokens` with the defined const `stringSeparator` '_-_' to facilitate its future export to a database. E.g.: '2023-05-12T20:24:12.081Z*-\_Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTYzMDk3M2QzM2QyNzk1N2VkZDdiMSIsImVtYWlsIjoic2ZkZXpsb3BAZ21haWwuY29tIiwiaWF0IjoxNjgzOTIyOTU0LCJleHAiOjE2ODQwMDkzNTR9.rG9thAI8DVJgITDvLIRjr9-ahXR3uEMwLE2Pn6BGm3U*-_localhost:4500_-_GET_-_/collections/readrecords/&collection=users&filterfield=role&filtervalue=user&searchfield=firstName&searchvalue=&searchtype=Contains&queryset=1&queryrecordsperset=4&orderfield=lastLogging&ordertype=desc&controlinfo=componentFile_query.collection.tsx_line_306_-_200_-_144_-\_25.417'
 
 To assure a coordinated work between backend and frontend, const `stringSeparator` must have the strict equal initialization in both apps (e.g. '_-_'). const `stringSeparator` are defined at /src/config.ts files of the backend and frontend. Please note that if your are going to use data in your data base with high probability of containing this string, change it to another one more complex to avoid malfunction on it.
 

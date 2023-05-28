@@ -149,22 +149,19 @@ export class CollectionsRepo {
     results: {
       measure: string;
       measureDescription: string;
-      filterName: string;
-      filterValue: string;
-      setName: string;
-      setLabel: string;
-      setData: string;
-      setStatus: string;
+      measureLabel: string;
+      measureInput: string;
+      measureOutput: number;
+      measureUnits: string;
+      measureStatus: string;
     }[];
   }> {
     const url = encodeURI(
       this.url +
         "/collections/measures/&measure=" +
         query.measure +
-        "&filtername=" +
-        query.filterName +
-        "&filtervalue=" +
-        query.filterValue +
+        "&measureinput=" +
+        query.measureInput +
         "&controlinfo=" +
         controlInfo
     );
@@ -187,51 +184,6 @@ export class CollectionsRepo {
     return data;
   }
 
-  async readRecordFieldValue(
-    query: ReadRecordFieldValueStructure,
-    token: string,
-    controlInfo: string
-  ): Promise<{
-    results: {
-      inputCollection: string;
-      inputFieldName: string;
-      inputFieldValue: string;
-      outputFieldName: string;
-      outputFieldValue: string;
-      outputStatus: string;
-    }[];
-  }> {
-    const url = encodeURI(
-      this.url +
-        "/collections/readrecordfieldvalue/&collection=" +
-        query.collection +
-        "&searchfield=" +
-        query.searchField +
-        "&searchvalue=" +
-        query.searchValue +
-        "&outputfieldname=" +
-        query.outputFieldName +
-        "&controlinfo=" +
-        controlInfo
-    );
-
-    const resp = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-type": "application/json",
-      },
-    });
-
-    if (!resp.ok)
-      throw new Error(
-        `Error http reading record field value at collection ${query.collection} for field ${query.outputFieldName} corresponding to record where ${query.searchField} is equal to ${query.searchValue}: ${resp.status} ${resp.statusText}`
-      );
-
-    const data = await resp.json();
-
-    return data;
-  }
   async readRecords(
     query: Partial<QueryInputCollectionStructure>,
 
@@ -277,6 +229,53 @@ export class CollectionsRepo {
     if (!resp.ok)
       throw new Error(
         `Error http reading records at collection ${query.filterCollection}: ${resp.status} ${resp.statusText}`
+      );
+
+    const data = await resp.json();
+
+    return data;
+  }
+  async view(
+    query: ReadRecordFieldValueStructure,
+    token: string,
+    controlInfo: string
+  ): Promise<{
+    results: {
+      inputCollection: string;
+      inputFieldName: string;
+      inputFieldValue: string;
+      outputFieldName: string;
+      outputFieldValue: string;
+      outputStatus: string;
+    }[];
+  }> {
+    const url = encodeURI(
+      this.url +
+        "/collections/views/&collection=" +
+        query.collection +
+        "&searchfield=" +
+        query.searchField +
+        "&searchvalue=" +
+        query.searchValue +
+        "&outputfieldname=" +
+        query.outputFieldName +
+        "&controlinfo=" +
+        controlInfo
+    );
+
+    console.log(url);
+
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!resp.ok)
+      throw new Error(
+        `Error http viewing record field value at collection ${query.collection} for field ${query.outputFieldName} corresponding to record where ${query.searchField} is equal to ${query.searchValue}: ${resp.status} ${resp.statusText}`
       );
 
     const data = await resp.json();

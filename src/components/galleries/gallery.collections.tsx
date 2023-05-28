@@ -712,17 +712,6 @@ appcollectionfields=
               item.record === i &&
               item.fieldName ===
                 measureFields[j].relatedInfo.split(stringSeparator)[3]
-          )[0].data +
-          stringSeparator +
-          measureFields[j].relatedInfo.split(stringSeparator)[4] +
-          stringSeparator +
-          measureFields[j].relatedInfo.split(stringSeparator)[5] +
-          stringSeparator +
-          recordsFieldsDataSchemaFieldsArraySnapshot.filter(
-            (item) =>
-              item.record === i &&
-              item.fieldName ===
-                measureFields[j].relatedInfo.split(stringSeparator)[3]
           )[0].data,
         fieldType: measureFields[j].fieldType,
         showOrder:
@@ -1020,8 +1009,7 @@ appcollectionfields=
                           <MicroServiceMeasureCollection
                             measureInputData={{
                               measure: item.data.split(stringSeparator)[1],
-                              filterName: item.data.split(stringSeparator)[6],
-                              filterValue: item.data.split(stringSeparator)[7],
+                              measureInput: item.data.split(stringSeparator)[4],
                             }}
                             controlInfo=""
                           ></MicroServiceMeasureCollection>

@@ -16,14 +16,14 @@ export function MicroServiceViewCollection({
   controlInfo,
 }: MicroServiceViewCollectionProps) {
   const repoCollection = new CollectionsRepo();
-  const { readRecordFieldValue } = useCollections(repoCollection);
+  const { view } = useCollections(repoCollection);
   const [valueToShow, setValueToShow] = useState("Initializing...");
   const [renderNumber, setRenderNumber] = useState(1);
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
   useEffect(() => {
-    const promiseToEvaluate = readRecordFieldValue(viewInputData, controlInfo);
+    const promiseToEvaluate = view(viewInputData, controlInfo);
     promiseToEvaluate.then((promiseValue) => {
       promiseValue === undefined
         ? setValueToShow("Info not found")

@@ -6,6 +6,7 @@ import { useProductMovements } from "../../../hooks/use.productmovements";
 import { ProductMovementsRepo } from "../../../services/repositories/productmovement.repo";
 import { RootState } from "../../../store/store";
 import { BarChart } from "../../barchart/bar.chart";
+import { MicroServiceMeasureCollection } from "../../microservices/microservices.collection/microservice.measure.collection";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -40,35 +41,65 @@ export default function DashboardPage() {
             className="dashboardPage__container"
             key={analyticsData.indexOf(item)}
           >
-            <div className="dashboardPage__graph">
-              <p className="dashboardPage__actualInventoryCostLabel">
-                Inventory Value
-              </p>
+            <div className="dashboardPage__graphContainer">
+              <p className="dashboardPage__graphTitle">Inventory Valuation</p>
               <div
-                className="dashboardPage__actualInventoryCostLabelEvolution"
-                style={{ width: 700 }}
+                className="dashboardPage__graph"
+                style={{ width: 900, height: 300, padding: 10 }}
               >
                 <BarChart></BarChart>
               </div>
 
-              <p className="dashboardPage__actualInventoryCost">
-                {item.ActualInventoryCost[0].totalValue}
+              <p className="dashboardPage__graphFooter">
+                <MicroServiceMeasureCollection
+                  measureInputData={{
+                    measure: "productstockcost",
+                    measureInput: "",
+                  }}
+                  controlInfo=""
+                ></MicroServiceMeasureCollection>
               </p>
             </div>
-            <div className="dashboardPage__metrics">
-              <div className="dashboardPage__metricProduct">
-                <p>Total Products</p>
-                <p>{productUnFilteredCountData}</p>
+            <div className="dashboardPage__metricsContainer">
+              <div className="dashboardPage__metricContainer">
+                <div className="dashboardPage__metricLabel">Total Products</div>
+                <div className="dashboardPage__metricData">
+                  <MicroServiceMeasureCollection
+                    measureInputData={{
+                      measure: "countdocumentsbycollection",
+                      measureInput: "products",
+                    }}
+                    controlInfo=""
+                  ></MicroServiceMeasureCollection>
+                </div>
               </div>
-              <div className="dashboardPage__metricUnits">
-                <p>Total Units at Inventory</p>
-                <p>{}</p>
+              <div className="dashboardPage__metricContainer">
+                <div className="dashboardPage__metricLabel">
+                  Total Units at Inventory
+                </div>
+                <div className="dashboardPage__metricData">
+                  <MicroServiceMeasureCollection
+                    measureInputData={{
+                      measure: "productstockunits",
+                      measureInput: "",
+                    }}
+                    controlInfo=""
+                  ></MicroServiceMeasureCollection>
+                </div>
               </div>
-              <div className="dashboardPage__metricValue">
-                <p>Total Product Movements</p>
-                <p className="dashboardPage__actualMovementsCount">
-                  {productMovementUnfilteredCountData}
-                </p>
+              <div className="dashboardPage__metricContainer">
+                <div className="dashboardPage__metricLabel">
+                  Total Product Movements
+                </div>
+                <div className="dashboardPage__metricData">
+                  <MicroServiceMeasureCollection
+                    measureInputData={{
+                      measure: "countdocumentsbycollection",
+                      measureInput: "productmovements",
+                    }}
+                    controlInfo=""
+                  ></MicroServiceMeasureCollection>
+                </div>
               </div>
             </div>
           </div>

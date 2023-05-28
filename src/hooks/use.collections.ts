@@ -71,36 +71,39 @@ export function useCollections(repo: CollectionsRepo) {
       const dataResults = data.results;
 
       switch (measureInputData.measure) {
+        case "countdocumentsbycollection":
+          return dataResults[0];
+        case "productstockcost":
+          return dataResults[0];
         case "productstockunitsbysku":
-          return dataResults[0].setData;
+          return dataResults[0];
+
+        case "productstockunits":
+          return dataResults[0];
 
         default:
-          return "case not available";
+          return {
+            measure: measureInputData.measure,
+            measureDescription: "measureDescription",
+            measureLabel: "measureLabel",
+            measureInput: measureInputData.measureInput,
+            measureOutput: 0,
+            measureUnits: "measureUnits",
+            measureStatus: "case not implemented",
+          };
       }
     } catch (error) {
       console.error((error as Error).message);
       addError(error as Error, appState.urlPage);
-      switch (measureInputData.measure) {
-        case "productstockunitsbysku":
-          return "0 (frontend)";
-
-        default:
-          return "case not available";
-      }
-      //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
     }
   };
 
-  const readRecordFieldValue = async (
+  const view = async (
     queryInputData: ReadRecordFieldValueStructure,
     controlInfo: string
   ) => {
     try {
-      const data = await repo.readRecordFieldValue(
-        queryInputData,
-        tokenToUse,
-        controlInfo
-      );
+      const data = await repo.view(queryInputData, tokenToUse, controlInfo);
 
       const dataResults = data.results;
 
@@ -111,7 +114,7 @@ export function useCollections(repo: CollectionsRepo) {
       console.error((error as Error).message);
       addError(error as Error, appState.urlPage);
       return "Info not found";
-      //Defensive hardcode because the readRecordFieldValue method always return a value at the backend
+      //Defensive hardcode because the view method at the backend always return a value
     }
   };
 
@@ -364,12 +367,12 @@ export function useCollections(repo: CollectionsRepo) {
   return {
     calculate,
     measure,
-    readRecordFieldValue,
     translate,
     updateAppCollectionFields,
     updateQueryFields,
     updateQueryInput,
     updateTranslations,
+    view,
 
     appCollectionFields,
     queryInput,
