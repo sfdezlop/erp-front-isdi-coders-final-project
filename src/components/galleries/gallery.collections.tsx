@@ -16,6 +16,7 @@ import { stringSeparator } from "../../config";
 import { MicroServiceViewCollection } from "../microservices/microservices.collection/microservice.view.collection";
 import { MicroServiceMeasureCollection } from "../microservices/microservices.collection/microservice.measure.collection";
 import { MicroServiceCalculatedCollection } from "../microservices/microservices.collection/microservice.calculated.collection";
+import { queryInputOnChangeCollection } from "../queries/query.collection/query.collection.cases";
 
 const componentFile = "gallery.collections.tsx";
 //To control the file and line of code where Hook functions are called
@@ -649,7 +650,6 @@ appcollectionfields=
             (() => {
               switch (showOrderToUse) {
                 case "createShow":
-                  console.log(showOrderToUse);
                   return collectionState.appCollectionFields.filter(
                     (item) =>
                       item.collectionName === viewFields[j].collectionName &&
@@ -880,14 +880,16 @@ appcollectionfields=
           .split("&queryset=")[1]
           .split("&queryrecordsperset=")[0]
       ),
-      showType: collectionState.queryInput.showType,
+      showType: "detail",
       showFormat: collectionState.queryInput.showFormat,
     };
+
+    console.log(queryObject);
     updateQueryInput(
       queryObject,
       "componentFile_" + componentFile + "_line_149"
     );
-    navigate(navigationURIToQueryPage(queryObject));
+    // Not necessary because <Link> is coded to navigate to navigate(navigationURIToQueryPage(queryObject));
   };
 
   const recordJSX = (i: number) => {
@@ -934,7 +936,10 @@ appcollectionfields=
                           "/collections/readrecords/&collection=" +
                             item.relatedInfo.split("_-_")[3] +
                             "&filterfield=" +
-                            item.relatedInfo.split("_-_")[4] +
+                            queryInputOnChangeCollection(
+                              item.relatedInfo.split("_-_")[3]
+                            ).filterField +
+                            // item.relatedInfo.split("_-_")[4] +
                             "&filtervalue=&searchfield=" +
                             item.relatedInfo.split("_-_")[4] +
                             "&searchvalue=" +
@@ -942,7 +947,10 @@ appcollectionfields=
                             "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
                             recordsPerSet[0] +
                             "&orderfield=" +
-                            item.relatedInfo.split("_-_")[4] +
+                            queryInputOnChangeCollection(
+                              item.relatedInfo.split("_-_")[3]
+                            ).orderField +
+                            // item.relatedInfo.split("_-_")[4] +
                             "&ordertype=asc&controlinfo="
                         )}
                         className="collectionGalleryCard__link"
@@ -954,7 +962,10 @@ appcollectionfields=
                             "/collections/readrecords/&collection=" +
                             item.relatedInfo.split("_-_")[3] +
                             "&filterfield=" +
-                            item.relatedInfo.split("_-_")[4] +
+                            queryInputOnChangeCollection(
+                              item.relatedInfo.split("_-_")[3]
+                            ).filterField +
+                            // item.relatedInfo.split("_-_")[4] +
                             "&filtervalue=&searchfield=" +
                             item.relatedInfo.split("_-_")[4] +
                             "&searchvalue=" +
@@ -962,7 +973,10 @@ appcollectionfields=
                             "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
                             recordsPerSet[0] +
                             "&orderfield=" +
-                            item.relatedInfo.split("_-_")[4] +
+                            queryInputOnChangeCollection(
+                              item.relatedInfo.split("_-_")[3]
+                            ).orderField +
+                            // item.relatedInfo.split("_-_")[4] +
                             "&ordertype=asc&controlinfo="
                           }
                           title={item.relatedInfo}

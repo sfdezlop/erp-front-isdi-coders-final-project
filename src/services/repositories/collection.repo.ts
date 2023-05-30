@@ -263,8 +263,6 @@ export class CollectionsRepo {
         controlInfo
     );
 
-    console.log(url);
-
     const resp = await fetch(url, {
       method: "GET",
       headers: {

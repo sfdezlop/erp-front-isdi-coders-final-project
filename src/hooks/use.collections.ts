@@ -20,6 +20,7 @@ import {
   ReadRecordFieldValueStructure,
 } from "../models/collections.model";
 import { stringSeparator } from "../config";
+import { queryInputOnChangeCollection } from "../components/queries/query.collection/query.collection.cases";
 
 export function useCollections(repo: CollectionsRepo) {
   const userState = useSelector((state: RootState) => state.userState);
@@ -225,9 +226,14 @@ export function useCollections(repo: CollectionsRepo) {
   ) => {
     const groupByQueryForUnQueriedCount: GroupByQueryCollectionStructure = {
       filterCollection: queryInputData.filterCollection,
-      firstGroupByField: queryInputData.filterField,
-      secondGroupByField: queryInputData.filterField,
-      searchField: queryInputData.filterField,
+      firstGroupByField: queryInputOnChangeCollection(
+        queryInputData.filterCollection
+      ).filterField,
+      secondGroupByField: queryInputOnChangeCollection(
+        queryInputData.filterCollection
+      ).filterField,
+      searchField: queryInputOnChangeCollection(queryInputData.filterCollection)
+        .filterField,
       searchValue: "",
       searchType: "Contains",
       aggregateSumField: "addedFieldForCountingDocuments",
