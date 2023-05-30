@@ -1,7 +1,11 @@
 import "./page.collection.css";
 import { useEffect, useState } from "react";
 import { Loader } from "../../loader/loader";
-import { QueryCollection } from "../../queries/query.collection/query.collection";
+import {
+  QueryCollection,
+  navigationURIToQueryPage,
+  queryInputForANavigationURI,
+} from "../../queries/query.collection/query.collection";
 import { CollectionsGallery } from "../../galleries/gallery.collections";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
@@ -9,9 +13,12 @@ import { ProductsGallery } from "../../galleries/gallery.products";
 import { ProductMovementsGallery } from "../../galleries/gallery.productmovements";
 import { useCollections } from "../../../hooks/use.collections";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
+import { useLocation } from "react-router-dom";
 
 const componentFile = "page.collection.tsx";
 export default function CollectionPage() {
+  const location = useLocation();
+  const [updatedData, setUpdatedData] = useState("");
   const [renderNumber, setRenderNumber] = useState(1);
 
   const collectionState = useSelector(
@@ -49,7 +56,16 @@ export default function CollectionPage() {
     updateAppCollectionFields,
     updateQueryInput,
   } = useCollections(repoCollection);
-
+  if (
+    location.pathname.toString() ===
+    navigationURIToQueryPage(collectionState.queryInput)
+  ) {
+    console.log("igual");
+    console.log(queryInputForANavigationURI(location.pathname));
+  } else {
+    console.log("diferente");
+    updateQueryInput(queryInputForANavigationURI(location.pathname), "hola");
+  }
   useEffect(() => {
     if (renderNumber === 1) {
       updateQueryFields("componentFile_" + componentFile + "_line_61");
@@ -60,7 +76,10 @@ export default function CollectionPage() {
         "componentFile_" + componentFile + "_line_61"
       );
     }
-    setRenderNumber(renderNumber + 1); // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    setRenderNumber(renderNumber + 1);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (renderNumber === 1) return <Loader></Loader>;
@@ -106,6 +125,9 @@ export default function CollectionPage() {
           queryCollectionProps={queryCollectionPropsInput}
           key={"QueryCollection" + collectionState.queryInput.filterCollection}
         ></QueryCollection>
+        <div>{location.pathname}</div>
+        <div>{navigationURIToQueryPage(collectionState.queryInput)}</div>
+        <div>{updatedData}</div>
         <CollectionsGallery
           key={
             "CollectionsGallery" + collectionState.queryInput.filterCollection

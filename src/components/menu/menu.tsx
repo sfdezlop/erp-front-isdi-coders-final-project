@@ -12,7 +12,10 @@ export const menuOptions: MenuOption[] = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Products", path: "/products" },
   { label: "Movements", path: "/productmovements" },
-  { label: "All Collections", path: "/collections/readrecords/products" },
+  {
+    label: "All Collections",
+    path: "/collections/readrecords/&collection=products&filterfield=brand&filtervalue=&searchfield=sku&searchvalue=&searchtype=Contains&queryset=1&queryrecordsperset=4&orderfield=ean&ordertype=asc&controlinfo=",
+  },
 ];
 
 export type MenuProps = {

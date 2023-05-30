@@ -8,6 +8,9 @@ import ProductsPage from "../components/pages/products/page.products";
 import { ErrorLog } from "../components/errorlog/errorlog";
 import DashboardPage from "../components/pages/dashboard/page.dashboard";
 import CollectionPage from "../components/pages/collection/page.collection";
+import { useSelector } from "react-redux";
+import { navigationURIToQueryPage } from "../components/queries/query.collection/query.collection";
+import { RootState } from "../store/store";
 
 // import { lazy, Suspense } from "react";
 // const HomePage = lazy(() => import("../pages/home/home.page"));
@@ -21,6 +24,9 @@ export type AppRouterProps = {
 };
 
 export function AppRouter({ options }: AppRouterProps) {
+  const collectionState = useSelector(
+    (state: RootState) => state.collectionState
+  );
   return (
     // <Suspense>
     <Routes>
@@ -44,7 +50,7 @@ export function AppRouter({ options }: AppRouterProps) {
       ></Route>
       <Route path="/errorlog" element={<ErrorLog></ErrorLog>}></Route>{" "}
       <Route
-        path="/collections/readrecords/:collection"
+        path="/collections/readrecords/:id"
         element={<CollectionPage></CollectionPage>}
       ></Route>
     </Routes>
