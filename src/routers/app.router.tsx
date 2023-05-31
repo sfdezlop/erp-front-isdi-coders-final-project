@@ -9,7 +9,6 @@ import { ErrorLog } from "../components/errorlog/errorlog";
 import DashboardPage from "../components/pages/dashboard/page.dashboard";
 import CollectionPage from "../components/pages/collection/page.collection";
 import { useSelector } from "react-redux";
-import { navigationURIToQueryPage } from "../components/queries/query.collection/query.collection";
 import { RootState } from "../store/store";
 
 // import { lazy, Suspense } from "react";

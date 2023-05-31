@@ -1,11 +1,7 @@
 import "./page.collection.css";
 import { useEffect, useState } from "react";
 import { Loader } from "../../loader/loader";
-import {
-  QueryCollection,
-  navigationURIToQueryPage,
-  queryInputForANavigationURI,
-} from "../../queries/query.collection/query.collection";
+import { QueryCollection } from "../../queries/query.collection/query.collection";
 import { CollectionsGallery } from "../../galleries/gallery.collections";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
@@ -14,6 +10,10 @@ import { ProductMovementsGallery } from "../../galleries/gallery.productmovement
 import { useCollections } from "../../../hooks/use.collections";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
 import { useLocation } from "react-router-dom";
+import {
+  navigationURIToQueryPage,
+  queryInputForANavigationURI,
+} from "../../../services/helpers/functions";
 
 const componentFile = "page.collection.tsx";
 export default function CollectionPage() {
@@ -57,13 +57,12 @@ export default function CollectionPage() {
     updateQueryInput,
   } = useCollections(repoCollection);
   if (
-    location.pathname.toString() ===
-    navigationURIToQueryPage(collectionState.queryInput)
+    location.pathname === navigationURIToQueryPage(collectionState.queryInput)
   ) {
-    console.log("igual");
+    console.log("equal");
     console.log(queryInputForANavigationURI(location.pathname));
   } else {
-    console.log("diferente");
+    console.log("different");
     updateQueryInput(queryInputForANavigationURI(location.pathname), "hola");
   }
   useEffect(() => {
@@ -125,9 +124,9 @@ export default function CollectionPage() {
           queryCollectionProps={queryCollectionPropsInput}
           key={"QueryCollection" + collectionState.queryInput.filterCollection}
         ></QueryCollection>
-        <div>{location.pathname}</div>
+        {/* <div>{location.pathname}</div>
         <div>{navigationURIToQueryPage(collectionState.queryInput)}</div>
-        <div>{updatedData}</div>
+        <div>{updatedData}</div> */}
         <CollectionsGallery
           key={
             "CollectionsGallery" + collectionState.queryInput.filterCollection

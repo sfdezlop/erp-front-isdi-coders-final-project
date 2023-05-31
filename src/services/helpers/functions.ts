@@ -1,3 +1,5 @@
+import { QueryInputCollectionStructure } from "../../models/collections.model";
+
 export const accumulateValueOfAnArrayOfNumbers = (a: number[]) => {
   //Parameter a is the array
   let result = a.reduce((c: any, d: any) => c + d, 0);
@@ -126,4 +128,80 @@ export const roundToDecimals = (a: number, b: number) => {
   const ax10PowerOfB = a * Math.pow(10, b);
 
   return Math.round(ax10PowerOfB) / Math.pow(10, b);
+};
+
+export const navigationURIToQueryPage = (
+  queryInput: QueryInputCollectionStructure
+) => {
+  const result = encodeURI(
+    "/collections/readrecords/&collection=" +
+      queryInput.filterCollection +
+      "&filterfield=" +
+      queryInput.filterField +
+      "&filtervalue=" +
+      queryInput.filterValue +
+      "&searchfield=" +
+      queryInput.searchField +
+      "&searchvalue=" +
+      queryInput.searchValue +
+      "&searchtype=" +
+      queryInput.searchType +
+      "&queryset=" +
+      queryInput.querySet +
+      "&queryrecordsperset=" +
+      queryInput.queryRecordsPerSet +
+      "&orderfield=" +
+      queryInput.orderField +
+      "&ordertype=" +
+      queryInput.orderType +
+      "&controlinfo="
+  );
+  return result;
+};
+
+export const queryInputForANavigationURI = (
+  navigationURI: string
+): QueryInputCollectionStructure => {
+  const decodedNavigationURI = decodeURI(navigationURI);
+
+  const result: QueryInputCollectionStructure = {
+    filterCollection: decodedNavigationURI
+      .split("&collection=")[1]
+      .split("&filterfield=")[0],
+    filterField: decodedNavigationURI
+      .split("&filterfield=")[1]
+      .split("&filtervalue=")[0],
+    filterValue: decodedNavigationURI
+      .split("&filtervalue=")[1]
+      .split("&searchfield=")[0],
+    searchField: decodedNavigationURI
+      .split("&searchfield=")[1]
+      .split("&searchvalue=")[0],
+    searchValue: decodedNavigationURI
+      .split("&searchvalue=")[1]
+      .split("&searchtype=")[0],
+    searchType: decodedNavigationURI
+      .split("&searchtype=")[1]
+      .split("&queryset=")[0],
+    querySet: Number(
+      decodedNavigationURI
+        .split("&queryset=")[1]
+        .split("&queryrecordsperset=")[0]
+    ),
+    queryRecordsPerSet: Number(
+      decodedNavigationURI
+        .split("&queryrecordsperset=")[1]
+        .split("&orderfield=")[0]
+    ),
+    orderField: decodedNavigationURI
+      .split("&orderfield=")[1]
+      .split("&ordertype=")[0],
+    orderType: decodedNavigationURI
+      .split("&ordertype=")[1]
+      .split("&controlinfo=")[0],
+    showType: "gallery",
+    showFormat: "raw",
+  };
+
+  return result;
 };

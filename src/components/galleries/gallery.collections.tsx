@@ -10,7 +10,6 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { SyntheticEvent } from "react";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
-import { navigationURIToQueryPage } from "../queries/query.collection/query.collection";
 import { recordsPerSet } from "../../reducers/collection.slice";
 import { stringSeparator } from "../../config";
 import { MicroServiceViewCollection } from "../microservices/microservices.collection/microservice.view.collection";
