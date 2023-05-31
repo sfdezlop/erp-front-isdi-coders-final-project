@@ -146,16 +146,21 @@ export const navigationURIToQueryPage = (
       queryInput.searchValue +
       "&searchtype=" +
       queryInput.searchType +
-      "&queryset=" +
-      queryInput.querySet +
-      "&queryrecordsperset=" +
-      queryInput.queryRecordsPerSet +
       "&orderfield=" +
       queryInput.orderField +
       "&ordertype=" +
       queryInput.orderType +
+      "&queryset=" +
+      queryInput.querySet +
+      "&queryrecordsperset=" +
+      queryInput.queryRecordsPerSet +
+      "&showtype=" +
+      queryInput.showType +
+      "&showformat=" +
+      queryInput.showFormat +
       "&controlinfo="
   );
+
   return result;
 };
 
@@ -182,6 +187,12 @@ export const queryInputForANavigationURI = (
       .split("&searchtype=")[0],
     searchType: decodedNavigationURI
       .split("&searchtype=")[1]
+      .split("&orderfield=")[0],
+    orderField: decodedNavigationURI
+      .split("&orderfield=")[1]
+      .split("&ordertype=")[0],
+    orderType: decodedNavigationURI
+      .split("&ordertype=")[1]
       .split("&queryset=")[0],
     querySet: Number(
       decodedNavigationURI
@@ -191,16 +202,14 @@ export const queryInputForANavigationURI = (
     queryRecordsPerSet: Number(
       decodedNavigationURI
         .split("&queryrecordsperset=")[1]
-        .split("&orderfield=")[0]
+        .split("&showtype=")[0]
     ),
-    orderField: decodedNavigationURI
-      .split("&orderfield=")[1]
-      .split("&ordertype=")[0],
-    orderType: decodedNavigationURI
-      .split("&ordertype=")[1]
+    showType: decodedNavigationURI
+      .split("&showtype=")[1]
+      .split("&showformat=")[0],
+    showFormat: decodedNavigationURI
+      .split("&showformat=")[1]
       .split("&controlinfo=")[0],
-    showType: "gallery",
-    showFormat: "raw",
   };
 
   return result;

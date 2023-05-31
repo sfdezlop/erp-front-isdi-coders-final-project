@@ -14,7 +14,7 @@ export const menuOptions: MenuOption[] = [
   { label: "Movements", path: "/productmovements" },
   {
     label: "All Collections",
-    path: "/collections/readrecords/&collection=products&filterfield=brand&filtervalue=&searchfield=sku&searchvalue=&searchtype=Contains&queryset=1&queryrecordsperset=4&orderfield=ean&ordertype=asc&controlinfo=",
+    path: "/collections/readrecords/&collection=products&filterfield=brand&filtervalue=&searchfield=sku&searchvalue=&searchtype=Contains&orderfield=ean&ordertype=asc&queryset=1&queryrecordsperset=4&showtype=gallery&showformat=raw&controlinfo=",
   },
 ];
 

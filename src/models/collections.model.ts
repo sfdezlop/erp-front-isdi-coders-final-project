@@ -65,6 +65,7 @@ export type UserStructure = {
   language: string;
 };
 
+//PENDING: Review CollectionStructure because is probably unnecessary. Now it does not use other collections structures in its definition, and it works!
 export type CollectionStructure = ProductStructure &
   ProductMovementStructure &
   UserStructure;
@@ -85,11 +86,10 @@ export type QueryInputCollectionStructure = {
   searchValue: string;
   searchType: string;
   //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
-  querySet: number;
-  queryRecordsPerSet: number;
   orderField: string;
   orderType: string;
-  //Options to use in the app: "asc" | "desc"
+  querySet: number; //Options to use in the app: "asc" | "desc"
+  queryRecordsPerSet: number;
   showType: string;
   showFormat: string;
 };
@@ -145,11 +145,11 @@ export type ReadQueryCollectionStructure = {
   searchValue: string;
   searchType: string;
   //Options to use in the app: "Begins with" | "Contains" | "Ends with" | "Exact match"
-  querySet: number;
-  queryRecordsPerSet: number;
   orderField: string;
   orderType: string;
   //Options to use in the app: "asc" | "desc"
+  querySet: number;
+  queryRecordsPerSet: number;
   showType: string;
   showFormat: string;
 };

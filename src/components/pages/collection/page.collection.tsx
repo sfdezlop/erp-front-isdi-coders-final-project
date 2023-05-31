@@ -25,28 +25,9 @@ export default function CollectionPage() {
     (state: RootState) => state.collectionState
   );
 
-  const queryCollectionPropsInput =
-    "collections/readrecords/&collection=" +
-    collectionState.queryInput.filterCollection +
-    "&filterfield=" +
-    collectionState.queryInput.filterField +
-    "&filtervalue=" +
-    collectionState.queryInput.filterValue +
-    "&searchfield=" +
-    collectionState.queryInput.searchField +
-    "&searchvalue=" +
-    collectionState.queryInput.searchValue +
-    "&searchtype=" +
-    collectionState.queryInput.searchType +
-    "&queryset=" +
-    collectionState.queryInput.querySet +
-    "&queryrecordsperset=" +
-    collectionState.queryInput.queryRecordsPerSet +
-    "&orderfield=" +
-    collectionState.queryInput.orderField +
-    "&ordertype=" +
-    collectionState.queryInput.orderType +
-    "&controlinfo=";
+  const queryCollectionPropsInput = navigationURIToQueryPage(
+    collectionState.queryInput
+  );
 
   const repoCollection = new CollectionsRepo();
 
@@ -60,10 +41,12 @@ export default function CollectionPage() {
     location.pathname === navigationURIToQueryPage(collectionState.queryInput)
   ) {
     console.log("equal");
-    console.log(queryInputForANavigationURI(location.pathname));
   } else {
     console.log("different");
-    updateQueryInput(queryInputForANavigationURI(location.pathname), "hola");
+    updateQueryInput(
+      queryInputForANavigationURI(location.pathname),
+      "synchronization"
+    );
   }
   useEffect(() => {
     if (renderNumber === 1) {

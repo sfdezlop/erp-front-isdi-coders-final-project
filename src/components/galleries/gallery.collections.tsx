@@ -5,12 +5,13 @@ import { CollectionsRepo } from "../../services/repositories/collection.repo";
 import { useCollections } from "../../hooks/use.collections";
 import {
   maximumValueOfAPropertyInAnArrayOfObjects,
+  navigationURIToQueryPage,
   orderByPropertyAnArrayOfObjects,
 } from "../../services/helpers/functions";
 import { Link, useNavigate } from "react-router-dom";
 import { SyntheticEvent } from "react";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
-import { recordsPerSet } from "../../reducers/collection.slice";
+import { queryInput, recordsPerSet } from "../../reducers/collection.slice";
 import { stringSeparator } from "../../config";
 import { MicroServiceViewCollection } from "../microservices/microservices.collection/microservice.view.collection";
 import { MicroServiceMeasureCollection } from "../microservices/microservices.collection/microservice.measure.collection";
@@ -844,45 +845,44 @@ appcollectionfields=
     const clickedDiv = event.currentTarget;
     const clickedDivAriaLabel = clickedDiv.ariaLabel ?? "";
 
-    const queryObject: QueryInputCollectionStructure = {
-      filterCollection: clickedDivAriaLabel
-        .split("/collections/readrecords/&collection=")[1]
-        .split("&filterfield=")[0],
-      filterField: clickedDivAriaLabel
-        .split("&filterfield=")[1]
-        .split("&filtervalue=")[0],
-      filterValue: clickedDivAriaLabel
-        .split("&filtervalue=")[1]
-        .split("&searchfield=")[0],
-      searchField: clickedDivAriaLabel
-        .split("&searchfield=")[1]
-        .split("&searchvalue=")[0],
-      searchType: clickedDivAriaLabel
-        .split("&searchtype=")[1]
-        .split("&queryset=")[0],
-      searchValue: clickedDivAriaLabel
-        .split("&searchvalue=")[1]
-        .split("&searchtype=")[0],
-      orderField: clickedDivAriaLabel
-        .split("&orderfield=")[1]
-        .split("&ordertype=")[0],
-      orderType: clickedDivAriaLabel
-        .split("&ordertype=")[1]
-        .split("&controlinfo=")[0],
-      queryRecordsPerSet: Number(
-        clickedDivAriaLabel
-          .split("&queryrecordsperset=")[1]
-          .split("&orderfield=")[0]
-      ),
-      querySet: Number(
-        clickedDivAriaLabel
-          .split("&queryset=")[1]
-          .split("&queryrecordsperset=")[0]
-      ),
-      showType: "detail",
-      showFormat: collectionState.queryInput.showFormat,
-    };
-
+    const queryObject: QueryInputCollectionStructure =
+      JSON.parse(clickedDivAriaLabel);
+    // filterCollection: clickedDivAriaLabel
+    //   .split("/collections/readrecords/&collection=")[1]
+    //   .split("&filterfield=")[0],
+    // filterField: clickedDivAriaLabel
+    //   .split("&filterfield=")[1]
+    //   .split("&filtervalue=")[0],
+    // filterValue: clickedDivAriaLabel
+    //   .split("&filtervalue=")[1]
+    //   .split("&searchfield=")[0],
+    // searchField: clickedDivAriaLabel
+    //   .split("&searchfield=")[1]
+    //   .split("&searchvalue=")[0],
+    // searchType: clickedDivAriaLabel
+    //   .split("&searchtype=")[1]
+    //   .split("&queryset=")[0],
+    // searchValue: clickedDivAriaLabel
+    //   .split("&searchvalue=")[1]
+    //   .split("&searchtype=")[0],
+    // orderField: clickedDivAriaLabel
+    //   .split("&orderfield=")[1]
+    //   .split("&ordertype=")[0],
+    // orderType: clickedDivAriaLabel
+    //   .split("&ordertype=")[1]
+    //   .split("&controlinfo=")[0],
+    // queryRecordsPerSet: Number(
+    //   clickedDivAriaLabel
+    //     .split("&queryrecordsperset=")[1]
+    //     .split("&orderfield=")[0]
+    // ),
+    // querySet: Number(
+    //   clickedDivAriaLabel
+    //     .split("&queryset=")[1]
+    //     .split("&queryrecordsperset=")[0]
+    // ),
+    // showType: "detail",
+    // showFormat: collectionState.queryInput.showFormat,
     console.log(queryObject);
     updateQueryInput(
       queryObject,
@@ -931,53 +931,68 @@ appcollectionfields=
                     //Case of div fieldType=schema with related info
                     return (
                       <Link
-                        to={encodeURI(
-                          "/collections/readrecords/&collection=" +
-                            item.relatedInfo.split("_-_")[3] +
-                            "&filterfield=" +
-                            queryInputOnChangeCollection(
-                              item.relatedInfo.split("_-_")[3]
-                            ).filterField +
-                            // item.relatedInfo.split("_-_")[4] +
-                            "&filtervalue=&searchfield=" +
-                            item.relatedInfo.split("_-_")[4] +
-                            "&searchvalue=" +
-                            item.data +
-                            "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                            recordsPerSet[0] +
-                            "&orderfield=" +
-                            queryInputOnChangeCollection(
-                              item.relatedInfo.split("_-_")[3]
-                            ).orderField +
-                            // item.relatedInfo.split("_-_")[4] +
-                            "&ordertype=asc&controlinfo="
-                        )}
+                        to={navigationURIToQueryPage({
+                          filterCollection: item.relatedInfo.split("_-_")[3],
+                          filterField: queryInputOnChangeCollection(
+                            item.relatedInfo.split("_-_")[3]
+                          ).filterField,
+                          filterValue: "",
+                          searchField: item.relatedInfo.split("_-_")[4],
+                          searchValue: item.data,
+                          searchType: "Exact match",
+                          orderField: queryInputOnChangeCollection(
+                            item.relatedInfo.split("_-_")[3]
+                          ).orderField,
+                          orderType: collectionState.queryInput.orderType,
+                          querySet: 1,
+                          queryRecordsPerSet:
+                            collectionState.queryInput.queryRecordsPerSet,
+                          showType: "detail",
+                          showFormat: collectionState.queryInput.showFormat,
+                        })}
                         className="collectionGalleryCard__link"
                       >
                         <div
                           className="collectionGalleryCard__data"
                           onClick={handlerOnClickLinkedDiv}
-                          aria-label={
-                            "/collections/readrecords/&collection=" +
-                            item.relatedInfo.split("_-_")[3] +
-                            "&filterfield=" +
-                            queryInputOnChangeCollection(
+                          aria-label={JSON.stringify({
+                            filterCollection: item.relatedInfo.split("_-_")[3],
+                            filterField: queryInputOnChangeCollection(
                               item.relatedInfo.split("_-_")[3]
-                            ).filterField +
-                            // item.relatedInfo.split("_-_")[4] +
-                            "&filtervalue=&searchfield=" +
-                            item.relatedInfo.split("_-_")[4] +
-                            "&searchvalue=" +
-                            item.data +
-                            "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                            recordsPerSet[0] +
-                            "&orderfield=" +
-                            queryInputOnChangeCollection(
+                            ).filterField,
+                            filterValue: "",
+                            searchField: item.relatedInfo.split("_-_")[4],
+                            searchValue: item.data,
+                            searchType: "Exact match",
+                            orderField: queryInputOnChangeCollection(
                               item.relatedInfo.split("_-_")[3]
-                            ).orderField +
-                            // item.relatedInfo.split("_-_")[4] +
-                            "&ordertype=asc&controlinfo="
-                          }
+                            ).orderField,
+                            orderType: collectionState.queryInput.orderType,
+                            querySet: 1,
+                            queryRecordsPerSet:
+                              collectionState.queryInput.queryRecordsPerSet,
+                            showType: "detail",
+                            showFormat: collectionState.queryInput.showFormat,
+                          })}
+                          // {
+                          //   "/collections/readrecords/&collection=" +
+                          //   item.relatedInfo.split("_-_")[3] +
+                          //   "&filterfield=" +
+                          //   queryInputOnChangeCollection(
+                          //     item.relatedInfo.split("_-_")[3]
+                          //   ).filterField +
+                          //   "&filtervalue=&searchfield=" +
+                          //   item.relatedInfo.split("_-_")[4] +
+                          //   "&searchvalue=" +
+                          //   item.data +
+                          //   "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
+                          //   recordsPerSet[0] +
+                          //   "&orderfield=" +
+                          //   queryInputOnChangeCollection(
+                          //     item.relatedInfo.split("_-_")[3]
+                          //   ).orderField +
+                          //   "&ordertype=asc&controlinfo="
+                          // }
                           title={item.relatedInfo}
                           // To better see the content of item.data which is responsible of passing info to Link and to the handlerOnClickLinkedDiv
                         >

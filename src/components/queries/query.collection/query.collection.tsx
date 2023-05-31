@@ -112,8 +112,9 @@ export function QueryCollection({
       queryDefault,
       "componentFile_" + componentFile + "_line_138"
     );
-
+    console.log("queryDefault", queryDefault);
     navigate(navigationURIToQueryPage(queryDefault));
+    console.log(navigationURIToQueryPage(queryDefault));
   };
 
   const handlerOnChangeFilterField = (
@@ -495,11 +496,12 @@ export function QueryCollection({
             </div>
             <div>{"props===pathname:"}</div>
             <div>
-              {decodeURI(useLocation().pathname.toString()) ===
-              "/" + queryCollectionProps
+              {decodeURI(useLocation().pathname) === queryCollectionProps
                 ? "true"
                 : "false"}
             </div>
+            {/* <div>{decodeURI(useLocation().pathname.toString())}</div>
+            <div>{queryCollectionProps}</div> */}
           </div>
         </div>
       </div>
