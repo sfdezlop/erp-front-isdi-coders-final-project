@@ -5,8 +5,6 @@ import { QueryCollection } from "../../queries/query.collection/query.collection
 import { CollectionsGallery } from "../../galleries/gallery.collections";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import { ProductsGallery } from "../../galleries/gallery.products";
-import { ProductMovementsGallery } from "../../galleries/gallery.productmovements";
 import { useCollections } from "../../../hooks/use.collections";
 import { CollectionsRepo } from "../../../services/repositories/collection.repo";
 import { useLocation } from "react-router-dom";
@@ -14,16 +12,20 @@ import {
   navigationURIToQueryPage,
   queryInputForANavigationURI,
 } from "../../../services/helpers/functions";
+import { initialState as initialUserState } from "../../../reducers/user.slice";
+import { UsersRepo } from "../../../services/repositories/user.repo";
+import { useUsers } from "../../../hooks/use.users";
 
 const componentFile = "page.collection.tsx";
 export default function CollectionPage() {
   const location = useLocation();
-  const [updatedData, setUpdatedData] = useState("");
   const [renderNumber, setRenderNumber] = useState(1);
 
   const collectionState = useSelector(
     (state: RootState) => state.collectionState
   );
+
+  const userState = useSelector((state: RootState) => state.userState);
 
   const queryCollectionPropsInput = navigationURIToQueryPage(
     collectionState.queryInput
@@ -37,17 +39,27 @@ export default function CollectionPage() {
     updateAppCollectionFields,
     updateQueryInput,
   } = useCollections(repoCollection);
+
+  const repoUser = new UsersRepo();
+
+  const { userLoginWithToken } = useUsers(repoUser);
+
+  // To warranty navigation throw pages fetching a new query to the server on each render. If there is no synchronization between location.pathname and collectionState.queryInput, it force to update collectionState.queryInput to the correspondent parameters if location.pathname.
   if (
     location.pathname === navigationURIToQueryPage(collectionState.queryInput)
   ) {
-    console.log("equal");
   } else {
-    console.log("different");
-    updateQueryInput(
-      queryInputForANavigationURI(location.pathname),
-      "synchronization"
-    );
+    if (
+      renderNumber <= 2 &&
+      userState.userLoggedToken !== initialUserState.userLoggedToken
+    )
+      // userLoginWithToken(localStorage.tokenERP, "users/login-with-token");
+      updateQueryInput(
+        queryInputForANavigationURI(location.pathname),
+        "synchronization"
+      );
   }
+
   useEffect(() => {
     if (renderNumber === 1) {
       updateQueryFields("componentFile_" + componentFile + "_line_61");
@@ -58,44 +70,11 @@ export default function CollectionPage() {
         "componentFile_" + componentFile + "_line_61"
       );
     }
-
     setRenderNumber(renderNumber + 1);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (renderNumber === 1) return <Loader></Loader>;
-
-  if (
-    collectionState.queryInput.filterCollection === "products" &&
-    collectionState.queryInput.showFormat === "custom"
-  )
-    return (
-      <>
-        <div className="collectionPage">
-          <QueryCollection
-            queryCollectionProps={queryCollectionPropsInput}
-          ></QueryCollection>
-          {/* <CollectionsGallery></CollectionsGallery> */}
-          <ProductsGallery></ProductsGallery>
-        </div>
-      </>
-    );
-  if (
-    collectionState.queryInput.filterCollection === "productmovements" &&
-    collectionState.queryInput.showFormat === "custom"
-  )
-    return (
-      <>
-        <div className="collectionPage">
-          <QueryCollection
-            queryCollectionProps={queryCollectionPropsInput}
-          ></QueryCollection>
-          {/* <CollectionsGallery></CollectionsGallery> */}
-          <ProductMovementsGallery></ProductMovementsGallery>
-        </div>
-      </>
-    );
 
   return (
     <>

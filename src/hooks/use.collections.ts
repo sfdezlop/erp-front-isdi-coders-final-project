@@ -21,6 +21,7 @@ import {
 } from "../models/collections.model";
 import { stringSeparator } from "../config";
 import { queryInputOnChangeCollection } from "../components/queries/query.collection/query.collection.cases";
+import { initialState as initialUserState } from "../reducers/user.slice";
 
 export function useCollections(repo: CollectionsRepo) {
   const userState = useSelector((state: RootState) => state.userState);
@@ -31,6 +32,13 @@ export function useCollections(repo: CollectionsRepo) {
 
   const dispatch = useDispatch<AppDispatch>();
   const tokenAtUserState = userState.userLoggedToken;
+  const tokenAtLocalStorage = localStorage.tokenERP;
+
+  // const tokenToUse =
+  //   localStorage.tokenERP === initialUserState.userLoggedToken
+  //     ? tokenAtUserState
+  //     : tokenAtLocalStorage;
+
   const tokenToUse = tokenAtUserState;
 
   const { addError } = useApp();

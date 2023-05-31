@@ -11,18 +11,18 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { SyntheticEvent } from "react";
 import { QueryInputCollectionStructure } from "../../models/collections.model";
-import { queryInput, recordsPerSet } from "../../reducers/collection.slice";
 import { stringSeparator } from "../../config";
 import { MicroServiceViewCollection } from "../microservices/microservices.collection/microservice.view.collection";
 import { MicroServiceMeasureCollection } from "../microservices/microservices.collection/microservice.measure.collection";
 import { MicroServiceCalculatedCollection } from "../microservices/microservices.collection/microservice.calculated.collection";
 import { queryInputOnChangeCollection } from "../queries/query.collection/query.collection.cases";
+import { NoData } from "../nodata/nodata";
 
 const componentFile = "gallery.collections.tsx";
 //To control the file and line of code where Hook functions are called
 
 export function CollectionsGallery() {
-  const navigate = useNavigate();
+  // Const navigate = useNavigate();
   const repoCollection = new CollectionsRepo();
   const { translate, updateQueryInput } = useCollections(repoCollection);
 
@@ -51,18 +51,7 @@ export function CollectionsGallery() {
   if (collectionState.queryOutput.gallery.length === 0)
     return (
       <>
-        <div className={"collectionsGallery__noDataContainer"}>
-          <img
-            className={"collectionsGallery__noDataImage"}
-            src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-616.jpg?w=740&t=st=1684516984~exp=1684517584~hmac=5f4ebde1ef5d6ae87fad3f1da34b98e6ea6eae54187e048053d42b90dcc4194f"
-            alt="no data"
-          />
-
-          <div className={"collectionsGallery__noDataText"}>
-            Sorry, we haven`t found the data you are looking for. Please change
-            the arguments of your query.
-          </div>
-        </div>
+        <NoData></NoData>
       </>
     );
 
@@ -847,43 +836,7 @@ appcollectionfields=
 
     const queryObject: QueryInputCollectionStructure =
       JSON.parse(clickedDivAriaLabel);
-    // filterCollection: clickedDivAriaLabel
-    //   .split("/collections/readrecords/&collection=")[1]
-    //   .split("&filterfield=")[0],
-    // filterField: clickedDivAriaLabel
-    //   .split("&filterfield=")[1]
-    //   .split("&filtervalue=")[0],
-    // filterValue: clickedDivAriaLabel
-    //   .split("&filtervalue=")[1]
-    //   .split("&searchfield=")[0],
-    // searchField: clickedDivAriaLabel
-    //   .split("&searchfield=")[1]
-    //   .split("&searchvalue=")[0],
-    // searchType: clickedDivAriaLabel
-    //   .split("&searchtype=")[1]
-    //   .split("&queryset=")[0],
-    // searchValue: clickedDivAriaLabel
-    //   .split("&searchvalue=")[1]
-    //   .split("&searchtype=")[0],
-    // orderField: clickedDivAriaLabel
-    //   .split("&orderfield=")[1]
-    //   .split("&ordertype=")[0],
-    // orderType: clickedDivAriaLabel
-    //   .split("&ordertype=")[1]
-    //   .split("&controlinfo=")[0],
-    // queryRecordsPerSet: Number(
-    //   clickedDivAriaLabel
-    //     .split("&queryrecordsperset=")[1]
-    //     .split("&orderfield=")[0]
-    // ),
-    // querySet: Number(
-    //   clickedDivAriaLabel
-    //     .split("&queryset=")[1]
-    //     .split("&queryrecordsperset=")[0]
-    // ),
-    // showType: "detail",
-    // showFormat: collectionState.queryInput.showFormat,
-    console.log(queryObject);
+
     updateQueryInput(
       queryObject,
       "componentFile_" + componentFile + "_line_149"
@@ -974,25 +927,6 @@ appcollectionfields=
                             showType: "detail",
                             showFormat: collectionState.queryInput.showFormat,
                           })}
-                          // {
-                          //   "/collections/readrecords/&collection=" +
-                          //   item.relatedInfo.split("_-_")[3] +
-                          //   "&filterfield=" +
-                          //   queryInputOnChangeCollection(
-                          //     item.relatedInfo.split("_-_")[3]
-                          //   ).filterField +
-                          //   "&filtervalue=&searchfield=" +
-                          //   item.relatedInfo.split("_-_")[4] +
-                          //   "&searchvalue=" +
-                          //   item.data +
-                          //   "&searchtype=Exact match&queryset=1&queryrecordsperset=" +
-                          //   recordsPerSet[0] +
-                          //   "&orderfield=" +
-                          //   queryInputOnChangeCollection(
-                          //     item.relatedInfo.split("_-_")[3]
-                          //   ).orderField +
-                          //   "&ordertype=asc&controlinfo="
-                          // }
                           title={item.relatedInfo}
                           // To better see the content of item.data which is responsible of passing info to Link and to the handlerOnClickLinkedDiv
                         >

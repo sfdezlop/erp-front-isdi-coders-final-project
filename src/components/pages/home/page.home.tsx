@@ -12,8 +12,6 @@ export default function HomePage() {
     setTokenERP(localStorage.tokenERP);
   }, []);
 
-  //Pending. Check the way to remove tokenERP  when checkbox is false at login component
-
   return (
     <>
       <div className="homePage">
