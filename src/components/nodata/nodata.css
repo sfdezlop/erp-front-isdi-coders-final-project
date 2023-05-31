@@ -1,0 +1,24 @@
+.noData__container {
+  padding: 4vh;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  width: 30%;
+}
+
+.noData__image {
+  width: 80%;
+}
+.noData__message {
+  font-size: 1.8vh;
+  padding-bottom: 1rem;
+}
+
+.noData__button {
+  background-color: #4472c4;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+
+  /* margin-left: 2rem; */
+}

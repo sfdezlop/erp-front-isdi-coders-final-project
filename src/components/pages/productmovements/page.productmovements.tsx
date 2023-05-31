@@ -11,6 +11,7 @@ import { FilterProductMovements } from "../../queries/query.productmovements/que
 import { useNavigate } from "react-router-dom";
 import { ProductKeyValue } from "../../microservices/product.key/product.keyvalue";
 import { ProductStock } from "../../microservices/product.stock/product.stock";
+import { NoData } from "../../nodata/nodata";
 
 export default function MovementsPage() {
   const filteredGalleryData = useSelector(
@@ -67,15 +68,17 @@ export default function MovementsPage() {
     confirmHandlerClick();
   };
 
+  if (filteredGalleryData.length === 0)
+    return (
+      <>
+        <NoData></NoData>
+      </>
+    );
+
   return (
     <>
       <div className="productMovementsPage">
-        <h2 className="productMovementsPage__heading">
-          {"Product Movements" +
-            " (forced render #" +
-            renderToAvoidConfirmMalfunction +
-            ")"}
-        </h2>
+        <h2 className="productMovementsPage__heading">{"Product Movements"}</h2>
         <FilterProductMovements></FilterProductMovements>
         <div className="productMovementsPage__container">
           <div className="productMovementsPage__fieldContainer">

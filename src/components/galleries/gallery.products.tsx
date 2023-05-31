@@ -7,6 +7,7 @@ import { ProductsRepo } from "../../services/repositories/product.repo";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { ProductStock } from "../microservices/product.stock/product.stock";
+import { NoData } from "../nodata/nodata";
 
 export function ProductsGallery() {
   const galleryArray = useSelector(
@@ -29,6 +30,13 @@ export function ProductsGallery() {
 
     navigate("/products/details/" + valueToDetail);
   };
+
+  if (galleryArray.length === 0)
+    return (
+      <>
+        <NoData></NoData>
+      </>
+    );
 
   return (
     <>

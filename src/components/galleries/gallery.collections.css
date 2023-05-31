@@ -112,7 +112,7 @@
   padding-top: 4vh;
 }
 
-.collectionsGallery__noDataContainer {
+/* .collectionsGallery__noDataContainer {
   padding: 4vh;
   display: flex;
   flex-direction: column;
@@ -125,4 +125,4 @@
 }
 .collectionsGallery__noDataText {
   font-size: medium;
-}
+} */

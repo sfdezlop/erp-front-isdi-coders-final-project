@@ -9,6 +9,7 @@ import { RootState } from "../../store/store";
 import "./gallery.productmovements.css";
 import { ProductKeyValue } from "../microservices/product.key/product.keyvalue";
 import { ProductStock } from "../microservices/product.stock/product.stock";
+import { NoData } from "../nodata/nodata";
 
 export function ProductMovementsGallery() {
   const filteredGalleryData = useSelector(
@@ -54,10 +55,7 @@ export function ProductMovementsGallery() {
     <>
       <div className="productMovementsGallery">
         <h2 className="productMovementsGallery__heading">
-          {"Product Movements" +
-            " (forced render #" +
-            renderToAvoidConfirmMalfunction +
-            ")"}
+          {"Product Movements"}
         </h2>
         <div className="productMovementsGallery__container">
           <div className="productMovementsGallery__fieldContainer">
